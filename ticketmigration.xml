@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <name>Ticket Migration</name>
+  <key>ticketmigration</key>
+  <state>development</state>
+  <description>Generic CSV-driven historical ticket migration for GLPI 11.</description>
+  <homepage>https://github.com/TiniSys-IT-Solutions/glpi-ticket-migration</homepage>
+  <download>https://github.com/TiniSys-IT-Solutions/glpi-ticket-migration/releases</download>
+  <issues>https://github.com/TiniSys-IT-Solutions/glpi-ticket-migration/issues</issues>
+  <authors><author>TiniSys IT Solutions</author></authors>
+  <license>GPLv3+</license>
+  <langs><lang>fr_FR</lang><lang>en_GB</lang></langs>
+  <versions>
+    <version>
+      <num>0.0.1</num>
+      <compatibility>^11.0</compatibility>
+      <download_url>https://github.com/TiniSys-IT-Solutions/glpi-ticket-migration/releases/download/v0.0.1/glpi-ticket-migration-0.0.1.zip</download_url>
+    </version>
+  </versions>
+</root>

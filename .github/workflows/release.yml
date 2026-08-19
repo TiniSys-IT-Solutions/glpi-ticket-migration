@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: fileinfo, iconv, mbstring
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - run: ./scripts/build-release.sh "${GITHUB_REF_NAME}"
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          ARCHIVE="dist/glpi-ticket-migration-${VERSION}.zip"
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" "${ARCHIVE}" --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" "${ARCHIVE}" \
+              --title "Ticket Migration ${GITHUB_REF_NAME}" --generate-notes
+          fi

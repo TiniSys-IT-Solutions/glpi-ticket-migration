@@ -1,6 +1,9 @@
 /vendor/
+/.phpunit.result.cache
 /.phpunit.cache/
 /.idea/
 /.vscode/
 /.env
 *.log
+/dist/*
+!/dist/*.zip
