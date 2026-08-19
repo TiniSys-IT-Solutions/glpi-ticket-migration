@@ -8,6 +8,7 @@ final class Installer
         'glpi_plugin_ticketmigration_runitems', 'glpi_plugin_ticketmigration_externalrefs',
         'glpi_plugin_ticketmigration_runs', 'glpi_plugin_ticketmigration_valuemappings',
         'glpi_plugin_ticketmigration_fieldmappings', 'glpi_plugin_ticketmigration_profiles',
+        'glpi_plugin_ticketmigration_sourcefiles',
         'glpi_plugin_ticketmigration_configs',
     ];
 
@@ -15,6 +16,7 @@ final class Installer
     {
         global $DB;
         $migration = new \Migration(PLUGIN_TICKETMIGRATION_VERSION);
+        SourceDirectory::ensureExists();
         foreach (Schema::tables() as $table => $sql) {
             if (!$DB->tableExists($table)) {
                 $DB->doQuery($sql);

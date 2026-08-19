@@ -2,7 +2,9 @@
 
 use Glpi\Plugin\Hooks;
 use GlpiPlugin\Ticketmigration\Menu;
+use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\ProfileRight;
+use GlpiPlugin\Ticketmigration\SourceFile;
 
 define('PLUGIN_TICKETMIGRATION_VERSION', '0.1.0-dev');
 define('PLUGIN_TICKETMIGRATION_MIN_GLPI', '11.0.0');
@@ -14,6 +16,8 @@ function plugin_init_ticketmigration(): void
 
     $PLUGIN_HOOKS[Hooks::CSRF_COMPLIANT]['ticketmigration'] = true;
     Plugin::registerClass(ProfileRight::class, ['addtabon' => ['Profile']]);
+    Plugin::registerClass(MigrationProfile::class);
+    Plugin::registerClass(SourceFile::class);
 
     if (Session::haveRight(ProfileRight::RIGHT_VIEW_PROFILES, READ)) {
         $PLUGIN_HOOKS['menu_toadd']['ticketmigration'] = ['tools' => Menu::class];
@@ -31,7 +35,7 @@ function plugin_version_ticketmigration(): array
         'version' => PLUGIN_TICKETMIGRATION_VERSION,
         'author' => 'DooSys',
         'license' => 'GPL-3.0-or-later',
-        'homepage' => 'https://github.com/DooSys/glpi-ticket-migration',
+        'homepage' => 'https://github.com/TiniSys-IT-Solutions/glpi-ticket-migration',
         'requirements' => [
             'glpi' => ['min' => PLUGIN_TICKETMIGRATION_MIN_GLPI, 'max' => PLUGIN_TICKETMIGRATION_MAX_GLPI],
             'php' => ['min' => '8.2'],

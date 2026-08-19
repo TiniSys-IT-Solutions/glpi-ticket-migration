@@ -27,6 +27,9 @@ The domain never depends on HTTP or session state. The same plan-building path f
 - **Plan**: immutable ticket aggregate containing actors, timeline, documents, relations, external reference, warnings, and errors.
 - **Execution**: creates GLPI objects in a controlled lifecycle with `_disablenotif`; it isolates a failed source row from subsequent rows.
 - **Persistence**: profiles, mappings, runs, row states, and external references remain in plugin-prefixed tables.
+- **Source storage**: random internal names under `GLPI_PLUGIN_DOC_DIR/ticketmigration/sources`; metadata and retention state live in `sourcefiles`.
+
+Each uploaded source receives a schema fingerprint over CSV controls and ordered positional columns. This lets a profile reject structurally incompatible delta files without relying on unique header names.
 
 ## Persistence
 

@@ -1,5 +1,5 @@
 {
-  "name": "doosys/glpi-ticket-migration",
+  "name": "tinisys-it-solutions/glpi-ticket-migration",
   "description": "Generic CSV-driven historical ticket migration plugin for GLPI 11",
   "type": "glpi-plugin",
   "license": "GPL-3.0-or-later",

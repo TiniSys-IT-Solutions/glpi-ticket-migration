@@ -14,4 +14,15 @@ final class CsvReaderTest extends TestCase
         self::assertSame(['0:name', '1:name', '2:description'], array_map(fn ($column) => $column->key(), $reader->columns()));
         self::assertSame("line 1\nline 2", $reader->preview(1)[0]->value(2));
     }
+
+    public function testReadsSyntheticHelpdeskFixtureWithoutVendorSpecificCode(): void
+    {
+        $path = dirname(__DIR__) . '/fixtures/csv/generic-helpdesk-acceptance.csv';
+        $reader = new CsvReader($path);
+        self::assertCount(16, $reader->columns());
+        $rows = $reader->preview(10);
+        self::assertCount(2, $rows);
+        self::assertStringContainsString("Description synthétique multiligne", (string) $rows[0]->value(11));
+        self::assertSame('REQUESTER@EXAMPLE.ORG', $rows[0]->value(7));
+    }
 }

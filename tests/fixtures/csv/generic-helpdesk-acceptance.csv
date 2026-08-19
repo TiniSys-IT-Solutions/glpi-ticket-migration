@@ -1,0 +1,7 @@
+﻿#;id-ticket;type;priorité;status;date;affectation;mail demandeur;tel demandeur;matériel logiciel adresse IP;site;description;resumeActions;cloture;Pièces jointes;Last modified
+33913;LEGACY-33913;diffusion;haute;clôturé;11/08/2026 10:21;"pc-infra, TECHNICIAN@EXAMPLE.ORG";REQUESTER@EXAMPLE.ORG;6419;PRES0;Issoire 1 - Jaures;"Bonjour,
+
+Description synthétique multiligne avec accents.";"Auteur source : Jean Dupont
+Date source : 11/08/2026 10:42
+Action réalisée";Problème résolu;https://files.example.org/document.pdf;11/08/2026 11:53
+33914;LEGACY-33914;incident;normale;en cours;12/08/2026 08:05;support-n1;unknown@example.net;;;Saint-Flour;Demande simple;;;;12/08/2026 08:30
