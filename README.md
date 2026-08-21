@@ -2,7 +2,7 @@
 
 Ticket Migration is an autonomous GLPI 11 plugin for reconstructing historical tickets from reusable, user-configured CSV mappings. A source row becomes a `MigrationPlan` that may contain a ticket, actors, timeline entries, documents, relations, and an external reference.
 
-Status: **early development (`0.1.0-dev`)**. The current milestone provides the installable foundation, persistent schema, rights/menu model, streaming CSV reader, canonical row hashing, and the first domain object. It is not yet safe for production imports.
+Status: **early development (`0.0.x`)**. The current milestone provides the installable foundation, persistent schema, rights/menu model, streaming CSV reader, canonical row hashing, and the first domain object. It is not yet safe for production imports.
 
 ## Compatibility
 

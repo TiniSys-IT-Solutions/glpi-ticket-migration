@@ -16,36 +16,62 @@ final class ProfileRight extends \Profile
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string
     {
-        return $item instanceof \Profile && $item->getID() > 0
-            ? self::createTabEntry(__('Ticket Migration', 'ticketmigration'))
+        return $item instanceof \Profile
+            && $item->getID() > 0
+            && ($item->fields['interface'] ?? '') === 'central'
+            ? self::createTabEntry(__('Ticket Migration', 'ticketmigration'), 0, $item::getType(), 'ti ti-transfer')
             : '';
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool
     {
         if ($item instanceof \Profile) {
-            (new self())->showRights((int) $item->getID());
+            $canEdit = Session::haveRight('profile', UPDATE);
+            if ($canEdit) {
+                echo "<form method='post' action='" . $item->getFormURL() . "'>";
+            }
+            $item->displayRightsChoiceMatrix(self::rights(), [
+                'canedit' => $canEdit,
+                'title' => __('Ticket Migration', 'ticketmigration'),
+            ]);
+            if ($canEdit) {
+                echo "<div class='center'>";
+                echo \Html::hidden('id', ['value' => $item->getID()]);
+                echo \Html::submit(_sx('button', 'Save'), ['name' => 'update']);
+                echo '</div>';
+                \Html::closeForm();
+            }
         }
         return true;
-    }
-
-    private function showRights(int $profilesId): void
-    {
-        $this->displayRightsChoiceMatrix(self::rights(), [
-            'canedit' => Session::haveRight('profile', UPDATE),
-            'title' => __('Ticket Migration', 'ticketmigration'),
-        ]);
     }
 
     public static function rights(): array
     {
         return [
-            ['itemtype' => self::class, 'label' => __('View migration profiles', 'ticketmigration'), 'field' => self::RIGHT_VIEW_PROFILES],
-            ['itemtype' => self::class, 'label' => __('Manage migration profiles', 'ticketmigration'), 'field' => self::RIGHT_MANAGE_PROFILES],
-            ['itemtype' => self::class, 'label' => __('Run dry runs', 'ticketmigration'), 'field' => self::RIGHT_DRY_RUN],
-            ['itemtype' => self::class, 'label' => __('Run imports', 'ticketmigration'), 'field' => self::RIGHT_RUN],
-            ['itemtype' => self::class, 'label' => __('View migration history', 'ticketmigration'), 'field' => self::RIGHT_HISTORY],
-            ['itemtype' => self::class, 'label' => __('Manage plugin configuration', 'ticketmigration'), 'field' => self::RIGHT_CONFIG],
+            self::right(__('View migration profiles', 'ticketmigration'), self::RIGHT_VIEW_PROFILES, [READ => __('Read')]),
+            self::right(__('Manage migration profiles', 'ticketmigration'), self::RIGHT_MANAGE_PROFILES, [
+                READ => __('Read'),
+                CREATE => __('Create'),
+                UPDATE => __('Update'),
+                DELETE => __('Delete'),
+                PURGE => ['short' => __('Purge'), 'long' => _x('button', 'Delete permanently')],
+            ]),
+            self::right(__('Run dry runs', 'ticketmigration'), self::RIGHT_DRY_RUN, [READ => __('Execute')]),
+            self::right(__('Run imports', 'ticketmigration'), self::RIGHT_RUN, [READ => __('Execute')]),
+            self::right(__('View migration history', 'ticketmigration'), self::RIGHT_HISTORY, [READ => __('Read')]),
+            self::right(__('Manage plugin configuration', 'ticketmigration'), self::RIGHT_CONFIG, [
+                READ => __('Read'),
+                UPDATE => __('Update'),
+            ]),
+        ];
+    }
+
+    private static function right(string $label, string $field, array $rights): array
+    {
+        return [
+            'label' => $label,
+            'field' => $field,
+            'rights' => $rights,
         ];
     }
 }

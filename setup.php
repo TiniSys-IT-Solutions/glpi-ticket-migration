@@ -6,7 +6,7 @@ use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\ProfileRight;
 use GlpiPlugin\Ticketmigration\SourceFile;
 
-define('PLUGIN_TICKETMIGRATION_VERSION', '0.0.3');
+define('PLUGIN_TICKETMIGRATION_VERSION', '0.0.4');
 define('PLUGIN_TICKETMIGRATION_MIN_GLPI', '11.0.0');
 define('PLUGIN_TICKETMIGRATION_MAX_GLPI', '11.1.0');
 
@@ -23,9 +23,9 @@ function plugin_init_ticketmigration(): void
         $PLUGIN_HOOKS['menu_toadd']['ticketmigration'] = ['tools' => Menu::class];
     }
 
-    if (Session::haveRight(ProfileRight::RIGHT_CONFIG, UPDATE)) {
-        $PLUGIN_HOOKS['config_page']['ticketmigration'] = 'front/config.php';
-    }
+    // GLPI decides whether to display the configuration wrench from this hook.
+    // The target page still performs its own authorization check.
+    $PLUGIN_HOOKS['config_page']['ticketmigration'] = 'front/config.php';
 }
 
 function plugin_version_ticketmigration(): array

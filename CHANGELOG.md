@@ -4,6 +4,14 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.4] - 2026-08-21
+
+### Fixed
+
+- Display the plugin configuration wrench while keeping authorization enforced by the target page.
+- Bootstrap Ticket Migration rights once for GLPI administrator profiles so the Tools menu is immediately available.
+- Render the Ticket Migration rights matrix from the profile being edited.
+
 ## [0.0.3] - 2026-08-21
 
 ### Fixed
