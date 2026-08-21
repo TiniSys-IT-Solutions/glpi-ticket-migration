@@ -22,8 +22,8 @@ final class Installer
                 $DB->doQuery($sql);
             }
         }
-        foreach (\GlpiPlugin\Ticketmigration\ProfileRight::rights() as $right) {
-            \ProfileRight::addProfileRights([$right['field']]);
+        if (!(new ProfileRightSynchronizer())->synchronize()) {
+            return false;
         }
         $migration->executeMigration();
         return true;
