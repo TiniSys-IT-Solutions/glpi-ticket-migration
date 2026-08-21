@@ -15,15 +15,33 @@ final class Menu extends CommonGLPI
 
     public static function getMenuContent(): array
     {
+        $canViewProfiles = ProfileRight::canViewProfiles();
+        $canConfigure = ProfileRight::canConfigure();
+        if (!$canViewProfiles && !$canConfigure) {
+            return [];
+        }
+
         $menu = [
             'title' => self::getMenuName(),
-            'page' => '/plugins/ticketmigration/front/profile.php',
+            'page' => $canViewProfiles
+                ? '/plugins/ticketmigration/front/profile.php'
+                : '/plugins/ticketmigration/front/config.php',
             'icon' => 'ti ti-transfer',
             'options' => [],
         ];
-        $menu['options']['profiles'] = ['title' => __('Migration profiles', 'ticketmigration'), 'page' => $menu['page']];
-        $menu['options']['runs'] = ['title' => __('Migration runs', 'ticketmigration'), 'page' => '/plugins/ticketmigration/front/run.php'];
-        if (\Session::haveRight(ProfileRight::RIGHT_CONFIG, READ)) {
+        if ($canViewProfiles) {
+            $menu['options']['profiles'] = [
+                'title' => __('Migration profiles', 'ticketmigration'),
+                'page' => '/plugins/ticketmigration/front/profile.php',
+            ];
+        }
+        if (ProfileRight::canViewHistory()) {
+            $menu['options']['runs'] = [
+                'title' => __('Migration runs', 'ticketmigration'),
+                'page' => '/plugins/ticketmigration/front/run.php',
+            ];
+        }
+        if ($canConfigure) {
             $menu['options']['config'] = ['title' => __('Configuration', 'ticketmigration'), 'page' => '/plugins/ticketmigration/front/config.php'];
         }
         return $menu;

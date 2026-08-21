@@ -1,6 +1,8 @@
 <?php
 
-include('../../../inc/includes.php');
+if (!defined('GLPI_ROOT')) {
+    require dirname(__DIR__, 3) . '/inc/includes.php';
+}
 
 use GlpiPlugin\Ticketmigration\Menu;
 use GlpiPlugin\Ticketmigration\ProfileRight;
@@ -8,7 +10,9 @@ use GlpiPlugin\Ticketmigration\Source\CsvConfiguration;
 use GlpiPlugin\Ticketmigration\Source\PreviewService;
 use GlpiPlugin\Ticketmigration\SourceFile;
 
-Session::checkRight(ProfileRight::RIGHT_VIEW_PROFILES, READ);
+if (!ProfileRight::canViewProfiles()) {
+    Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
+}
 
 $source = new SourceFile();
 $id = (int) ($_GET['id'] ?? 0);

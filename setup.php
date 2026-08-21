@@ -6,7 +6,7 @@ use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\ProfileRight;
 use GlpiPlugin\Ticketmigration\SourceFile;
 
-define('PLUGIN_TICKETMIGRATION_VERSION', '0.0.4');
+define('PLUGIN_TICKETMIGRATION_VERSION', '0.0.6');
 define('PLUGIN_TICKETMIGRATION_MIN_GLPI', '11.0.0');
 define('PLUGIN_TICKETMIGRATION_MAX_GLPI', '11.1.0');
 
@@ -19,9 +19,9 @@ function plugin_init_ticketmigration(): void
     Plugin::registerClass(MigrationProfile::class);
     Plugin::registerClass(SourceFile::class);
 
-    if (Session::haveRight(ProfileRight::RIGHT_VIEW_PROFILES, READ)) {
-        $PLUGIN_HOOKS['menu_toadd']['ticketmigration'] = ['tools' => Menu::class];
-    }
+    // Always register the menu provider. It performs the authorization check
+    // when GLPI builds the menu, including the administrator recovery path.
+    $PLUGIN_HOOKS['menu_toadd']['ticketmigration'] = ['tools' => Menu::class];
 
     // GLPI decides whether to display the configuration wrench from this hook.
     // The target page still performs its own authorization check.

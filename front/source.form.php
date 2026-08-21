@@ -1,6 +1,8 @@
 <?php
 
-include('../../../inc/includes.php');
+if (!defined('GLPI_ROOT')) {
+    require dirname(__DIR__, 3) . '/inc/includes.php';
+}
 
 use GlpiPlugin\Ticketmigration\Install\SourceDirectory;
 use GlpiPlugin\Ticketmigration\Menu;
@@ -11,7 +13,9 @@ use GlpiPlugin\Ticketmigration\Source\PreviewService;
 use GlpiPlugin\Ticketmigration\Source\SourceFileStorage;
 use GlpiPlugin\Ticketmigration\SourceFile;
 
-Session::checkRight(ProfileRight::RIGHT_MANAGE_PROFILES, UPDATE);
+if (!ProfileRight::canManageProfiles(UPDATE)) {
+    Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
+}
 
 $profileId = (int) ($_REQUEST['profiles_id'] ?? 0);
 $profile = new MigrationProfile();

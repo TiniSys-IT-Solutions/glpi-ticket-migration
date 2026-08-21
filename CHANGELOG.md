@@ -4,6 +4,23 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.6] - 2026-08-21
+
+### Fixed
+
+- Register the Tools menu provider unconditionally and authorize its entries when GLPI builds the menu, including the GLPI administrator recovery path.
+- Apply the same administrator recovery authorization to the currently testable profile, upload, preview, history, and dashboard pages.
+
+## [0.0.5] - 2026-08-21
+
+### Fixed
+
+- Load GLPI safely from every front controller whether it is dispatched by GLPI 11 or accessed directly from a plugins/marketplace directory.
+
+### Added
+
+- Replace the configuration placeholder with an operational dashboard, direct workflow actions, counters, and protected-storage status.
+
 ## [0.0.4] - 2026-08-21
 
 ### Fixed

@@ -4,6 +4,8 @@
 
 GLPI administrator profiles receive the Ticket Migration rights once when the plugin is installed or upgraded. The plugin is then available under **Tools > Ticket Migration**, and its configuration shortcut is shown on the Plugins page.
 
+The configuration shortcut opens the plugin dashboard. It provides direct access to profiles and migration history, summarizes stored profiles and CSV sources, checks protected-storage availability, and describes the currently testable workflow.
+
 To delegate access, open **Administration > Profiles**, select a central-interface profile, then use its **Ticket Migration** tab. The configuration page always performs an authorization check even though GLPI displays its shortcut.
 
 ## Create a profile

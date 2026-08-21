@@ -44,13 +44,13 @@ final class MigrationProfile extends CommonDBTM
 
     public function canCreateItem(): bool
     {
-        return Session::haveRight(ProfileRight::RIGHT_MANAGE_PROFILES, CREATE)
+        return ProfileRight::canManageProfiles(CREATE)
             && Session::haveAccessToEntity((int) ($this->input['entities_id'] ?? Session::getActiveEntity()));
     }
 
     public function canUpdateItem(): bool
     {
-        return Session::haveRight(ProfileRight::RIGHT_MANAGE_PROFILES, UPDATE) && $this->canViewItem();
+        return ProfileRight::canManageProfiles(UPDATE) && $this->canViewItem();
     }
 
     public function prepareInputForAdd($input): array|false

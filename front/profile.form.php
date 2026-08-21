@@ -1,12 +1,16 @@
 <?php
 
-include('../../../inc/includes.php');
+if (!defined('GLPI_ROOT')) {
+    require dirname(__DIR__, 3) . '/inc/includes.php';
+}
 
 use GlpiPlugin\Ticketmigration\Menu;
 use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\ProfileRight;
 
-Session::checkRight(ProfileRight::RIGHT_MANAGE_PROFILES, UPDATE);
+if (!ProfileRight::canManageProfiles(UPDATE)) {
+    Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
+}
 
 $profile = new MigrationProfile();
 if (isset($_POST['add'])) {

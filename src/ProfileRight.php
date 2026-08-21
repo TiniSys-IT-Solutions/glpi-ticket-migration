@@ -14,6 +14,31 @@ final class ProfileRight extends \Profile
     public const RIGHT_HISTORY = 'plugin_ticketmigration_history';
     public const RIGHT_CONFIG = 'plugin_ticketmigration_config';
 
+    public static function canViewProfiles(): bool
+    {
+        return Session::haveRight(self::RIGHT_VIEW_PROFILES, READ) || self::isGlpiAdministrator();
+    }
+
+    public static function canManageProfiles(int $right): bool
+    {
+        return Session::haveRight(self::RIGHT_MANAGE_PROFILES, $right) || self::isGlpiAdministrator();
+    }
+
+    public static function canViewHistory(): bool
+    {
+        return Session::haveRight(self::RIGHT_HISTORY, READ) || self::isGlpiAdministrator();
+    }
+
+    public static function canConfigure(): bool
+    {
+        return Session::haveRight(self::RIGHT_CONFIG, READ) || self::isGlpiAdministrator();
+    }
+
+    private static function isGlpiAdministrator(): bool
+    {
+        return Session::haveRight('config', UPDATE);
+    }
+
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string
     {
         return $item instanceof \Profile

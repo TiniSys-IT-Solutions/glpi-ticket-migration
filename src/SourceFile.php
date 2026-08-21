@@ -18,6 +18,11 @@ final class SourceFile extends CommonDBTM
         return _n('Migration source file', 'Migration source files', $nb, 'ticketmigration');
     }
 
+    public function canCreateItem(): bool
+    {
+        return ProfileRight::canManageProfiles(CREATE);
+    }
+
     public function prepareInputForAdd($input): array|false
     {
         foreach (['users_id', 'source_filename', 'internal_filename', 'sha256', 'filesize', 'mime_type', 'uploaded_at'] as $field) {

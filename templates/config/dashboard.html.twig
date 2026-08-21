@@ -1,0 +1,70 @@
+<div class="container-fluid p-3">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h1 class="h2 mb-1"><i class="ti ti-transfer me-2"></i>{{ __('Ticket Migration', 'ticketmigration') }}</h1>
+      <p class="text-muted mb-0">{{ __('Prepare and validate generic CSV ticket migrations.', 'ticketmigration') }}</p>
+    </div>
+    <span class="badge bg-blue-lt text-blue">v{{ version }}</span>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-4">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted">{{ __('Migration profiles', 'ticketmigration') }}</div>
+        <div class="display-6">{{ profiles_count }}</div>
+      </div></div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted">{{ __('CSV sources', 'ticketmigration') }}</div>
+        <div class="display-6">{{ sources_count }}</div>
+      </div></div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted">{{ __('Migration runs', 'ticketmigration') }}</div>
+        <div class="display-6">{{ runs_count }}</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="card-title">{{ __('Test the current workflow', 'ticketmigration') }}</h2></div>
+        <div class="card-body">
+          <ol class="mb-4">
+            <li class="mb-2">{{ __('Create a migration profile and save it.', 'ticketmigration') }}</li>
+            <li class="mb-2">{{ __('Open the saved profile and select Upload CSV.', 'ticketmigration') }}</li>
+            <li>{{ __('Choose the CSV format, upload the file, and verify its bounded preview.', 'ticketmigration') }}</li>
+          </ol>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary" href="{{ profiles_url }}"><i class="ti ti-list me-1"></i>{{ __('Open profiles', 'ticketmigration') }}</a>
+            {% if can_manage_profiles %}
+              <a class="btn btn-outline-primary" href="{{ new_profile_url }}"><i class="ti ti-plus me-1"></i>{{ __('New profile', 'ticketmigration') }}</a>
+            {% endif %}
+            <a class="btn btn-outline-secondary" href="{{ runs_url }}"><i class="ti ti-history me-1"></i>{{ __('Migration runs', 'ticketmigration') }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="card-title">{{ __('System status', 'ticketmigration') }}</h2></div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span>{{ __('Protected CSV storage', 'ticketmigration') }}</span>
+            <span class="badge {{ storage_ready ? 'bg-green-lt text-green' : 'bg-red-lt text-red' }}">
+              {{ storage_ready ? __('Ready', 'ticketmigration') : __('Unavailable', 'ticketmigration') }}
+            </span>
+          </div>
+          <code class="d-block text-break">{{ storage_path }}</code>
+          <hr>
+          <div class="alert alert-warning mb-0">
+            {{ __('Mapping, dry run, and ticket creation are not enabled yet. No ticket can be created from this screen.', 'ticketmigration') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
