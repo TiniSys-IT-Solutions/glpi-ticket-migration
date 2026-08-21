@@ -4,17 +4,18 @@ set -euo pipefail
 PLUGIN_KEY="ticketmigration"
 REPOSITORY_NAME="glpi-ticket-migration"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TAG_NAME="${1:-v0.0.1}"
-VERSION="${TAG_NAME#v}"
+TAG_NAME="${1:-}"
 DIST_DIR="${ROOT_DIR}/dist"
 BUILD_DIR="${DIST_DIR}/build"
 PACKAGE_DIR="${BUILD_DIR}/${PLUGIN_KEY}"
-ARCHIVE="${DIST_DIR}/${REPOSITORY_NAME}-${VERSION}.zip"
 
 cd "${ROOT_DIR}"
 PLUGIN_VERSION="$(sed -n "s/^define('PLUGIN_TICKETMIGRATION_VERSION', '\([^']*\)');/\1/p" setup.php)"
 [[ -n "${PLUGIN_VERSION}" ]] || { echo "Unable to read plugin version" >&2; exit 1; }
+VERSION="${TAG_NAME#v}"
+[[ -n "${VERSION}" ]] || VERSION="${PLUGIN_VERSION}"
 [[ "${VERSION}" == "${PLUGIN_VERSION}" ]] || { echo "Version mismatch: ${VERSION} != ${PLUGIN_VERSION}" >&2; exit 1; }
+ARCHIVE="${DIST_DIR}/${REPOSITORY_NAME}-${VERSION}.zip"
 
 for command in composer php rsync python3; do
   command -v "${command}" >/dev/null 2>&1 || { echo "Missing command: ${command}" >&2; exit 1; }
