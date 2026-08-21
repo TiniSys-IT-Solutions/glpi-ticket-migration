@@ -1,0 +1,30 @@
+<div class="card m-3">
+  <div class="card-header"><h2 class="card-title">{{ __('CSV source for %s', 'ticketmigration')|format(profile.name) }}</h2></div>
+  <form method="post" enctype="multipart/form-data" action="{{ form_action }}">
+    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="profiles_id" value="{{ profile_id }}">
+    <div class="card-body row g-3">
+      <div class="col-12">
+        <label class="form-label" for="source-csv">{{ __('CSV file', 'ticketmigration') }}</label>
+        <input class="form-control" id="source-csv" type="file" name="source_csv" accept=".csv,text/csv,text/plain" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="delimiter">{{ __('Delimiter', 'ticketmigration') }}</label>
+        <select class="form-select" id="delimiter" name="delimiter">
+          <option value=";">;</option><option value=",">,</option><option value="&#9;">{{ __('Tab', 'ticketmigration') }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="encoding">{{ __('Encoding', 'ticketmigration') }}</label>
+        <select class="form-select" id="encoding" name="encoding">
+          <option value="UTF-8">UTF-8</option><option value="Windows-1252">Windows-1252</option><option value="ISO-8859-1">ISO-8859-1</option>
+        </select>
+      </div>
+      <div class="col-md-4 form-check mt-5">
+        <input class="form-check-input" id="has-header" type="checkbox" name="has_header" value="1" checked>
+        <label class="form-check-label" for="has-header">{{ __('First row contains headers', 'ticketmigration') }}</label>
+      </div>
+    </div>
+    <div class="card-footer"><button class="btn btn-primary" type="submit" name="upload" value="1">{{ __('Upload and preview', 'ticketmigration') }}</button></div>
+  </form>
+</div>

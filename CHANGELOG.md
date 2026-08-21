@@ -4,6 +4,10 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+### Added
+
+- Functional profile list/editor, protected CSV upload, persistent source metadata, and bounded streaming preview.
+
 ## [0.0.1] - 2026-08-19
 
 ### Added

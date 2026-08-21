@@ -1,7 +1,7 @@
 # Security model
 
 - Every front/AJAX action checks a dedicated GLPI right, entity visibility, and CSRF token before mutation.
-- Uploaded files use a random internal name under a GLPI-approved plugin data directory; source name, SHA-256, size, owner, and retention metadata are persisted.
+- Uploaded files use a random internal name under a GLPI-approved plugin data directory; extension, MIME, size and upload provenance are validated, while source name, SHA-256, owner and retention metadata are persisted.
 - CSV is streamed. Full files and large row collections never enter `$_SESSION`.
 - Remote attachments accept HTTP(S) only, resolve and reject loopback/link-local/private destinations by default, revalidate redirects, enforce allowlists, timeouts, byte limits, MIME checks, and sanitized names.
 - Source text is escaped/sanitized for GLPI-compatible HTML. Error CSV exports neutralize spreadsheet-formula prefixes.

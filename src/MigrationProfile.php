@@ -19,6 +19,20 @@ final class MigrationProfile extends CommonDBTM
         return _n('Migration profile', 'Migration profiles', $nb, 'ticketmigration');
     }
 
+    public static function getFormURL($full = true): string
+    {
+        global $CFG_GLPI;
+        $root = $full ? $CFG_GLPI['root_doc'] : '';
+        return $root . '/plugins/ticketmigration/front/profile.form.php';
+    }
+
+    public static function getSearchURL($full = true): string
+    {
+        global $CFG_GLPI;
+        $root = $full ? $CFG_GLPI['root_doc'] : '';
+        return $root . '/plugins/ticketmigration/front/profile.php';
+    }
+
     public function canViewItem(): bool
     {
         if (!Session::haveAccessToEntity((int) $this->fields['entities_id'], (bool) $this->fields['is_recursive'])) {
@@ -61,9 +75,15 @@ final class MigrationProfile extends CommonDBTM
             return false;
         }
         $input['name'] = $name;
-        $input['source_name'] = trim((string) ($input['source_name'] ?? ''));
-        $input['is_private'] = (int) (bool) ($input['is_private'] ?? true);
-        $input['is_recursive'] = (int) (bool) ($input['is_recursive'] ?? false);
+        if (array_key_exists('source_name', $input)) {
+            $input['source_name'] = trim((string) $input['source_name']);
+        }
+        if (array_key_exists('is_private', $input)) {
+            $input['is_private'] = (int) (bool) $input['is_private'];
+        }
+        if (array_key_exists('is_recursive', $input)) {
+            $input['is_recursive'] = (int) (bool) $input['is_recursive'];
+        }
         return $input;
     }
 }

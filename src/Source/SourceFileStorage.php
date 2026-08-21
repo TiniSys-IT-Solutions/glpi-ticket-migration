@@ -44,6 +44,17 @@ final class SourceFileStorage
         }
         chmod($destination, 0640);
         $mime = (new \finfo(FILEINFO_MIME_TYPE))->file($destination) ?: 'application/octet-stream';
+        $allowedMimeTypes = [
+            'text/plain',
+            'text/csv',
+            'application/csv',
+            'application/vnd.ms-excel',
+            'application/octet-stream',
+        ];
+        if (!in_array($mime, $allowedMimeTypes, true)) {
+            unlink($destination);
+            throw new \RuntimeException('Uploaded file MIME type is not accepted for CSV sources.');
+        }
         return new StoredSourceFile(
             $safeSourceName,
             $internalFilename,

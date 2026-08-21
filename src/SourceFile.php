@@ -27,4 +27,26 @@ final class SourceFile extends CommonDBTM
         }
         return $input;
     }
+
+    public function canViewItem(): bool
+    {
+        $profile = new MigrationProfile();
+        return $profile->getFromDB((int) ($this->fields['profiles_id'] ?? 0))
+            && $profile->canViewItem();
+    }
+
+    public function getProtectedPath(): string
+    {
+        $filename = (string) ($this->fields['internal_filename'] ?? '');
+        if (!preg_match('/^[a-f0-9]{64}\.csv$/', $filename)) {
+            throw new \RuntimeException('Stored source filename is invalid.');
+        }
+        $directory = Install\SourceDirectory::path();
+        $base = realpath($directory);
+        $path = realpath($directory . DIRECTORY_SEPARATOR . $filename);
+        if ($base === false || $path === false || !str_starts_with($path, $base . DIRECTORY_SEPARATOR)) {
+            throw new \RuntimeException('Stored source file cannot be located safely.');
+        }
+        return $path;
+    }
 }

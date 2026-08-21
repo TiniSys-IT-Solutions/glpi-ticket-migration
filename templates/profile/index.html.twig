@@ -1,13 +1,23 @@
 <div class="card m-3">
-  <div class="card-header">
+  <div class="card-header d-flex justify-content-between align-items-center">
     <h2 class="card-title"><i class="ti ti-transfer me-2"></i>{{ __('Migration profiles', 'ticketmigration') }}</h2>
+    {% if can_create %}<a class="btn btn-primary" href="{{ form_url }}">{{ __('New profile', 'ticketmigration') }}</a>{% endif %}
   </div>
-  <div class="card-body">
-    <div class="alert alert-info" role="status">
-      {{ __('Profile creation and CSV preview are being enabled in this development milestone.', 'ticketmigration') }}
-    </div>
-    <p class="text-muted mb-0">
-      {{ __('Uploaded sources are streamed from protected GLPI plugin storage and are never copied into the PHP session.', 'ticketmigration') }}
-    </p>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover mb-0">
+      <thead><tr><th>{{ __('Name') }}</th><th>{{ __('Source', 'ticketmigration') }}</th><th>{{ __('Visibility') }}</th><th>{{ __('Configuration status', 'ticketmigration') }}</th></tr></thead>
+      <tbody>
+      {% for profile in profiles %}
+        <tr>
+          <td><a href="{{ form_url }}?id={{ profile.id }}">{{ profile.name }}</a></td>
+          <td>{{ profile.source_name }}</td>
+          <td>{{ profile.is_private ? __('Private') : __('Public') }}</td>
+          <td><span class="badge {{ profile.is_ready ? 'bg-green' : 'bg-orange' }}">{{ profile.is_ready ? __('Ready', 'ticketmigration') : __('Draft', 'ticketmigration') }}</span></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4" class="text-muted text-center">{{ __('No migration profile yet.', 'ticketmigration') }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>

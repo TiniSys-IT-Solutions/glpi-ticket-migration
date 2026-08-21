@@ -1,0 +1,35 @@
+<div class="card m-3">
+  <div class="card-header">
+    <h2 class="card-title">{{ profile_id ? __('Edit migration profile', 'ticketmigration') : __('New migration profile', 'ticketmigration') }}</h2>
+  </div>
+  <form method="post" action="{{ form_action }}">
+    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="id" value="{{ profile_id }}">
+    <input type="hidden" name="entities_id" value="{{ profile.entities_id|default(active_entity) }}">
+    <div class="card-body row g-3">
+      <div class="col-md-6">
+        <label class="form-label" for="profile-name">{{ __('Name') }}</label>
+        <input class="form-control" id="profile-name" name="name" required maxlength="255" value="{{ profile.name|default('') }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="source-name">{{ __('Logical source name', 'ticketmigration') }}</label>
+        <input class="form-control" id="source-name" name="source_name" maxlength="255" value="{{ profile.source_name|default('') }}">
+      </div>
+      <div class="col-12">
+        <label class="form-label" for="profile-comment">{{ __('Comment') }}</label>
+        <textarea class="form-control" id="profile-comment" name="comment" rows="3">{{ profile.comment|default('') }}</textarea>
+        <input type="hidden" name="is_private" value="0">
+      </div>
+      <div class="col-md-6 form-check ms-2">
+        <input class="form-check-input" type="checkbox" id="is-private" name="is_private" value="1" {% if profile.is_private|default(1) %}checked{% endif %}>
+        <label class="form-check-label" for="is-private">{{ __('Private profile', 'ticketmigration') }}</label>
+      </div>
+    </div>
+    <div class="card-footer d-flex gap-2">
+      <button class="btn btn-primary" type="submit" name="{{ profile_id ? 'update' : 'add' }}" value="1">{{ __('Save') }}</button>
+      {% if profile_id %}
+        <a class="btn btn-outline-primary" href="{{ upload_url }}?profiles_id={{ profile_id }}">{{ __('Upload CSV', 'ticketmigration') }}</a>
+      {% endif %}
+    </div>
+  </form>
+</div>
