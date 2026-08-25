@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Ticket Migration 0.0.23\n"
+"Project-Id-Version: Ticket Migration 0.0.25\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 16:50+0530\n"
+"POT-Creation-Date: 2026-08-25 17:03+0530\n"
 "PO-Revision-Date: 2026-08-25 00:00+0000\n"
 "Last-Translator: TiniSys IT Solutions\n"
 "Language-Team: French (France)\n"
@@ -213,7 +213,7 @@ msgstr ""
 "La validation des résolveurs, la simulation et la création de tickets ne "
 "sont pas encore activées. Aucun ticket ne peut être créé depuis cet écran."
 
-#: templates/mapping/values.html.twig front/value.form.php:283
+#: templates/mapping/values.html.twig front/value.form.php:313
 msgid "Value correspondence"
 msgstr "Correspondance des valeurs"
 
@@ -237,6 +237,10 @@ msgid "Perfect automatic matches"
 msgstr "Correspondances automatiques parfaites"
 
 #: templates/mapping/values.html.twig
+msgid "Saved manual associations"
+msgstr "Associations manuelles enregistrées"
+
+#: templates/mapping/values.html.twig
 msgid "Decisions remaining"
 msgstr "Décisions restantes"
 
@@ -247,6 +251,10 @@ msgstr "Dernière analyse enregistrée"
 #: templates/mapping/values.html.twig
 msgid "automatic"
 msgstr "automatiques"
+
+#: templates/mapping/values.html.twig
+msgid "manual"
+msgstr "manuelles"
 
 #: templates/mapping/values.html.twig
 msgid "remaining"
@@ -317,8 +325,8 @@ msgstr ""
 "actuel."
 
 #: templates/mapping/values.html.twig
-msgid "Save draft"
-msgstr "Enregistrer le brouillon"
+msgid "Save progress"
+msgstr "Enregistrer la progression"
 
 #: templates/mapping/values.html.twig
 msgid "Validate and continue"
@@ -848,44 +856,48 @@ msgstr ""
 msgid "Complete the required field mappings first."
 msgstr "Complétez d’abord les mappages de champs obligatoires."
 
-#: front/value.form.php:90 front/value.form.php:100 front/value.form.php:150
+#: front/value.form.php:106
+msgid "Invalid value mapping submission key."
+msgstr "Clé d’envoi de correspondance de valeur invalide."
+
+#: front/value.form.php:112 front/value.form.php:180
 msgid "Every discovered source value must be explicitly resolved or ignored."
 msgstr ""
 "Chaque valeur source découverte doit être explicitement résolue ou ignorée."
 
-#: front/value.form.php:105
+#: front/value.form.php:123
 msgid "Duplicate value mapping submission."
 msgstr "Soumission en double d’une correspondance de valeur."
 
-#: front/value.form.php:123
+#: front/value.form.php:141
 msgid "Select a valid GLPI reference from the full list."
 msgstr "Sélectionnez une référence GLPI valide dans la liste complète."
 
-#: front/value.form.php:130 front/value.form.php:134
+#: front/value.form.php:148 front/value.form.php:152
 msgid "Invalid GLPI reference selection."
 msgstr "Sélection de référence GLPI invalide."
 
-#: front/value.form.php:139
+#: front/value.form.php:157
 msgid "Invalid value mapping selection."
 msgstr "Sélection de correspondance de valeur invalide."
 
-#: front/value.form.php:192
-msgid "Value correspondence draft saved. You can resume this work later."
+#: front/value.form.php:214
+msgid "Value correspondence progress saved. You can resume this work later."
 msgstr ""
-"Le brouillon des correspondances de valeurs a été enregistré. Vous pourrez "
-"reprendre ce travail plus tard."
+"La progression des correspondances de valeurs a été enregistrée. Vous "
+"pourrez reprendre ce travail plus tard."
 
-#: front/value.form.php:195
+#: front/value.form.php:217
 msgid "Value mappings saved."
 msgstr "Correspondances de valeurs enregistrées."
 
-#: front/value.form.php:195
+#: front/value.form.php:217
 msgid "Value mappings saved, but the distinct-value limit was reached."
 msgstr ""
 "Correspondances de valeurs enregistrées, mais la limite de valeurs "
 "distinctes a été atteinte."
 
-#: front/value.form.php:249
+#: front/value.form.php:271
 #, php-format
 msgid "Search all GLPI %s"
 msgstr "Rechercher tous les éléments GLPI : %s"
@@ -919,6 +931,14 @@ msgstr ""
 #: front/plan.preview.php:32
 msgid "The active CSV source is unavailable."
 msgstr "La source CSV active est indisponible."
+
+#~ msgid "Value correspondence draft saved. You can resume this work later."
+#~ msgstr ""
+#~ "Le brouillon des correspondances de valeurs a été enregistré. Vous "
+#~ "pourrez reprendre ce travail plus tard."
+
+#~ msgid "Save draft"
+#~ msgstr "Enregistrer le brouillon"
 
 #~ msgid "Save value correspondences"
 #~ msgstr "Enregistrer les correspondances de valeurs"

@@ -12,9 +12,15 @@ Controlled fields then use streaming distinct-value discovery. Status, type, pri
 
 User-reference suggestion labels contain the full name, GLPI login, and numeric object ID. This keeps homonymous accounts distinguishable without changing the persisted reference, which remains the verified `User` itemtype and ID.
 
+Manual requester lookup uses GLPI's native `all` user scope with `with_no_right`, so visible requester accounts without a profile assignment remain selectable. Manual assignee lookup uses GLPI's official `own_ticket` scope and therefore lists technicians eligible to own tickets. Both selections retain entity scoping, IDOR protection, and server-side `canViewItem()` validation.
+
 Unique reference matches are represented as prepared hidden decisions so the operator sees only exceptions while a single form save still validates the complete set. Aggregate and per-target counts are calculated from the current source. A bounded summary of the last saved analysis is stored in profile options for comparison with a later active source; row payloads remain outside profiles and PHP sessions.
 
-Value correspondence supports transactional partial drafts. A draft upserts only submitted decisions by profile, target key, and canonical source-value hash, preserving all earlier work and leaving the workflow at `mapping_configured`. Final validation replaces the current decision set only after its cardinality matches every non-skipped distinct value, then advances to `values_configured`.
+Value correspondence supports transactional partial progress saving. A progress save upserts only submitted decisions by profile, target key, and canonical source-value hash, preserving all earlier work and leaving the workflow at `mapping_configured`. Final validation advances to `values_configured` only after the merged repository state covers every non-skipped distinct value.
+
+Large correspondence forms submit one SHA-256-keyed resolution per completed manual decision. Blank controls and inactive GLPI selectors are disabled before submission, while unique automatic matches are rebuilt server-side. The server derives target and source context from the current streamed value sets, merges the submitted decisions, and validates final completeness against repository state. This avoids parallel-array drift and reduces pressure on PHP `max_input_vars`.
+
+Progress statistics distinguish unique automatic reference matches, persisted manual decisions (including explicit ignore), and unresolved values. The same three-way counts are exposed globally, by mapping target, and in the bounded last-analysis summary.
 
 Title remains a required field mapping, but individual rows may contain an empty value. An enabled profile fallback generates `Ticket — <description excerpt>` from a configurable number of words in the raw main description. If both values are empty, it generates `Ticket <external identifier>`. A non-empty mapped title is never modified, and each fallback is recorded as a plan warning.
 

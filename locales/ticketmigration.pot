@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 16:50+0530\n"
+"POT-Creation-Date: 2026-08-25 17:03+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -210,7 +210,7 @@ msgid ""
 "ticket can be created from this screen."
 msgstr ""
 
-#: templates/mapping/values.html.twig front/value.form.php:283
+#: templates/mapping/values.html.twig front/value.form.php:313
 msgid "Value correspondence"
 msgstr ""
 
@@ -230,6 +230,10 @@ msgid "Perfect automatic matches"
 msgstr ""
 
 #: templates/mapping/values.html.twig
+msgid "Saved manual associations"
+msgstr ""
+
+#: templates/mapping/values.html.twig
 msgid "Decisions remaining"
 msgstr ""
 
@@ -239,6 +243,10 @@ msgstr ""
 
 #: templates/mapping/values.html.twig
 msgid "automatic"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "manual"
 msgstr ""
 
 #: templates/mapping/values.html.twig
@@ -303,7 +311,7 @@ msgid "No value correspondence is required for the current field mapping."
 msgstr ""
 
 #: templates/mapping/values.html.twig
-msgid "Save draft"
+msgid "Save progress"
 msgstr ""
 
 #: templates/mapping/values.html.twig
@@ -816,39 +824,43 @@ msgstr ""
 msgid "Complete the required field mappings first."
 msgstr ""
 
-#: front/value.form.php:90 front/value.form.php:100 front/value.form.php:150
+#: front/value.form.php:106
+msgid "Invalid value mapping submission key."
+msgstr ""
+
+#: front/value.form.php:112 front/value.form.php:180
 msgid "Every discovered source value must be explicitly resolved or ignored."
 msgstr ""
 
-#: front/value.form.php:105
+#: front/value.form.php:123
 msgid "Duplicate value mapping submission."
 msgstr ""
 
-#: front/value.form.php:123
+#: front/value.form.php:141
 msgid "Select a valid GLPI reference from the full list."
 msgstr ""
 
-#: front/value.form.php:130 front/value.form.php:134
+#: front/value.form.php:148 front/value.form.php:152
 msgid "Invalid GLPI reference selection."
 msgstr ""
 
-#: front/value.form.php:139
+#: front/value.form.php:157
 msgid "Invalid value mapping selection."
 msgstr ""
 
-#: front/value.form.php:192
-msgid "Value correspondence draft saved. You can resume this work later."
+#: front/value.form.php:214
+msgid "Value correspondence progress saved. You can resume this work later."
 msgstr ""
 
-#: front/value.form.php:195
+#: front/value.form.php:217
 msgid "Value mappings saved."
 msgstr ""
 
-#: front/value.form.php:195
+#: front/value.form.php:217
 msgid "Value mappings saved, but the distinct-value limit was reached."
 msgstr ""
 
-#: front/value.form.php:249
+#: front/value.form.php:271
 #, php-format
 msgid "Search all GLPI %s"
 msgstr ""

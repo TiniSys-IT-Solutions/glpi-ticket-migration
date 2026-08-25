@@ -4,16 +4,36 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.25] - 2026-08-25
+
+### Added
+
+- Add saved manual-association counts to the global statistics, per-category cards, and last saved analysis summary.
+
+### Changed
+
+- Count a persisted manual choice or explicit ignore as completed work instead of leaving it in the remaining-decision total.
+
+## [0.0.24] - 2026-08-25
+
+### Fixed
+
+- Replace fragile parallel POST arrays with one cryptographically keyed resolution field per source decision.
+- Reconstruct source values, target keys, and unique automatic matches server-side before draft persistence.
+- Prevent blank and inactive manual controls from consuming PHP `max_input_vars` during large draft submissions.
+- Validate final completeness against the transactionally merged repository state, including earlier drafts.
+- Use GLPI's complete requester-user search, including visible accounts without assigned rights, while keeping the official `own_ticket` technician filter for assignees.
+
 ## [0.0.23] - 2026-08-25
 
 ### Added
 
-- Add partial draft saving to the value-correspondence screen without advancing the migration workflow.
+- Add partial progress saving to the value-correspondence screen without advancing the migration workflow.
 - Add a distinct final validation action that still requires every current source value to be resolved or ignored.
 
 ### Changed
 
-- Merge draft decisions transactionally with previously saved work instead of replacing the complete profile mapping.
+- Merge progress decisions transactionally with previously saved work instead of replacing the complete profile mapping.
 - Count only genuinely unresolved values as remaining after a draft is resumed.
 - Preserve partial correspondence progress and the latest analysis summary across sessions.
 
