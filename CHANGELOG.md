@@ -4,6 +4,15 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.26] - 2026-08-25
+
+### Fixed
+
+- Replace the malformed PCRE reference decoder with a deterministic parser for `ref:<itemtype>:<id>` selections.
+- Validate itemtype syntax and positive numeric IDs before instantiating and permission-checking GLPI references.
+- Add regression coverage for user and namespaced itemtype reference selections.
+- Add regression coverage for requester and technician GLPI dropdown scopes.
+
 ## [0.0.25] - 2026-08-25
 
 ### Added

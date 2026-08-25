@@ -7,7 +7,9 @@ if (!defined('GLPI_ROOT')) {
 use GlpiPlugin\Ticketmigration\Mapping\DistinctValueCollector;
 use GlpiPlugin\Ticketmigration\Mapping\FieldMappingRepository;
 use GlpiPlugin\Ticketmigration\Mapping\GlpiValueOptions;
+use GlpiPlugin\Ticketmigration\Mapping\ReferenceSelection;
 use GlpiPlugin\Ticketmigration\Mapping\TargetRegistry;
+use GlpiPlugin\Ticketmigration\Mapping\UserDropdownScope;
 use GlpiPlugin\Ticketmigration\Mapping\ValueMappingRepository;
 use GlpiPlugin\Ticketmigration\Menu;
 use GlpiPlugin\Ticketmigration\MigrationProfile;
@@ -142,17 +144,17 @@ if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
             }
             $decision['target_itemtype'] = $itemtype;
             $decision['target_id'] = $manualId;
-        } elseif (preg_match('/^ref:([A-Za-z_\\]+):(\d+)$/', $resolution, $matches)) {
+        } elseif (($reference = ReferenceSelection::parse($resolution)) !== null) {
             $definition = $definitions[$mappingKey];
-            if (($definition['itemtype'] ?? '') !== $matches[1]) {
+            if (($definition['itemtype'] ?? '') !== $reference['itemtype']) {
                 Html::displayErrorAndDie(__('Invalid GLPI reference selection.', 'ticketmigration'));
             }
-            $referencedItem = new $matches[1]();
-            if (!$referencedItem->getFromDB((int) $matches[2]) || !$referencedItem->canViewItem()) {
+            $referencedItem = new $reference['itemtype']();
+            if (!$referencedItem->getFromDB($reference['id']) || !$referencedItem->canViewItem()) {
                 Html::displayErrorAndDie(__('Invalid GLPI reference selection.', 'ticketmigration'));
             }
-            $decision['target_itemtype'] = $matches[1];
-            $decision['target_id'] = (int) $matches[2];
+            $decision['target_itemtype'] = $reference['itemtype'];
+            $decision['target_id'] = $reference['id'];
         } else {
             Html::displayErrorAndDie(__('Invalid value mapping selection.', 'ticketmigration'));
         }
@@ -271,10 +273,7 @@ foreach ($fieldMappings as $index => $mapping) {
                 'placeholder' => sprintf(__('Search all GLPI %s', 'ticketmigration'), $definition['label']),
             ];
             if ($definition['itemtype'] === 'User') {
-                $userDropdownOptions = $targetKey === 'actor.assignee'
-                    ? ['right' => 'own_ticket', 'with_no_right' => 0]
-                    : ['right' => 'all', 'with_no_right' => 1];
-                $manualDropdown = (string) User::dropdown($dropdownOptions + $userDropdownOptions);
+                $manualDropdown = (string) User::dropdown($dropdownOptions + UserDropdownScope::forTarget($targetKey));
             } else {
                 $manualDropdown = (string) Dropdown::show($definition['itemtype'], $dropdownOptions);
             }

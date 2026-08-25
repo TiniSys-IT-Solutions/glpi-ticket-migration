@@ -9,6 +9,7 @@
 - Source text is escaped/sanitized for GLPI-compatible HTML. Structured descriptions escape every source label and value before adding plugin-owned headings, line breaks, and separators; profiles can exclude sensitive columns. Error CSV exports neutralize spreadsheet-formula prefixes.
 - Manual reference mapping uses GLPI's native AJAX dropdowns and validates the selected object again with `canViewItem()` before persistence. User records are never created during resolution.
 - Value-form decisions use server-recomputed SHA-256 form keys bound to the target and source value. The server rejects unknown keys and reconstructs trusted mapping context instead of accepting client-submitted target metadata.
+- Submitted reference tokens are parsed as exactly three components, restricted to a valid itemtype name and positive integer ID, matched against the target registry, then loaded and permission-checked before persistence.
 - Imports pass `_disablenotif` to every GLPI object creation/update that supports it. The plugin never disables GLPI notifications globally.
 - Logs identify run, row, external ID, created IDs, and diagnostic codes without dumping ticket bodies, secrets, or remote credentials.
 
