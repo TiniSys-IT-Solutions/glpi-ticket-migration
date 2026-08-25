@@ -42,5 +42,13 @@ final class DistinctValueCollectorTest extends TestCase
             $collector->splitValue('one@example.org, two@example.org', 'auto'),
         );
         self::assertSame(['Dupont, Jean'], $collector->splitValue('Dupont, Jean', 'auto'));
+        self::assertSame(
+            ['support agfa', 'pascale@example.org'],
+            $collector->splitValue('support agfa, pascale@example.org', 'auto'),
+        );
+        self::assertSame(
+            ['francois@example.org'],
+            $collector->splitValue('francois@example.org,', 'auto'),
+        );
     }
 }

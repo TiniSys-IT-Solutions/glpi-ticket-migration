@@ -56,7 +56,9 @@ final class GlpiValueOptions
         foreach (array_unique($ids) as $id) {
             $item = new $itemtype();
             if ($item->getFromDB($id) && $item->canViewItem()) {
-                $options[$id] = $item->getName();
+                $options[$id] = $itemtype === 'User'
+                    ? sprintf('%s — %s (#%d)', $item->getName(), (string) $item->fields['name'], $id)
+                    : $item->getName();
             }
         }
         return $options;

@@ -4,6 +4,33 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.23] - 2026-08-25
+
+### Added
+
+- Add partial draft saving to the value-correspondence screen without advancing the migration workflow.
+- Add a distinct final validation action that still requires every current source value to be resolved or ignored.
+
+### Changed
+
+- Merge draft decisions transactionally with previously saved work instead of replacing the complete profile mapping.
+- Count only genuinely unresolved values as remaining after a draft is resumed.
+- Preserve partial correspondence progress and the latest analysis summary across sessions.
+
+## [0.0.22] - 2026-08-25
+
+### Fixed
+
+- Disambiguate homonymous user suggestions by displaying the GLPI login and numeric ID after the full name.
+
+## [0.0.21] - 2026-08-25
+
+### Fixed
+
+- Split mixed comma-separated actor lists containing e-mail addresses, logins, or display labels.
+- Ignore empty actor components produced by trailing commas.
+- Preserve comma-formatted person names when no e-mail marker establishes that the value is a list.
+
 ## [0.0.20] - 2026-08-25
 
 ### Fixed

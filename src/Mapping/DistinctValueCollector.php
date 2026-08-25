@@ -42,13 +42,9 @@ final class DistinctValueCollector
             $detected = [];
             foreach ($parts as $part) {
                 $commaParts = array_map('trim', explode(',', $part));
-                $isEmailList = count($commaParts) > 1
-                    && array_reduce(
-                        $commaParts,
-                        static fn (bool $valid, string $candidate): bool => $valid && filter_var($candidate, FILTER_VALIDATE_EMAIL) !== false,
-                        true,
-                    );
-                array_push($detected, ...($isEmailList ? $commaParts : [trim($part)]));
+                $containsEmail = count($commaParts) > 1
+                    && array_filter($commaParts, static fn (string $candidate): bool => filter_var($candidate, FILTER_VALIDATE_EMAIL) !== false) !== [];
+                array_push($detected, ...($containsEmail ? $commaParts : [trim($part)]));
             }
             return array_values(array_filter($detected, static fn (string $part): bool => $part !== ''));
         }

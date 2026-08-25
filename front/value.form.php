@@ -60,14 +60,16 @@ foreach ($fieldMappings as $index => $mapping) {
     }
 }
 $valueRepository = new ValueMappingRepository();
+$saved = $valueRepository->forProfile($profileId);
 $profileOptions = json_decode((string) ($profile->fields['options'] ?? ''), true) ?: [];
 $savedSkipTargets = (array) ($profileOptions['actor_resolution']['skip_unresolved_targets'] ?? []);
-if (isset($_POST['save_values'])) {
+if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
     if (!$profile->canUpdateItem()) {
         Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
     }
     $decisions = [];
     $seen = [];
+    $isDraft = isset($_POST['save_draft']);
     $skipUnresolvedTargets = [];
     foreach ((array) ($_POST['skip_unresolved_targets'] ?? []) as $targetKey) {
         foreach ($fieldMappings as $index => $fieldMapping) {
@@ -92,6 +94,9 @@ if (isset($_POST['save_values'])) {
             continue;
         }
         if ($resolution === '') {
+            if ($isDraft) {
+                continue;
+            }
             Session::addMessageAfterRedirect(__('Every discovered source value must be explicitly resolved or ignored.', 'ticketmigration'), false, ERROR);
             Html::redirect(WebUrl::front('value.form.php') . '?profiles_id=' . $profileId);
         }
@@ -111,6 +116,9 @@ if (isset($_POST['save_values'])) {
             $manualId = (int) (($_POST['manual_reference'] ?? [])[$manualKey] ?? 0);
             $itemtype = (string) ($definition['itemtype'] ?? '');
             $referencedItem = $itemtype !== '' ? new $itemtype() : null;
+            if ($isDraft && $manualId <= 0) {
+                continue;
+            }
             if ($manualId <= 0 || $referencedItem === null || !$referencedItem->getFromDB($manualId) || !$referencedItem->canViewItem()) {
                 Html::displayErrorAndDie(__('Select a valid GLPI reference from the full list.', 'ticketmigration'));
             }
@@ -138,15 +146,20 @@ if (isset($_POST['save_values'])) {
             $expectedCount += count($values);
         }
     }
-    if (count($decisions) !== $expectedCount) {
+    if (!$isDraft && count($decisions) !== $expectedCount) {
         Session::addMessageAfterRedirect(__('Every discovered source value must be explicitly resolved or ignored.', 'ticketmigration'), false, ERROR);
         Html::redirect(WebUrl::front('value.form.php') . '?profiles_id=' . $profileId);
     }
-    $valueRepository->replace($profileId, $decisions);
+    if ($isDraft) {
+        $valueRepository->merge($profileId, $decisions);
+    } else {
+        $valueRepository->replace($profileId, $decisions);
+    }
     $truncated = array_filter($sets, static fn ($set, $index): bool => $set->truncated && !in_array((string) $fieldMappings[$index]['target_key'], $skipUnresolvedTargets, true), ARRAY_FILTER_USE_BOTH);
     $profileOptions['actor_resolution']['skip_unresolved_targets'] = $skipUnresolvedTargets;
     $analysis = ['source_id' => (int) $source->getID(), 'filename' => (string) $source->fields['source_filename'], 'total' => 0, 'automatic' => 0, 'remaining' => 0, 'by_target' => []];
     $analysisProvider = new GlpiValueOptions();
+    $savedAfter = $valueRepository->forProfile($profileId);
     foreach ($fieldMappings as $index => $fieldMapping) {
         $targetKey = (string) $fieldMapping['target_key'];
         $definition = $definitions[$targetKey];
@@ -159,26 +172,33 @@ if (isset($_POST['save_values'])) {
                 }
             }
         }
+        $resolved = in_array($targetKey, $skipUnresolvedTargets, true)
+            ? $total
+            : count(array_intersect_key((array) ($savedAfter[$targetKey] ?? []), (array) ($allowed[$targetKey] ?? [])));
+        $remaining = max(0, $total - $resolved);
         $analysis['total'] += $total;
         $analysis['automatic'] += $automatic;
-        $analysis['remaining'] += $total - $automatic;
-        $analysis['by_target'][$targetKey] = ['label' => $definition['label'], 'total' => $total, 'automatic' => $automatic, 'remaining' => $total - $automatic];
+        $analysis['remaining'] += $remaining;
+        $analysis['by_target'][$targetKey] = ['label' => $definition['label'], 'total' => $total, 'automatic' => $automatic, 'remaining' => $remaining];
     }
     $profileOptions['last_value_analysis'] = $analysis;
     global $DB;
     $DB->update(MigrationProfile::getTable(), [
-        'workflow_step' => $truncated === [] ? MigrationProfile::STEP_VALUES_CONFIGURED : MigrationProfile::STEP_MAPPING_CONFIGURED,
+        'workflow_step' => !$isDraft && $truncated === [] ? MigrationProfile::STEP_VALUES_CONFIGURED : MigrationProfile::STEP_MAPPING_CONFIGURED,
         'is_ready' => 0,
         'options' => json_encode($profileOptions, JSON_THROW_ON_ERROR),
     ], ['id' => $profileId]);
-    Session::addMessageAfterRedirect(
-        $truncated === [] ? __('Value mappings saved.', 'ticketmigration') : __('Value mappings saved, but the distinct-value limit was reached.', 'ticketmigration'),
-        false,
-        $truncated === [] ? INFO : WARNING,
-    );
+    if ($isDraft) {
+        Session::addMessageAfterRedirect(__('Value correspondence draft saved. You can resume this work later.', 'ticketmigration'), false, INFO);
+    } else {
+        Session::addMessageAfterRedirect(
+            $truncated === [] ? __('Value mappings saved.', 'ticketmigration') : __('Value mappings saved, but the distinct-value limit was reached.', 'ticketmigration'),
+            false,
+            $truncated === [] ? INFO : WARNING,
+        );
+    }
     Html::redirect(WebUrl::front('value.form.php') . '?profiles_id=' . $profileId);
 }
-$saved = $valueRepository->forProfile($profileId);
 $optionProvider = new GlpiValueOptions();
 $fields = [];
 $statistics = ['total' => 0, 'automatic' => 0, 'remaining' => 0];
@@ -243,7 +263,8 @@ foreach ($fieldMappings as $index => $mapping) {
     $totalCount = count($sets[$index]->values);
     $statistics['total'] += $totalCount;
     $statistics['automatic'] += count($automaticRows);
-    $statistics['remaining'] += count($rows);
+    $remainingCount = count(array_filter($rows, static fn (array $row): bool => $row['selected'] === ''));
+    $statistics['remaining'] += $remainingCount;
     $fields[] = [
         'target_key' => $targetKey,
         'label' => $definition['label'],
@@ -252,7 +273,7 @@ foreach ($fieldMappings as $index => $mapping) {
         'automatic_rows' => $automaticRows,
         'total_count' => $totalCount,
         'automatic_count' => count($automaticRows),
-        'remaining_count' => count($rows),
+        'remaining_count' => $remainingCount,
         'truncated' => $sets[$index]->truncated,
         'can_skip_unresolved' => str_starts_with($targetKey, 'actor.'),
         'is_multi_actor' => str_starts_with($targetKey, 'actor.'),

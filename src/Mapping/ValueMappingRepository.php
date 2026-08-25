@@ -39,4 +39,30 @@ final class ValueMappingRepository
             throw $exception;
         }
     }
+
+    public function merge(int $profileId, array $decisions): void
+    {
+        global $DB;
+        $DB->beginTransaction();
+        try {
+            foreach ($decisions as $decision) {
+                $key = [
+                    'profiles_id' => $profileId,
+                    'mapping_key' => $decision['mapping_key'],
+                    'source_value_hash' => hash('sha256', $decision['source_value']),
+                ];
+                $DB->delete(self::TABLE, $key);
+                $DB->insert(self::TABLE, $key + [
+                    'source_value' => $decision['source_value'],
+                    'target_itemtype' => $decision['target_itemtype'] ?: null,
+                    'target_id' => $decision['target_id'] ?: null,
+                    'target_value' => $decision['target_value'] !== '' ? $decision['target_value'] : null,
+                ]);
+            }
+            $DB->commit();
+        } catch (\Throwable $exception) {
+            $DB->rollBack();
+            throw $exception;
+        }
+    }
 }
