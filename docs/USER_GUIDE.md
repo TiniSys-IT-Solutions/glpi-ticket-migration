@@ -42,7 +42,7 @@ After field mapping, **Continue to value correspondence** scans the active CSV i
 
 The page summarizes analyzed, perfectly matched, and remaining values globally and by category. Perfect unique references are kept out of the manual worklist and are validated together when the form is saved. The complete GLPI selector appears only after choosing manual selection. The last saved analysis and its source filename remain visible, making it possible to compare the result after preparing and activating a revised CSV.
 
-For requester, assigned-technician, and actor-group columns, select how multiple actors are separated during field mapping. Automatic mode supports semicolons, pipes, and line breaks. Choose comma explicitly when the export uses commas, because automatic comma splitting would damage names formatted as `Last name, First name`.
+For requester, assigned-technician, and actor-group columns, select how multiple actors are separated during field mapping. Automatic mode supports semicolons, pipes, and line breaks. It also safely detects comma-separated e-mail lists: each address is shown and mapped independently, then becomes a separate ticket actor. Choose comma explicitly for non-email comma-separated exports; automatic mode preserves names formatted as `Last name, First name`.
 
 The distinct-value display is limited to 200 values per field. Reaching that limit normally prevents validation and indicates that the selected column or strategy must be refined. For an actor field, you may explicitly choose **Import tickets without actors from this source field**. That choice omits the corresponding requester, technician, or group role for the entire source field; it does not create users and the immutable plan reports unresolved actors as warnings.
 

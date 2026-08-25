@@ -4,6 +4,17 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.20] - 2026-08-25
+
+### Fixed
+
+- Automatically split comma-separated e-mail actor lists into independent correspondence values and independent migration-plan actors.
+- Preserve person names formatted as `Last name, First name` when automatic separator detection is used.
+
+### Changed
+
+- Apply contextual comma detection through the shared actor splitter used by both distinct-value analysis and immutable plan construction.
+
 ## [0.0.19] - 2026-08-25
 
 ### Added

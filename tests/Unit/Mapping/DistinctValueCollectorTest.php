@@ -33,4 +33,14 @@ final class DistinctValueCollectorTest extends TestCase
         self::assertSame(['one@example.org', 'two@example.org'], $set->values);
         self::assertFalse($set->truncated);
     }
+
+    public function testAutoSplitsCommaSeparatedEmailsButPreservesLastNameFirstName(): void
+    {
+        $collector = new DistinctValueCollector();
+        self::assertSame(
+            ['one@example.org', 'two@example.org'],
+            $collector->splitValue('one@example.org, two@example.org', 'auto'),
+        );
+        self::assertSame(['Dupont, Jean'], $collector->splitValue('Dupont, Jean', 'auto'));
+    }
 }

@@ -37,12 +37,26 @@ final class DistinctValueCollector
 
     public function splitValue(string $value, ?string $delimiter): array
     {
+        if ($delimiter === 'auto') {
+            $parts = preg_split('/[;|]|\R/u', $value) ?: [$value];
+            $detected = [];
+            foreach ($parts as $part) {
+                $commaParts = array_map('trim', explode(',', $part));
+                $isEmailList = count($commaParts) > 1
+                    && array_reduce(
+                        $commaParts,
+                        static fn (bool $valid, string $candidate): bool => $valid && filter_var($candidate, FILTER_VALIDATE_EMAIL) !== false,
+                        true,
+                    );
+                array_push($detected, ...($isEmailList ? $commaParts : [trim($part)]));
+            }
+            return array_values(array_filter($detected, static fn (string $part): bool => $part !== ''));
+        }
         $pattern = match ($delimiter) {
             'comma' => '/,/',
             'semicolon' => '/;/',
             'pipe' => '/\|/',
             'newline' => '/\R/u',
-            'auto' => '/[;|]|\R/u',
             default => null,
         };
         $parts = $pattern === null ? [$value] : (preg_split($pattern, $value) ?: [$value]);

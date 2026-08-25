@@ -67,4 +67,29 @@ final class MigrationPlanBuilderTest extends TestCase
         self::assertSame('Ticket EXT-45', $fromExternalId->ticket['name']);
         self::assertTrue($fromExternalId->isExecutable());
     }
+
+    public function testBuildsSeparateActorsFromAutoDetectedCommaSeparatedEmails(): void
+    {
+        $mappings = [
+            0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct'],
+            1 => ['target_key' => 'ticket.name', 'strategy' => 'direct'],
+            2 => ['target_key' => 'actor.assignee', 'strategy' => 'direct', 'configuration' => json_encode(['multi_delimiter' => 'auto'])],
+        ];
+        $first = 'first@example.org';
+        $second = 'second@example.org';
+        $users = ['actor.assignee' => [
+            hash('sha256', $first) => ['target_itemtype' => 'User', 'target_id' => 41, 'target_value' => null],
+            hash('sha256', $second) => ['target_itemtype' => 'User', 'target_id' => 42, 'target_value' => null],
+        ]];
+        $plan = (new MigrationPlanBuilder())->build(
+            new SourceRow(4, ['EXT-46', 'Ticket', $first . ', ' . $second]),
+            $mappings,
+            $users,
+        );
+        self::assertSame([
+            ['itemtype' => 'User', 'id' => 41],
+            ['itemtype' => 'User', 'id' => 42],
+        ], $plan->actors['assignee']);
+        self::assertTrue($plan->isExecutable());
+    }
 }
