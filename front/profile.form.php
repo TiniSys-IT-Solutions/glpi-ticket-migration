@@ -36,6 +36,12 @@ if ($id > 0 && (int) ($profile->fields['sourcefiles_id'] ?? 0) > 0) {
         $activeSource = $source->fields;
     }
 }
+$entityDropdown = (string) Dropdown::show('Entity', [
+    'name' => 'entities_id',
+    'value' => (int) ($profile->fields['entities_id'] ?? Session::getActiveEntity()),
+    'display' => false,
+    'width' => '100%',
+]);
 
 Html::header(__('Migration profile details', 'ticketmigration'), $_SERVER['PHP_SELF'], 'tools', Menu::class);
 Glpi\Application\View\TemplateRenderer::getInstance()->display(
@@ -51,6 +57,7 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display(
         'preview_url' => WebUrl::front('preview.php'),
         'active_source' => $activeSource,
         'active_entity' => Session::getActiveEntity(),
+        'entity_dropdown' => $entityDropdown,
     ],
 );
 Html::footer();

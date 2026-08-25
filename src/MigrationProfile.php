@@ -78,6 +78,10 @@ final class MigrationProfile extends CommonDBTM
             return false;
         }
         $input['name'] = $name;
+        if (array_key_exists('entities_id', $input) && !Session::haveAccessToEntity((int) $input['entities_id'])) {
+            Session::addMessageAfterRedirect(__('You do not have permission to use the selected default entity.', 'ticketmigration'), false, ERROR);
+            return false;
+        }
         if (array_key_exists('source_name', $input)) {
             $input['source_name'] = trim((string) $input['source_name']);
         }

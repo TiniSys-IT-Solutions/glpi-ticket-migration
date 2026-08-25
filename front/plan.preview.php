@@ -9,6 +9,7 @@ use GlpiPlugin\Ticketmigration\Mapping\ValueMappingRepository;
 use GlpiPlugin\Ticketmigration\Menu;
 use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\Plan\MigrationPlanBuilder;
+use GlpiPlugin\Ticketmigration\Plan\EntityContextProvider;
 use GlpiPlugin\Ticketmigration\ProfileRight;
 use GlpiPlugin\Ticketmigration\Source\CsvConfiguration;
 use GlpiPlugin\Ticketmigration\Source\CsvReader;
@@ -38,14 +39,16 @@ $reader = new CsvReader($source->getProtectedPath(), new CsvConfiguration(
 $rows = $reader->preview(1);
 $row = $rows[0] ?? null;
 $profileOptions = json_decode((string) ($profile->fields['options'] ?? ''), true) ?: [];
+$valueMappings = (new ValueMappingRepository())->forProfile($profileId);
 $plan = $row ? (new MigrationPlanBuilder())->build(
     $row,
     (new FieldMappingRepository())->forProfile($profileId),
-    (new ValueMappingRepository())->forProfile($profileId),
+    $valueMappings,
     $reader->columns(),
     (array) ($profileOptions['description_consolidation'] ?? []),
     (array) ($profileOptions['actor_resolution'] ?? []),
     (array) ($profileOptions['title_fallback'] ?? []),
+    (new EntityContextProvider())->build((int) $profile->fields['entities_id'], $valueMappings),
 ) : null;
 Html::header(__('First-row migration plan', 'ticketmigration'), $_SERVER['PHP_SELF'], 'tools', Menu::class);
 Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration/plan/preview.html.twig', [

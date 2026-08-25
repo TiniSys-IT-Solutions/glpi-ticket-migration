@@ -10,7 +10,7 @@ final class UserDropdownScopeTest extends TestCase
     public function testRequesterIncludesAllVisibleUsersAndAssigneeUsesTechnicianRight(): void
     {
         self::assertSame(
-            ['right' => 'all', 'with_no_right' => 1],
+            ['right' => 'all', 'with_no_right' => 1, 'entity' => -1, 'entity_sons' => false],
             UserDropdownScope::forTarget('actor.requester'),
         );
         self::assertSame(

@@ -17,4 +17,9 @@ final class WebUrl
     {
         return self::plugin($withRootDocument) . '/front/' . ltrim($filename, '/');
     }
+
+    public static function ajax(string $filename, bool $withRootDocument = true): string
+    {
+        return self::plugin($withRootDocument) . '/ajax/' . ltrim($filename, '/');
+    }
 }

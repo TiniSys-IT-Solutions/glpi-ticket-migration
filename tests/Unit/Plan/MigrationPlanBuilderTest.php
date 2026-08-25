@@ -39,6 +39,7 @@ final class MigrationPlanBuilderTest extends TestCase
         );
         self::assertSame([['itemtype' => 'User', 'id' => 42]], $plan->actors['assignee']);
         self::assertCount(1, $plan->warnings);
+        self::assertStringContainsString('missing@example.org', $plan->warnings[0]);
         self::assertTrue($plan->isExecutable());
     }
 
@@ -91,5 +92,49 @@ final class MigrationPlanBuilderTest extends TestCase
             ['itemtype' => 'User', 'id' => 42],
         ], $plan->actors['assignee']);
         self::assertTrue($plan->isExecutable());
+    }
+
+    public function testNormalizesDatesAndAppliesDeterministicEntityPrecedence(): void
+    {
+        $mappings = [
+            0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct'],
+            1 => ['target_key' => 'ticket.name', 'strategy' => 'direct'],
+            2 => ['target_key' => 'ticket.date', 'strategy' => 'direct'],
+            3 => ['target_key' => 'ticket.closedate', 'strategy' => 'direct'],
+            4 => ['target_key' => 'ticket.location', 'strategy' => 'direct'],
+            5 => ['target_key' => 'actor.requester', 'strategy' => 'direct'],
+        ];
+        $values = [
+            'ticket.location' => [hash('sha256', 'Mende') => ['target_itemtype' => 'Location', 'target_id' => 30, 'target_value' => null]],
+            'actor.requester' => [hash('sha256', 'requester@example.org') => ['target_itemtype' => 'User', 'target_id' => 50, 'target_value' => null]],
+        ];
+        $plan = (new MigrationPlanBuilder())->build(
+            new SourceRow(2, ['EXT-47', 'Ticket', '11/08/2026', '11/08/2026 11:53', 'Mende', 'requester@example.org']),
+            $mappings,
+            $values,
+            entityContext: ['default_entity_id' => 2, 'location_entities' => [30 => 7], 'user_entities' => [50 => [8]]],
+        );
+        self::assertSame('2026-08-11 00:00:00', $plan->ticket['date']);
+        self::assertSame('2026-08-11 11:53:00', $plan->ticket['closedate']);
+        self::assertSame(['itemtype' => 'Entity', 'id' => 7], $plan->ticket['entity']);
+        self::assertTrue($plan->isExecutable());
+    }
+
+    public function testUsesProfileEntityWhenRequesterEntityIsAmbiguous(): void
+    {
+        $mappings = [
+            0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct'],
+            1 => ['target_key' => 'ticket.name', 'strategy' => 'direct'],
+            2 => ['target_key' => 'actor.requester', 'strategy' => 'direct'],
+        ];
+        $values = ['actor.requester' => [hash('sha256', 'requester@example.org') => ['target_itemtype' => 'User', 'target_id' => 50, 'target_value' => null]]];
+        $plan = (new MigrationPlanBuilder())->build(
+            new SourceRow(2, ['EXT-48', 'Ticket', 'requester@example.org']),
+            $mappings,
+            $values,
+            entityContext: ['default_entity_id' => 2, 'user_entities' => [50 => [7, 8]]],
+        );
+        self::assertSame(['itemtype' => 'Entity', 'id' => 2], $plan->ticket['entity']);
+        self::assertStringContainsString('multiple entities', implode(' ', $plan->warnings));
     }
 }

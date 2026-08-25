@@ -29,6 +29,15 @@
     </div>
   </div>
 
+  <div class="alert alert-danger d-flex align-items-start gap-3 mb-3" role="alert">
+    <i class="ti ti-database-exclamation fs-1 flex-shrink-0"></i>
+    <div>
+      <h2 class="h4 mb-1">{{ __('Backup required before any import', 'ticketmigration') }}</h2>
+      <p class="mb-1">{{ __('Before running a pilot or final migration, create and verify a recent, restorable backup of the complete GLPI environment.', 'ticketmigration') }}</p>
+      <p class="mb-0"><strong>{{ __('At minimum, back up the complete GLPI MySQL database.', 'ticketmigration') }}</strong> {{ __('Also back up GLPI files when documents or attachments may be imported.', 'ticketmigration') }}</p>
+    </div>
+  </div>
+
   <div class="row g-3">
     <div class="col-lg-7">
       <div class="card h-100">

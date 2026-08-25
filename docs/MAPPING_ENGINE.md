@@ -12,7 +12,7 @@ Controlled fields then use streaming distinct-value discovery. Status, type, pri
 
 User-reference suggestion labels contain the full name, GLPI login, and numeric object ID. This keeps homonymous accounts distinguishable without changing the persisted reference, which remains the verified `User` itemtype and ID.
 
-Manual requester lookup uses GLPI's native `all` user scope with `with_no_right`, so visible requester accounts without a profile assignment remain selectable. Manual assignee lookup uses GLPI's official `own_ticket` scope and therefore lists technicians eligible to own tickets. Both selections retain entity scoping, IDOR protection, and server-side `canViewItem()` validation.
+Manual requester lookup uses GLPI's native `all` user scope with `with_no_right` across all active entities visible to the operator, so requester accounts without a profile assignment remain selectable. Manual assignee lookup uses GLPI's official `own_ticket` scope and the migration-profile entity, therefore listing technicians eligible to own tickets. A protected plugin AJAX endpoint delegates filtering and IDOR checks to GLPI, then enriches all user labels with login and numeric ID. Both selection paths retain server-side `canViewItem()` validation.
 
 Unique reference matches are represented as prepared hidden decisions so the operator sees only exceptions while a single form save still validates the complete set. Aggregate and per-target counts are calculated from the current source. A bounded summary of the last saved analysis is stored in profile options for comparison with a later active source; row payloads remain outside profiles and PHP sessions.
 
@@ -22,7 +22,13 @@ Large correspondence forms submit one SHA-256-keyed resolution per completed man
 
 Progress statistics distinguish unique automatic reference matches, persisted manual decisions (including explicit ignore), and unresolved values. The same three-way counts are exposed globally, by mapping target, and in the bounded last-analysis summary.
 
+An actor-target omission policy never bypasses resolution persistence. Exact automatic matches and submitted manual decisions are merged first; `MigrationPlanBuilder` applies every resolved reference and converts only missing references into omission warnings. Omitted values are tracked separately from blocking remaining decisions.
+
 Title remains a required field mapping, but individual rows may contain an empty value. An enabled profile fallback generates `Ticket — <description excerpt>` from a configurable number of words in the raw main description. If both values are empty, it generates `Ticket <external identifier>`. A non-empty mapped title is never modified, and each fallback is recorded as a plan warning.
+
+Opening, resolution, and closing dates accept strict French `d/m/Y[ H:i[:s]]`, SQL `Y-m-d[ H:i[:s]]`, and ISO date-time forms. Valid values are normalized to `Y-m-d H:i:s`; invalid non-empty values block the plan. Structured historical metadata continues to contain the untouched source strings.
+
+Entity resolution is deterministic: an explicitly mapped entity wins, followed by the entity of a resolved GLPI location, then the requester's entity only when it is unique, then the migration profile's required default entity. Multiple requester entities never trigger an arbitrary choice and instead produce a warning before profile fallback.
 
 Requester, assigned-technician, requester-group, and technician-group source fields may contain multiple actors. Their separator is stored with the field mapping and applied identically by distinct-value discovery and `MigrationPlanBuilder`. Automatic mode recognizes semicolons, pipes, and line breaks. It also recognizes comma-separated lists as soon as one non-empty component is a valid e-mail address, allowing mixed e-mail, login, and display-label lists while ignoring trailing empty components. Person names formatted as `Last name, First name` remain intact when no e-mail establishes that the value is a list; unrestricted comma splitting remains an explicit choice. Each controlled field is bounded to 200 distinct values. For actor fields only, an explicit profile policy can omit the whole actor role and allow ticket import to continue without those actors; all omissions are reported as plan warnings.
 

@@ -5,7 +5,6 @@
   <form method="post" action="{{ form_action }}">
     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
     <input type="hidden" name="id" value="{{ profile_id }}">
-    <input type="hidden" name="entities_id" value="{{ profile.entities_id|default(active_entity) }}">
     <div class="card-body row g-3">
       <div class="col-md-6">
         <label class="form-label" for="profile-name">{{ __('Name') }}</label>
@@ -14,6 +13,11 @@
       <div class="col-md-6">
         <label class="form-label" for="source-name">{{ __('Logical source name', 'ticketmigration') }}</label>
         <input class="form-control" id="source-name" name="source_name" maxlength="255" value="{{ profile.source_name|default('') }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">{{ __('Default ticket entity', 'ticketmigration') }}</label>
+        {{ entity_dropdown|raw }}
+        <div class="form-hint">{{ __('Used when no explicit entity, resolved location entity, or unique requester entity is available.', 'ticketmigration') }}</div>
       </div>
       <div class="col-12">
         <label class="form-label" for="profile-comment">{{ __('Comment') }}</label>

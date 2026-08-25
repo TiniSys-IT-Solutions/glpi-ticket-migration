@@ -4,6 +4,60 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.31] - 2026-08-25
+
+### Added
+
+- Add a permanent configuration-dashboard warning requiring a verified, restorable GLPI backup before pilot or final import.
+- Document a mandatory, server-enforced final-import backup acknowledgement with GLPI user, timestamp, and optional backup reference.
+
+### Security
+
+- Keep backup execution outside the plugin so database credentials and platform-specific dump privileges are never introduced into GLPI.
+
+## [0.0.30] - 2026-08-25
+
+### Added
+
+- Add a visible GLPI-native default-entity selector to migration-profile creation and editing.
+- Add strict French and ISO date normalization to GLPI's `Y-m-d H:i:s` format for opening, resolution, and closing dates.
+- Add deterministic entity resolution with precedence: explicit mapping, resolved location entity, unique requester entity, then profile default.
+- Add plan warnings for inferred location/requester entities and ambiguous requester-entity fallback.
+
+### Changed
+
+- Reject invalid non-empty dates in the immutable plan instead of passing locale-formatted values to the future executor.
+- Preserve original date strings in structured historical metadata while using normalized values for GLPI fields.
+
+## [0.0.29] - 2026-08-25
+
+### Fixed
+
+- Always persist automatic and manual actor associations even when unresolved actors are configured for omission in the same submission.
+- Apply the omission policy only when a source actor has no saved resolution during migration-plan construction.
+- Distinguish omitted actors from remaining decisions in per-category progress statistics.
+
+### Changed
+
+- Rename and clarify the high-cardinality actor option as **Keep resolved associations and omit only unresolved actors**.
+
+## [0.0.28] - 2026-08-25
+
+### Changed
+
+- Highlight complete value decisions with a green row, border, validated control, check badge, and explicit saved/ready state.
+- Hide the no-exact-match warning once a valid manual reference has been selected.
+- Refresh completion feedback immediately when either the resolution mode or native GLPI selector changes.
+
+## [0.0.27] - 2026-08-25
+
+### Fixed
+
+- Search requesters across all active entities visible to the operator, including accounts without assigned rights.
+- Preserve GLPI's official `own_ticket` filter only for assigned-technician searches.
+- Format every manual user-search result consistently as `Full name — login (#ID)`.
+- Proxy the native GLPI user dropdown result through a permission-protected plugin endpoint without replacing GLPI's filtering or IDOR validation.
+
 ## [0.0.26] - 2026-08-25
 
 ### Fixed

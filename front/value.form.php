@@ -92,7 +92,7 @@ if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
     foreach ($fieldMappings as $index => $fieldMapping) {
         $mappingKey = (string) $fieldMapping['target_key'];
         $definition = $definitions[$mappingKey];
-        if ($definition['value_kind'] !== 'reference' || in_array($mappingKey, $skipUnresolvedTargets, true)) {
+        if ($definition['value_kind'] !== 'reference') {
             continue;
         }
         foreach ($sets[$index]->values as $sourceValue) {
@@ -113,9 +113,6 @@ if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
         if (!isset($allowed[$mappingKey][hash('sha256', $sourceValue)])) {
             Session::addMessageAfterRedirect(__('Every discovered source value must be explicitly resolved or ignored.', 'ticketmigration'), false, ERROR);
             Html::redirect(WebUrl::front('value.form.php') . '?profiles_id=' . $profileId);
-        }
-        if (in_array($mappingKey, $skipUnresolvedTargets, true)) {
-            continue;
         }
         if ($resolution === '') {
             continue;
@@ -169,7 +166,7 @@ if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
     $valueRepository->merge($profileId, $decisions);
     $truncated = array_filter($sets, static fn ($set, $index): bool => $set->truncated && !in_array((string) $fieldMappings[$index]['target_key'], $skipUnresolvedTargets, true), ARRAY_FILTER_USE_BOTH);
     $profileOptions['actor_resolution']['skip_unresolved_targets'] = $skipUnresolvedTargets;
-    $analysis = ['source_id' => (int) $source->getID(), 'filename' => (string) $source->fields['source_filename'], 'total' => 0, 'automatic' => 0, 'manual' => 0, 'remaining' => 0, 'by_target' => []];
+    $analysis = ['source_id' => (int) $source->getID(), 'filename' => (string) $source->fields['source_filename'], 'total' => 0, 'automatic' => 0, 'manual' => 0, 'omitted' => 0, 'remaining' => 0, 'by_target' => []];
     $analysisProvider = new GlpiValueOptions();
     $savedAfter = $valueRepository->forProfile($profileId);
     $resolvedCurrentCount = 0;
@@ -194,16 +191,17 @@ if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
                 }
             }
         }
-        $resolved = in_array($targetKey, $skipUnresolvedTargets, true)
-            ? $total
-            : count(array_intersect_key((array) ($savedAfter[$targetKey] ?? []), (array) ($allowed[$targetKey] ?? [])));
-        $remaining = max(0, $total - $resolved);
+        $resolved = count(array_intersect_key((array) ($savedAfter[$targetKey] ?? []), (array) ($allowed[$targetKey] ?? [])));
+        $isSkipping = in_array($targetKey, $skipUnresolvedTargets, true);
+        $omitted = $isSkipping ? max(0, $total - $resolved) : 0;
+        $remaining = $isSkipping ? 0 : max(0, $total - $resolved);
         $manual = max(0, $resolved - $automatic);
         $analysis['total'] += $total;
         $analysis['automatic'] += $automatic;
         $analysis['manual'] += $manual;
+        $analysis['omitted'] += $omitted;
         $analysis['remaining'] += $remaining;
-        $analysis['by_target'][$targetKey] = ['label' => $definition['label'], 'total' => $total, 'automatic' => $automatic, 'manual' => $manual, 'remaining' => $remaining];
+        $analysis['by_target'][$targetKey] = ['label' => $definition['label'], 'total' => $total, 'automatic' => $automatic, 'manual' => $manual, 'omitted' => $omitted, 'remaining' => $remaining];
     }
     $profileOptions['last_value_analysis'] = $analysis;
     global $DB;
@@ -225,7 +223,7 @@ if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
 }
 $optionProvider = new GlpiValueOptions();
 $fields = [];
-$statistics = ['total' => 0, 'automatic' => 0, 'manual' => 0, 'remaining' => 0];
+$statistics = ['total' => 0, 'automatic' => 0, 'manual' => 0, 'omitted' => 0, 'remaining' => 0];
 $position = 0;
 foreach ($fieldMappings as $index => $mapping) {
     $targetKey = (string) $mapping['target_key'];
@@ -273,12 +271,24 @@ foreach ($fieldMappings as $index => $mapping) {
                 'placeholder' => sprintf(__('Search all GLPI %s', 'ticketmigration'), $definition['label']),
             ];
             if ($definition['itemtype'] === 'User') {
-                $manualDropdown = (string) User::dropdown($dropdownOptions + UserDropdownScope::forTarget($targetKey));
+                $manualDropdown = (string) User::dropdown(array_replace(
+                    $dropdownOptions,
+                    UserDropdownScope::forTarget($targetKey),
+                    ['url' => WebUrl::ajax('users.php')],
+                ));
             } else {
                 $manualDropdown = (string) Dropdown::show($definition['itemtype'], $dropdownOptions);
             }
         }
-        $row = ['source' => $value, 'options' => $options, 'selected' => $selected, 'manual_dropdown' => $manualDropdown, 'position' => $position, 'form_key' => $formKey];
+        $row = [
+            'source' => $value,
+            'options' => $options,
+            'selected' => $selected,
+            'manual_dropdown' => $manualDropdown,
+            'position' => $position,
+            'form_key' => $formKey,
+            'is_saved' => isset($saved[$targetKey][$hash]),
+        ];
         if ($isAutomatic) {
             $automaticRows[] = $row;
         } else {
@@ -289,9 +299,13 @@ foreach ($fieldMappings as $index => $mapping) {
     $totalCount = count($sets[$index]->values);
     $statistics['total'] += $totalCount;
     $statistics['automatic'] += count($automaticRows);
-    $remainingCount = count(array_filter($rows, static fn (array $row): bool => $row['selected'] === ''));
-    $manualCount = count($rows) - $remainingCount;
+    $unresolvedCount = count(array_filter($rows, static fn (array $row): bool => $row['selected'] === ''));
+    $isSkipping = in_array($targetKey, $savedSkipTargets, true);
+    $remainingCount = $isSkipping ? 0 : $unresolvedCount;
+    $omittedCount = $isSkipping ? $unresolvedCount : 0;
+    $manualCount = count($rows) - $unresolvedCount;
     $statistics['manual'] += $manualCount;
+    $statistics['omitted'] += $omittedCount;
     $statistics['remaining'] += $remainingCount;
     $fields[] = [
         'target_key' => $targetKey,
@@ -302,6 +316,7 @@ foreach ($fieldMappings as $index => $mapping) {
         'total_count' => $totalCount,
         'automatic_count' => count($automaticRows),
         'manual_count' => $manualCount,
+        'omitted_count' => $omittedCount,
         'remaining_count' => $remainingCount,
         'truncated' => $sets[$index]->truncated,
         'can_skip_unresolved' => str_starts_with($targetKey, 'actor.'),

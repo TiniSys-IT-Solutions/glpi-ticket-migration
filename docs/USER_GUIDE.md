@@ -34,6 +34,10 @@ Description consolidation is enabled by default for historical migrations. It pr
 
 The mapping page also enables an empty-title fallback by default. When the mapped title is empty for a row, the plugin generates `Ticket —` followed by the configured number of words from the main description. When the description is empty too, it uses `Ticket` followed by the external identifier. Existing non-empty titles are preserved unchanged.
 
+Choose a **Default ticket entity** when creating or editing a migration profile. The plan first honors an explicitly mapped entity, otherwise uses the resolved location's GLPI entity, otherwise a requester's single unambiguous entity, and finally this profile default. If a requester belongs to several entities, the profile default is used with a warning.
+
+Mapped opening, resolution, and closing dates are normalized from supported French or ISO forms to GLPI's date-time format. Invalid dates block the plan, while their original source representation remains visible in the structured historical description.
+
 Direct positional mapping and controlled-value correspondence are enabled. Pilot execution, full dry run, and import remain disabled until the guarded GLPI executor is validated. The planned continuation is: inspect a first-row plan, perform an explicitly confirmed pilot import, execute a full dry run, then start the resumable import.
 
 ## Match controlled values
@@ -44,11 +48,13 @@ The page summarizes analyzed values, perfect automatic matches, saved manual ass
 
 Use **Save progress** at any time to persist only the decisions already completed. Blank rows remain pending, previously saved decisions are preserved, and the workflow does not advance. **Validate and continue** is the final action: it requires every current value to be resolved or explicitly ignored before enabling the migration-plan preview.
 
+A complete row is highlighted in green with a check badge. **Association saved** identifies a persisted decision; **Ready to save** identifies a complete choice changed during the current page session. The no-exact-match warning disappears after a valid manual GLPI object is selected.
+
 When several GLPI users share the same first and last name, suggested choices include both the GLPI login and numeric ID after the display name, for example `RIVRON François — francois.rivron@example.org (#123)`.
 
 For requester, assigned-technician, and actor-group columns, select how multiple actors are separated during field mapping. Automatic mode supports semicolons, pipes, and line breaks. It also safely detects comma-separated lists containing at least one e-mail, including mixed values such as `support team, user@example.org`; every non-empty component is shown and mapped independently, then becomes a separate ticket actor. Choose comma explicitly for lists containing only non-email logins or labels; automatic mode preserves names formatted as `Last name, First name`.
 
-The distinct-value display is limited to 200 values per field. Reaching that limit normally prevents validation and indicates that the selected column or strategy must be refined. For an actor field, you may explicitly choose **Import tickets without actors from this source field**. That choice omits the corresponding requester, technician, or group role for the entire source field; it does not create users and the immutable plan reports unresolved actors as warnings.
+The distinct-value display is limited to 200 values per field. Reaching that limit normally prevents validation and indicates that the selected column or strategy must be refined. For an actor field, you may explicitly choose **Keep resolved associations and omit only unresolved actors**. Every automatic or manual association is still saved and applied to imported tickets, including decisions made in the same submission. Only source actors without any saved resolution are omitted and reported as warnings; the category statistics count them separately as omitted rather than remaining. The plugin never creates missing users.
 
 ## Preview the first migration plan
 

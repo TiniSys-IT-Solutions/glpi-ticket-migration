@@ -8,7 +8,7 @@ use GlpiPlugin\Ticketmigration\Source\SourceRow;
 
 final class MigrationPlanBuilder
 {
-    public function build(SourceRow $row, array $fieldMappings, array $valueMappings, array $columns = [], array $descriptionConfiguration = [], array $resolutionConfiguration = [], array $titleFallbackConfiguration = []): MigrationPlan
+    public function build(SourceRow $row, array $fieldMappings, array $valueMappings, array $columns = [], array $descriptionConfiguration = [], array $resolutionConfiguration = [], array $titleFallbackConfiguration = [], array $entityContext = []): MigrationPlan
     {
         $ticket = [];
         $actors = [];
@@ -52,6 +52,14 @@ final class MigrationPlanBuilder
                 if ($target === 'ticket.external_id') {
                     $external['external_id'] = $sourceValue;
                 } elseif (str_starts_with($target, 'ticket.')) {
+                    if (in_array($target, ['ticket.date', 'ticket.solvedate', 'ticket.closedate'], true)) {
+                        $normalizedDate = (new DateNormalizer())->normalize((string) $value);
+                        if ($normalizedDate === null) {
+                            $errors[] = sprintf(__('Invalid date "%s" for %s.', 'ticketmigration'), $sourceValue, $target);
+                            continue;
+                        }
+                        $value = $normalizedDate;
+                    }
                     $ticket[substr($target, 7)] = $value;
                 } elseif (str_starts_with($target, 'actor.')) {
                     $actors[substr($target, 6)][] = $value;
@@ -61,6 +69,7 @@ final class MigrationPlanBuilder
         if (($external['external_id'] ?? '') === '') {
             $errors[] = __('External ticket identifier is empty.', 'ticketmigration');
         }
+        $this->resolveEntity($ticket, $actors, $entityContext, $warnings);
         if (($ticket['name'] ?? '') === '') {
             if ((bool) ($titleFallbackConfiguration['enabled'] ?? true)) {
                 $ticket['name'] = $this->fallbackTitle(
@@ -97,5 +106,34 @@ final class MigrationPlanBuilder
             return mb_strimwidth(__('Ticket', 'ticketmigration') . ' — ' . $excerpt, 0, 250, '…', 'UTF-8');
         }
         return mb_strimwidth(__('Ticket', 'ticketmigration') . ($externalId !== '' ? ' ' . $externalId : ''), 0, 250, '…', 'UTF-8');
+    }
+
+    private function resolveEntity(array &$ticket, array $actors, array $context, array &$warnings): void
+    {
+        if (isset($ticket['entity']['id'])) {
+            return;
+        }
+        $locationId = (int) ($ticket['location']['id'] ?? 0);
+        if ($locationId > 0 && array_key_exists($locationId, (array) ($context['location_entities'] ?? []))) {
+            $ticket['entity'] = ['itemtype' => 'Entity', 'id' => (int) $context['location_entities'][$locationId]];
+            $warnings[] = __('Ticket entity derived from the resolved location.', 'ticketmigration');
+            return;
+        }
+        $requesterEntities = [];
+        foreach ((array) ($actors['requester'] ?? []) as $requester) {
+            if (($requester['itemtype'] ?? '') === 'User') {
+                $requesterEntities = array_merge($requesterEntities, (array) (($context['user_entities'] ?? [])[(int) $requester['id']] ?? []));
+            }
+        }
+        $requesterEntities = array_values(array_unique(array_map('intval', $requesterEntities)));
+        if (count($requesterEntities) === 1) {
+            $ticket['entity'] = ['itemtype' => 'Entity', 'id' => $requesterEntities[0]];
+            $warnings[] = __('Ticket entity derived from the requester unique entity.', 'ticketmigration');
+            return;
+        }
+        if (count($requesterEntities) > 1) {
+            $warnings[] = __('Requester belongs to multiple entities; the migration profile default entity was used.', 'ticketmigration');
+        }
+        $ticket['entity'] = ['itemtype' => 'Entity', 'id' => max(0, (int) ($context['default_entity_id'] ?? 0))];
     }
 }
