@@ -10,6 +10,7 @@ final class MigrationProfile extends CommonDBTM
     public const STEP_PROFILE_CREATED = 'profile_created';
     public const STEP_SOURCE_SELECTED = 'source_selected';
     public const STEP_MAPPING_CONFIGURED = 'mapping_configured';
+    public const STEP_VALUES_CONFIGURED = 'values_configured';
     public const STEP_DRY_RUN_VALIDATED = 'dry_run_validated';
 
     public static $rightname = ProfileRight::RIGHT_VIEW_PROFILES;

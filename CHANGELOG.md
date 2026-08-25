@@ -4,6 +4,33 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.16] - 2026-08-25
+
+### Added
+
+- Add configurable structured historical-description consolidation for mapped and unmapped CSV fields.
+- Add per-column exclusion controls, mapped/unmapped inclusion policies, and before/after positioning around the main description.
+- Add safe HTML generation with escaped source labels and values, omitted empty fields, preserved line breaks, section headings, and an `<hr>` separator.
+
+### Changed
+
+- Rename the direct description target to **Main description** and keep it as a dedicated section without duplicating it in historical metadata.
+- Render the consolidated description in the first-row immutable plan preview.
+
+## [0.0.15] - 2026-08-25
+
+### Added
+
+- Add streaming distinct-value discovery for mapped status, type, priority, urgency, impact, user, group, entity, location, and category fields.
+- Add persistent value correspondence with explicit ignore decisions and normalized-exact GLPI reference suggestions requiring user confirmation.
+- Resolve users by login, name variants, or exact email and resolve tree dropdowns by name or complete name.
+- Add a read-only first-row immutable `MigrationPlan` preview with warnings and validation errors and no GLPI business-object writes.
+
+### Changed
+
+- Extend the resumable workflow with a `values_configured` state and contextual navigation.
+- Limit each distinct-value set to 200 entries and block progression when the limit requires a refined strategy.
+
 ## [0.0.14] - 2026-08-25
 
 ### Added

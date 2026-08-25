@@ -39,6 +39,7 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display(
         'can_create' => ProfileRight::canManageProfiles(CREATE),
         'form_url' => MigrationProfile::getFormURL(),
         'mapping_url' => WebUrl::front('mapping.form.php'),
+        'values_url' => WebUrl::front('value.form.php'),
         'upload_url' => WebUrl::front('source.form.php'),
     ],
 );

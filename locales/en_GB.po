@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ticket Migration 0.0.14\n"
+"Project-Id-Version: Ticket Migration 0.0.16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 11:31+0530\n"
+"POT-Creation-Date: 2026-08-25 12:15+0530\n"
 "PO-Revision-Date: 2026-08-25 00:00+0000\n"
 "Last-Translator: TiniSys IT Solutions\n"
 "Language-Team: English (United Kingdom)\n"
@@ -34,8 +34,12 @@ msgid "Private profile"
 msgstr "Private profile"
 
 #: templates/profile/form.html.twig templates/profile/index.html.twig
-msgid "Resume mapping"
-msgstr "Resume mapping"
+msgid "Resume value correspondence"
+msgstr "Resume value correspondence"
+
+#: templates/profile/form.html.twig templates/mapping/form.html.twig
+msgid "Continue to value correspondence"
+msgstr "Continue to value correspondence"
 
 #: templates/profile/form.html.twig templates/source/preview.html.twig
 msgid "Continue to mapping"
@@ -80,8 +84,12 @@ msgid "No source selected"
 msgstr "No source selected"
 
 #: templates/profile/index.html.twig
-msgid "Mapping configured"
-msgstr "Mapping configured"
+msgid "Values configured"
+msgstr "Values configured"
+
+#: templates/profile/index.html.twig
+msgid "Mapping configured — values required"
+msgstr "Mapping configured — values required"
 
 #: templates/profile/index.html.twig
 msgid "Source selected — mapping required"
@@ -92,12 +100,48 @@ msgid "Profile created — source required"
 msgstr "Profile created — source required"
 
 #: templates/profile/index.html.twig
+msgid "Configure values"
+msgstr "Configure values"
+
+#: templates/profile/index.html.twig
 msgid "Configure mapping"
 msgstr "Configure mapping"
 
 #: templates/profile/index.html.twig
 msgid "No migration profile yet."
 msgstr "No migration profile yet."
+
+#: templates/plan/preview.html.twig front/plan.preview.php:48
+msgid "First-row migration plan"
+msgstr "First-row migration plan"
+
+#: templates/plan/preview.html.twig
+msgid ""
+"This is a read-only plan preview. No GLPI ticket or business object has been "
+"created."
+msgstr ""
+"This is a read-only plan preview. No GLPI ticket or business object has been "
+"created."
+
+#: templates/plan/preview.html.twig
+msgid "Source row"
+msgstr "Source row"
+
+#: templates/plan/preview.html.twig
+msgid "Immutable migration plan"
+msgstr "Immutable migration plan"
+
+#: templates/plan/preview.html.twig
+msgid "The CSV contains no data row."
+msgstr "The CSV contains no data row."
+
+#: templates/plan/preview.html.twig
+msgid "Return to value correspondence"
+msgstr "Return to value correspondence"
+
+#: templates/plan/preview.html.twig
+msgid "Import this pilot row"
+msgstr "Import this pilot row"
 
 #: templates/config/dashboard.html.twig src/ProfileRight.php:47
 #: src/ProfileRight.php:60 src/Menu.php:13 setup.php:34 front/profile.php:34
@@ -170,7 +214,63 @@ msgstr ""
 "Resolver validation, dry run, and ticket creation are not enabled yet. No "
 "ticket can be created from this screen."
 
-#: templates/mapping/form.html.twig front/mapping.form.php:69
+#: templates/mapping/values.html.twig front/value.form.php:145
+msgid "Value correspondence"
+msgstr "Value correspondence"
+
+#: templates/mapping/values.html.twig
+msgid ""
+"Confirm how every distinct source value corresponds to an existing GLPI "
+"value. Normalized exact matches are suggestions only until saved."
+msgstr ""
+"Confirm how every distinct source value corresponds to an existing GLPI "
+"value. Normalized exact matches are suggestions only until saved."
+
+#: templates/mapping/values.html.twig
+msgid ""
+"More than 200 distinct values were found. This field cannot be validated "
+"until its mapping strategy is refined."
+msgstr ""
+"More than 200 distinct values were found. This field cannot be validated "
+"until its mapping strategy is refined."
+
+#: templates/mapping/values.html.twig
+msgid "Source value"
+msgstr "Source value"
+
+#: templates/mapping/values.html.twig
+msgid "GLPI correspondence"
+msgstr "GLPI correspondence"
+
+#: templates/mapping/values.html.twig
+msgid "Select a correspondence"
+msgstr "Select a correspondence"
+
+#: templates/mapping/values.html.twig
+msgid "Ignore this source value"
+msgstr "Ignore this source value"
+
+#: templates/mapping/values.html.twig
+msgid "No exact or normalized exact GLPI match was found."
+msgstr "No exact or normalized exact GLPI match was found."
+
+#: templates/mapping/values.html.twig
+msgid "No value correspondence is required for the current field mapping."
+msgstr "No value correspondence is required for the current field mapping."
+
+#: templates/mapping/values.html.twig
+msgid "Save value correspondences"
+msgstr "Save value correspondences"
+
+#: templates/mapping/values.html.twig
+msgid "Return to field mapping"
+msgstr "Return to field mapping"
+
+#: templates/mapping/values.html.twig
+msgid "Preview first migration plan"
+msgstr "Preview first migration plan"
+
+#: templates/mapping/form.html.twig front/mapping.form.php:93
 msgid "CSV field mapping"
 msgstr "CSV field mapping"
 
@@ -181,6 +281,16 @@ msgid ""
 msgstr ""
 "Map each positional CSV column to a functional GLPI target. Unselected "
 "columns are explicitly ignored."
+
+#: templates/mapping/form.html.twig
+msgid ""
+"Mapped and unmapped source fields can be consolidated into the GLPI ticket "
+"description. The main description remains a separate, clearly identified "
+"section."
+msgstr ""
+"Mapped and unmapped source fields can be consolidated into the GLPI ticket "
+"description. The main description remains a separate, clearly identified "
+"section."
 
 #: templates/mapping/form.html.twig
 msgid "CSV column"
@@ -195,12 +305,48 @@ msgid "GLPI target"
 msgstr "GLPI target"
 
 #: templates/mapping/form.html.twig
+msgid "Historical description"
+msgstr "Historical description"
+
+#: templates/mapping/form.html.twig
 msgid "Ignore this column"
 msgstr "Ignore this column"
 
 #: templates/mapping/form.html.twig
+msgid "Exclude this column"
+msgstr "Exclude this column"
+
+#: templates/mapping/form.html.twig
 msgid "Required for dry run: external identifier and title."
 msgstr "Required for dry run: external identifier and title."
+
+#: templates/mapping/form.html.twig
+msgid "Description consolidation"
+msgstr "Description consolidation"
+
+#: templates/mapping/form.html.twig
+msgid "Build a structured historical description"
+msgstr "Build a structured historical description"
+
+#: templates/mapping/form.html.twig
+msgid "Include mapped fields"
+msgstr "Include mapped fields"
+
+#: templates/mapping/form.html.twig
+msgid "Include unmapped fields"
+msgstr "Include unmapped fields"
+
+#: templates/mapping/form.html.twig
+msgid "Historical data position"
+msgstr "Historical data position"
+
+#: templates/mapping/form.html.twig
+msgid "Before the main description"
+msgstr "Before the main description"
+
+#: templates/mapping/form.html.twig
+msgid "After the main description"
+msgstr "After the main description"
 
 #: templates/mapping/form.html.twig
 msgid "Save mapping"
@@ -212,12 +358,8 @@ msgid "Return to profile"
 msgstr "Return to profile"
 
 #: templates/mapping/form.html.twig
-msgid "Dry run is the next development step."
-msgstr "Dry run is the next development step."
-
-#: templates/mapping/form.html.twig
-msgid "Continue to dry run"
-msgstr "Continue to dry run"
+msgid "Complete required mappings to continue"
+msgstr "Complete required mappings to continue"
 
 #: templates/source/preview.html.twig
 #, php-format
@@ -351,15 +493,41 @@ msgstr "A PHP extension stopped the upload."
 msgid "The CSV upload failed with an unknown error."
 msgstr "The CSV upload failed with an unknown error."
 
-#: src/MigrationProfile.php:24
+#: src/MigrationProfile.php:25
 msgid "Migration profile"
 msgid_plural "Migration profiles"
 msgstr[0] "Migration profile"
 msgstr[1] "Migration profiles"
 
-#: src/MigrationProfile.php:76
+#: src/MigrationProfile.php:77
 msgid "A migration profile name is required."
 msgstr "A migration profile name is required."
+
+#: src/Plan/MigrationPlanBuilder.php:29
+#, php-format
+msgid "Unresolved value \"%s\" for %s."
+msgstr "Unresolved value \"%s\" for %s."
+
+#: src/Plan/MigrationPlanBuilder.php:33
+#, php-format
+msgid "Value \"%s\" ignored for %s."
+msgstr "Value \"%s\" ignored for %s."
+
+#: src/Plan/MigrationPlanBuilder.php:49
+msgid "External ticket identifier is empty."
+msgstr "External ticket identifier is empty."
+
+#: src/Plan/MigrationPlanBuilder.php:52
+msgid "Ticket title is empty."
+msgstr "Ticket title is empty."
+
+#: src/Plan/StructuredDescriptionBuilder.php:40
+msgid "Imported historical data"
+msgstr "Imported historical data"
+
+#: src/Plan/StructuredDescriptionBuilder.php:43
+msgid "Original description"
+msgstr "Original description"
 
 #: src/ProfileRight.php:76
 msgid "View migration profiles"
@@ -403,8 +571,8 @@ msgid "Title"
 msgstr "Title"
 
 #: src/Mapping/TargetRegistry.php:13
-msgid "Description"
-msgstr "Description"
+msgid "Main description"
+msgstr "Main description"
 
 #: src/Mapping/TargetRegistry.php:14
 msgid "Opening date"
@@ -505,8 +673,8 @@ msgstr "Documents"
 msgid "Configuration"
 msgstr "Configuration"
 
-#: front/profile.form.php:30 front/mapping.form.php:23 front/preview.php:44
-#: front/source.php:20
+#: front/profile.form.php:30 front/mapping.form.php:23 front/value.form.php:26
+#: front/preview.php:44 front/source.php:20 front/plan.preview.php:24
 msgid "You do not have permission to view this migration profile."
 msgstr "You do not have permission to view this migration profile."
 
@@ -522,11 +690,15 @@ msgstr "Ticket Migration configuration"
 msgid "Select a CSV source before configuring mappings."
 msgstr "Select a CSV source before configuring mappings."
 
-#: front/mapping.form.php:54
+#: front/mapping.form.php:66
+msgid "Unable to save description consolidation settings."
+msgstr "Unable to save description consolidation settings."
+
+#: front/mapping.form.php:78
 msgid "Mapping saved. The profile is ready for the future dry-run step."
 msgstr "Mapping saved. The profile is ready for the future dry-run step."
 
-#: front/mapping.form.php:55
+#: front/mapping.form.php:79
 msgid "Mapping saved, but required targets are still missing."
 msgstr "Mapping saved, but required targets are still missing."
 
@@ -552,6 +724,38 @@ msgstr "Unable to prepare CSV preview: %s"
 msgid "Upload CSV source"
 msgstr "Upload CSV source"
 
+#: front/value.form.php:30
+msgid "Select a CSV source before configuring value mappings."
+msgstr "Select a CSV source before configuring value mappings."
+
+#: front/value.form.php:34
+msgid "Complete the required field mappings first."
+msgstr "Complete the required field mappings first."
+
+#: front/value.form.php:67 front/value.form.php:98
+msgid "Every discovered source value must be explicitly resolved or ignored."
+msgstr "Every discovered source value must be explicitly resolved or ignored."
+
+#: front/value.form.php:72
+msgid "Duplicate value mapping submission."
+msgstr "Duplicate value mapping submission."
+
+#: front/value.form.php:83 front/value.form.php:87
+msgid "Invalid GLPI reference selection."
+msgstr "Invalid GLPI reference selection."
+
+#: front/value.form.php:92
+msgid "Invalid value mapping selection."
+msgstr "Invalid value mapping selection."
+
+#: front/value.form.php:109
+msgid "Value mappings saved."
+msgstr "Value mappings saved."
+
+#: front/value.form.php:109
+msgid "Value mappings saved, but the distinct-value limit was reached."
+msgstr "Value mappings saved, but the distinct-value limit was reached."
+
 #: front/preview.php:22
 msgid "You do not have permission to view this CSV source."
 msgstr "You do not have permission to view this CSV source."
@@ -571,3 +775,11 @@ msgstr "The active or previously used CSV source cannot be deleted."
 #: front/source.php:36
 msgid "CSV source revisions"
 msgstr "CSV source revisions"
+
+#: front/plan.preview.php:27
+msgid "Complete value correspondence before previewing a migration plan."
+msgstr "Complete value correspondence before previewing a migration plan."
+
+#: front/plan.preview.php:32
+msgid "The active CSV source is unavailable."
+msgstr "The active CSV source is unavailable."

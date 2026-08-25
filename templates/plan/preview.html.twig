@@ -1,0 +1,9 @@
+<div class="card m-3"><div class="card-header"><div><h2 class="card-title">{{ __('First-row migration plan', 'ticketmigration') }}</h2><div class="text-muted">{{ profile.name }} — {{ source.source_filename }}</div></div></div>
+  <div class="card-body">
+    <div class="alert alert-info">{{ __('This is a read-only plan preview. No GLPI ticket or business object has been created.', 'ticketmigration') }}</div>
+    {% if plan %}<div class="row g-3 mb-3"><div class="col-md-4"><div class="card"><div class="card-body"><div class="text-muted">{{ __('Source row', 'ticketmigration') }}</div><div class="h2">{{ row.number }}</div></div></div></div><div class="col-md-4"><div class="card"><div class="card-body"><div class="text-muted">{{ __('Warnings') }}</div><div class="h2">{{ plan.warnings|length }}</div></div></div></div><div class="col-md-4"><div class="card"><div class="card-body"><div class="text-muted">{{ __('Errors') }}</div><div class="h2">{{ plan.errors|length }}</div></div></div></div></div>
+      {% for error in plan.errors %}<div class="alert alert-danger">{{ error }}</div>{% endfor %}{% for warning in plan.warnings %}<div class="alert alert-warning">{{ warning }}</div>{% endfor %}
+      <h3>{{ __('Immutable migration plan', 'ticketmigration') }}</h3><pre class="bg-light p-3 border rounded text-wrap">{{ plan_json }}</pre>
+    {% else %}<div class="alert alert-warning">{{ __('The CSV contains no data row.', 'ticketmigration') }}</div>{% endif %}
+  </div><div class="card-footer d-flex gap-2"><a class="btn btn-outline-secondary" href="{{ values_url }}">{{ __('Return to value correspondence', 'ticketmigration') }}</a><button class="btn btn-outline-secondary" disabled>{{ __('Import this pilot row', 'ticketmigration') }}</button></div>
+</div>

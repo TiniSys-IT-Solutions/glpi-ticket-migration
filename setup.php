@@ -6,7 +6,7 @@ use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\ProfileRight;
 use GlpiPlugin\Ticketmigration\SourceFile;
 
-define('PLUGIN_TICKETMIGRATION_VERSION', '0.0.14');
+define('PLUGIN_TICKETMIGRATION_VERSION', '0.0.16');
 define('PLUGIN_TICKETMIGRATION_MIN_GLPI', '11.0.0');
 define('PLUGIN_TICKETMIGRATION_MAX_GLPI', '11.1.0');
 

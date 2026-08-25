@@ -47,6 +47,7 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display(
         'upload_url' => WebUrl::front('source.form.php'),
         'sources_url' => WebUrl::front('source.php'),
         'mapping_url' => WebUrl::front('mapping.form.php'),
+        'values_url' => WebUrl::front('value.form.php'),
         'preview_url' => WebUrl::front('preview.php'),
         'active_source' => $activeSource,
         'active_entity' => Session::getActiveEntity(),

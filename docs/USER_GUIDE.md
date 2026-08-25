@@ -28,8 +28,20 @@ Selecting a revision with the same schema fingerprint preserves the mapping. Sel
 
 ## Map CSV columns
 
-Select a functional GLPI target for each positional CSV column, or explicitly leave it ignored. The external ticket identifier and ticket title targets are mandatory. Saving a complete mapping makes the profile ready for the future dry-run step; it still creates no GLPI ticket.
+Select a functional GLPI target for each positional CSV column, or explicitly leave it ignored. The external ticket identifier and ticket title targets are mandatory. Map the original ticket body to **Main description**.
 
-Direct positional mapping is enabled. Resolver/value mapping, dry run, and execution remain disabled until their validation stages are implemented. The planned continuation is: validate reference values, execute a full dry run, then explicitly start the resumable import.
+Description consolidation is enabled by default for historical migrations. It produces a **Historical data imported** section from mapped and unmapped source fields, a safe HTML separator, then the original description in its own section. Empty values are omitted. You can include or exclude mapped/unmapped fields, position historical data before or after the main description, and exclude technical or sensitive columns individually. All source labels and values are escaped before HTML generation.
+
+Direct positional mapping and controlled-value correspondence are enabled. Pilot execution, full dry run, and import remain disabled until the guarded GLPI executor is validated. The planned continuation is: inspect a first-row plan, perform an explicitly confirmed pilot import, execute a full dry run, then start the resumable import.
+
+## Match controlled values
+
+After field mapping, **Continue to value correspondence** scans the active CSV in streaming mode and lists distinct values only for controlled targets. Map enumerations to official GLPI values and confirm suggested existing users, groups, entities, locations, or categories. Suggestions use exact or normalized-exact matching and are never accepted automatically. Every discovered value must be resolved or explicitly ignored.
+
+The distinct-value display is limited to 200 values per field. Reaching that limit prevents validation and indicates that the selected column or strategy must be refined.
+
+## Preview the first migration plan
+
+After saving all value correspondences, preview the immutable plan generated for the first CSV data row. It shows ticket data, actors, external reference, warnings, and errors. This preview is read-only and creates no GLPI ticket. Pilot import remains disabled until the guarded executor is validated against GLPI 11.0.8.
 
 Replaying the same external IDs with identical canonical row hashes skips them. Changed rows are reported and are not updated automatically in V1.

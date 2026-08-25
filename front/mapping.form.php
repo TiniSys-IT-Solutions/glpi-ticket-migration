@@ -35,12 +35,36 @@ $configuration = new CsvConfiguration(
 );
 $preview = (new PreviewService())->preview($source->getProtectedPath(), $configuration, 1);
 $repository = new FieldMappingRepository();
+$profileOptions = json_decode((string) ($profile->fields['options'] ?? ''), true) ?: [];
+$descriptionConfiguration = array_replace([
+    'enabled' => true,
+    'include_mapped' => true,
+    'include_unmapped' => true,
+    'position' => 'before',
+    'excluded_columns' => [],
+], (array) ($profileOptions['description_consolidation'] ?? []));
 if (isset($_POST['save_mapping'])) {
     if (!$profile->canUpdateItem()) {
         Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
     }
     try {
         $repository->replace($profileId, $preview->columns, (array) ($_POST['target'] ?? []));
+        $validIndexes = array_map(static fn ($column): int => (int) $column->index, $preview->columns);
+        $excludedColumns = array_values(array_intersect(
+            $validIndexes,
+            array_map('intval', (array) ($_POST['description_excluded_columns'] ?? [])),
+        ));
+        $descriptionConfiguration = [
+            'enabled' => isset($_POST['description_enabled']),
+            'include_mapped' => isset($_POST['description_include_mapped']),
+            'include_unmapped' => isset($_POST['description_include_unmapped']),
+            'position' => ($_POST['description_position'] ?? 'before') === 'after' ? 'after' : 'before',
+            'excluded_columns' => $excludedColumns,
+        ];
+        $profileOptions['description_consolidation'] = $descriptionConfiguration;
+        if (!$profile->update(['id' => $profileId, 'options' => json_encode($profileOptions, JSON_THROW_ON_ERROR)])) {
+            throw new RuntimeException(__('Unable to save description consolidation settings.', 'ticketmigration'));
+        }
         $missing = $repository->missingRequiredTargets($profileId);
         global $DB;
         $DB->update(MigrationProfile::getTable(), [
@@ -79,5 +103,8 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration
     'form_action' => WebUrl::front('mapping.form.php'),
     'profile_url' => MigrationProfile::getFormURLWithID($profileId),
     'sources_url' => WebUrl::front('source.php') . '?profiles_id=' . $profileId,
+    'values_url' => WebUrl::front('value.form.php') . '?profiles_id=' . $profileId,
+    'can_continue' => $repository->missingRequiredTargets($profileId) === [],
+    'description_configuration' => $descriptionConfiguration,
 ]);
 Html::footer();

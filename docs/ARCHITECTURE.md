@@ -37,7 +37,7 @@ A profile explicitly references one active source revision through `sourcefiles_
 
 Frequently filtered fields are normal columns and indexed. Extensible mapping/options payloads use JSON. `profiles_id + external_id` is unique and is the technical idempotency key. No core table schema is changed. Uninstalling the plugin drops plugin data only; migrated tickets remain GLPI-owned.
 
-Workflow state is persisted on the profile (`profile_created`, `source_selected`, `mapping_configured`, then later dry-run/import states). It drives navigation but never substitutes for validation: readiness remains derived from the required configuration and a successful dry run.
+Workflow state is persisted on the profile (`profile_created`, `source_selected`, `mapping_configured`, `values_configured`, then later dry-run/import states). It drives navigation but never substitutes for validation: readiness remains derived from the required configuration and a successful dry run.
 
 ## Dependency rule
 

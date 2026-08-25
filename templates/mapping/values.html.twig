@@ -1,0 +1,18 @@
+<div class="card m-3">
+  <div class="card-header"><div><h2 class="card-title">{{ __('Value correspondence', 'ticketmigration') }}</h2><div class="text-muted">{{ profile.name }} — {{ source.source_filename }}</div></div></div>
+  <form method="post" action="{{ form_action }}"><input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="profiles_id" value="{{ profile.id }}">
+    <div class="card-body">
+      <div class="alert alert-info">{{ __('Confirm how every distinct source value corresponds to an existing GLPI value. Normalized exact matches are suggestions only until saved.', 'ticketmigration') }}</div>
+      {% for field in fields %}<section class="mb-4"><h3 class="h4">{{ field.label }} <span class="text-muted">— {{ field.column }}</span></h3>
+        {% if field.truncated %}<div class="alert alert-warning">{{ __('More than 200 distinct values were found. This field cannot be validated until its mapping strategy is refined.', 'ticketmigration') }}</div>{% endif %}
+        <div class="table-responsive"><table class="table table-striped"><thead><tr><th>{{ __('Source value', 'ticketmigration') }}</th><th>{{ __('GLPI correspondence', 'ticketmigration') }}</th></tr></thead><tbody>
+        {% for row in field.rows %}<tr><td class="text-wrap">{{ row.source }}</td><td>
+          <input type="hidden" name="mapping_key[]" value="{{ field.target_key }}"><input type="hidden" name="source_value[]" value="{{ row.source }}">
+          <select class="form-select" name="resolution[]" required {% if not can_manage %}disabled{% endif %}><option value="">{{ __('Select a correspondence', 'ticketmigration') }}</option>{% for key, label in row.options %}<option value="{{ key }}" {% if row.selected == key %}selected{% endif %}>{{ label }}</option>{% endfor %}<option value="ignore" {% if row.selected == 'ignore' %}selected{% endif %}>{{ __('Ignore this source value', 'ticketmigration') }}</option></select>
+          {% if row.options is empty %}<div class="form-hint text-orange">{{ __('No exact or normalized exact GLPI match was found.', 'ticketmigration') }}</div>{% endif %}
+        </td></tr>{% endfor %}
+        </tbody></table></div></section>{% else %}<div class="alert alert-success">{{ __('No value correspondence is required for the current field mapping.', 'ticketmigration') }}</div>{% endfor %}
+    </div>
+    <div class="card-footer d-flex gap-2">{% if can_manage %}<button class="btn btn-primary" name="save_values" value="1">{{ __('Save value correspondences', 'ticketmigration') }}</button>{% endif %}<a class="btn btn-outline-secondary" href="{{ mapping_url }}">{{ __('Return to field mapping', 'ticketmigration') }}</a>{% if can_preview_plan %}<a class="btn btn-success" href="{{ plan_url }}">{{ __('Preview first migration plan', 'ticketmigration') }}</a>{% else %}<button class="btn btn-outline-secondary" disabled>{{ __('Preview first migration plan', 'ticketmigration') }}</button>{% endif %}</div>
+  </form>
+</div>
