@@ -21,4 +21,16 @@ final class DistinctValueCollectorTest extends TestCase
         self::assertSame(['Open'], $set->values);
         self::assertTrue($set->truncated);
     }
+
+    public function testSplitsMultipleActorsWithExplicitCommaDelimiter(): void
+    {
+        $reader = new class implements SourceReaderInterface {
+            public function rows(): iterable { yield new SourceRow(1, ['one@example.org, two@example.org']); }
+            public function columns(): array { return [new SourceColumn(0, 'Technicians')]; }
+            public function preview(int $limit = 10): array { return []; }
+        };
+        $set = (new DistinctValueCollector())->collect($reader, [0], 200, [0 => 'comma'])[0];
+        self::assertSame(['one@example.org', 'two@example.org'], $set->values);
+        self::assertFalse($set->truncated);
+    }
 }

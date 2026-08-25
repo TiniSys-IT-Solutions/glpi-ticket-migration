@@ -4,6 +4,20 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.17] - 2026-08-25
+
+### Added
+
+- Add configurable multi-actor splitting for requesters, assigned technicians, and actor groups.
+- Add official GLPI AJAX selectors to search the complete user, location, group, entity, or category list without loading it into the page.
+- Add an explicit per-actor-field policy to continue without that actor role when more than 200 distinct values are discovered.
+
+### Changed
+
+- Preselect a unique exact or normalized-exact match while still requiring the operator to save and validate the correspondence.
+- Apply the same actor-splitting and unresolved-actor policy to distinct-value discovery and immutable migration-plan construction.
+- Keep comma splitting explicit to avoid corrupting values written as `Last name, First name`; automatic mode recognizes semicolons, pipes, and line breaks.
+
 ## [0.0.16] - 2026-08-25
 
 ### Added

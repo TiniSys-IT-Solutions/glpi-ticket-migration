@@ -7,6 +7,7 @@
 - CSV is streamed. Full files and large row collections never enter `$_SESSION`.
 - Remote attachments accept HTTP(S) only, resolve and reject loopback/link-local/private destinations by default, revalidate redirects, enforce allowlists, timeouts, byte limits, MIME checks, and sanitized names.
 - Source text is escaped/sanitized for GLPI-compatible HTML. Structured descriptions escape every source label and value before adding plugin-owned headings, line breaks, and separators; profiles can exclude sensitive columns. Error CSV exports neutralize spreadsheet-formula prefixes.
+- Manual reference mapping uses GLPI's native AJAX dropdowns and validates the selected object again with `canViewItem()` before persistence. User records are never created during resolution.
 - Imports pass `_disablenotif` to every GLPI object creation/update that supports it. The plugin never disables GLPI notifications globally.
 - Logs identify run, row, external ID, created IDs, and diagnostic codes without dumping ticket bodies, secrets, or remote credentials.
 

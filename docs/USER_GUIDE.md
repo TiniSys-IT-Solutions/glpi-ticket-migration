@@ -36,9 +36,11 @@ Direct positional mapping and controlled-value correspondence are enabled. Pilot
 
 ## Match controlled values
 
-After field mapping, **Continue to value correspondence** scans the active CSV in streaming mode and lists distinct values only for controlled targets. Map enumerations to official GLPI values and confirm suggested existing users, groups, entities, locations, or categories. Suggestions use exact or normalized-exact matching and are never accepted automatically. Every discovered value must be resolved or explicitly ignored.
+After field mapping, **Continue to value correspondence** scans the active CSV in streaming mode and lists distinct values only for controlled targets. Map enumerations to official GLPI values and confirm suggested existing users, groups, entities, locations, or categories. When there is exactly one exact or normalized-exact match it is preselected, but it is accepted only when you save the form. If no useful suggestion exists, use the GLPI search field below the correspondence to find an authorized object in the complete GLPI list. Every discovered value must be resolved or explicitly ignored. No user is ever created by the plugin.
 
-The distinct-value display is limited to 200 values per field. Reaching that limit prevents validation and indicates that the selected column or strategy must be refined.
+For requester, assigned-technician, and actor-group columns, select how multiple actors are separated during field mapping. Automatic mode supports semicolons, pipes, and line breaks. Choose comma explicitly when the export uses commas, because automatic comma splitting would damage names formatted as `Last name, First name`.
+
+The distinct-value display is limited to 200 values per field. Reaching that limit normally prevents validation and indicates that the selected column or strategy must be refined. For an actor field, you may explicitly choose **Import tickets without actors from this source field**. That choice omits the corresponding requester, technician, or group role for the entire source field; it does not create users and the immutable plan reports unresolved actors as warnings.
 
 ## Preview the first migration plan
 

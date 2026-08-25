@@ -16,7 +16,7 @@ final class FieldMappingRepository
         return $result;
     }
 
-    public function replace(int $profileId, array $columns, array $targets): bool
+    public function replace(int $profileId, array $columns, array $targets, array $multiDelimiters = []): bool
     {
         global $DB;
         $DB->beginTransaction();
@@ -39,7 +39,9 @@ final class FieldMappingRepository
                     'source_name' => $column->name,
                     'target_key' => $target !== '' ? $target : null,
                     'strategy' => $target !== '' ? 'direct' : 'ignore',
-                    'configuration' => null,
+                    'configuration' => str_starts_with($target, 'actor.')
+                        ? json_encode(['multi_delimiter' => $this->normalizeDelimiter((string) ($multiDelimiters[$index] ?? 'auto'))], JSON_THROW_ON_ERROR)
+                        : null,
                     'sort_order' => $index,
                 ]);
             }
@@ -49,6 +51,11 @@ final class FieldMappingRepository
             $DB->rollBack();
             throw $exception;
         }
+    }
+
+    private function normalizeDelimiter(string $delimiter): string
+    {
+        return in_array($delimiter, ['auto', 'semicolon', 'comma', 'pipe', 'newline'], true) ? $delimiter : 'auto';
     }
 
     public function missingRequiredTargets(int $profileId): array

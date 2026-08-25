@@ -45,7 +45,14 @@ $fieldMappings = array_filter(
     $fieldRepository->forProfile($profileId),
     static fn (array $mapping): bool => isset($definitions[(string) $mapping['target_key']]),
 );
-$sets = (new DistinctValueCollector())->collect($reader, array_keys($fieldMappings));
+$multiDelimiters = [];
+foreach ($fieldMappings as $index => $mapping) {
+    $mappingConfiguration = json_decode((string) ($mapping['configuration'] ?? ''), true) ?: [];
+    if (str_starts_with((string) $mapping['target_key'], 'actor.')) {
+        $multiDelimiters[$index] = $mappingConfiguration['multi_delimiter'] ?? 'auto';
+    }
+}
+$sets = (new DistinctValueCollector())->collect($reader, array_keys($fieldMappings), 200, $multiDelimiters);
 $allowed = [];
 foreach ($fieldMappings as $index => $mapping) {
     foreach ($sets[$index]->values as $value) {
@@ -53,17 +60,38 @@ foreach ($fieldMappings as $index => $mapping) {
     }
 }
 $valueRepository = new ValueMappingRepository();
+$profileOptions = json_decode((string) ($profile->fields['options'] ?? ''), true) ?: [];
+$savedSkipTargets = (array) ($profileOptions['actor_resolution']['skip_unresolved_targets'] ?? []);
 if (isset($_POST['save_values'])) {
     if (!$profile->canUpdateItem()) {
         Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
     }
     $decisions = [];
     $seen = [];
+    $skipUnresolvedTargets = [];
+    foreach ((array) ($_POST['skip_unresolved_targets'] ?? []) as $targetKey) {
+        foreach ($fieldMappings as $index => $fieldMapping) {
+            if (($fieldMapping['target_key'] ?? '') === $targetKey
+                && str_starts_with((string) $targetKey, 'actor.')
+                && $sets[$index]->truncated) {
+                $skipUnresolvedTargets[] = (string) $targetKey;
+                break;
+            }
+        }
+    }
+    $skipUnresolvedTargets = array_values(array_unique($skipUnresolvedTargets));
     $resolutions = (array) ($_POST['resolution'] ?? []);
     foreach ((array) ($_POST['mapping_key'] ?? []) as $position => $mappingKey) {
         $sourceValue = (string) (($_POST['source_value'] ?? [])[$position] ?? '');
         $resolution = (string) ($resolutions[$position] ?? '');
-        if (!isset($allowed[$mappingKey][hash('sha256', $sourceValue)]) || $resolution === '') {
+        if (!isset($allowed[$mappingKey][hash('sha256', $sourceValue)])) {
+            Session::addMessageAfterRedirect(__('Every discovered source value must be explicitly resolved or ignored.', 'ticketmigration'), false, ERROR);
+            Html::redirect(WebUrl::front('value.form.php') . '?profiles_id=' . $profileId);
+        }
+        if (in_array($mappingKey, $skipUnresolvedTargets, true)) {
+            continue;
+        }
+        if ($resolution === '') {
             Session::addMessageAfterRedirect(__('Every discovered source value must be explicitly resolved or ignored.', 'ticketmigration'), false, ERROR);
             Html::redirect(WebUrl::front('value.form.php') . '?profiles_id=' . $profileId);
         }
@@ -77,6 +105,16 @@ if (isset($_POST['save_values'])) {
             $decision['target_value'] = '__ignore__';
         } elseif (str_starts_with($resolution, 'value:')) {
             $decision['target_value'] = substr($resolution, 6);
+        } elseif ($resolution === 'manual') {
+            $definition = $definitions[$mappingKey];
+            $manualId = (int) ($_POST['manual_reference_' . $position] ?? 0);
+            $itemtype = (string) ($definition['itemtype'] ?? '');
+            $referencedItem = $itemtype !== '' ? new $itemtype() : null;
+            if ($manualId <= 0 || $referencedItem === null || !$referencedItem->getFromDB($manualId) || !$referencedItem->canViewItem()) {
+                Html::displayErrorAndDie(__('Select a valid GLPI reference from the full list.', 'ticketmigration'));
+            }
+            $decision['target_itemtype'] = $itemtype;
+            $decision['target_id'] = $manualId;
         } elseif (preg_match('/^ref:([A-Za-z_\\]+):(\d+)$/', $resolution, $matches)) {
             $definition = $definitions[$mappingKey];
             if (($definition['itemtype'] ?? '') !== $matches[1]) {
@@ -93,17 +131,24 @@ if (isset($_POST['save_values'])) {
         }
         $decisions[] = $decision;
     }
-    $expectedCount = array_sum(array_map('count', $allowed));
+    $expectedCount = 0;
+    foreach ($allowed as $targetKey => $values) {
+        if (!in_array($targetKey, $skipUnresolvedTargets, true)) {
+            $expectedCount += count($values);
+        }
+    }
     if (count($decisions) !== $expectedCount) {
         Session::addMessageAfterRedirect(__('Every discovered source value must be explicitly resolved or ignored.', 'ticketmigration'), false, ERROR);
         Html::redirect(WebUrl::front('value.form.php') . '?profiles_id=' . $profileId);
     }
     $valueRepository->replace($profileId, $decisions);
-    $truncated = array_filter($sets, static fn ($set): bool => $set->truncated);
+    $truncated = array_filter($sets, static fn ($set, $index): bool => $set->truncated && !in_array((string) $fieldMappings[$index]['target_key'], $skipUnresolvedTargets, true), ARRAY_FILTER_USE_BOTH);
+    $profileOptions['actor_resolution']['skip_unresolved_targets'] = $skipUnresolvedTargets;
     global $DB;
     $DB->update(MigrationProfile::getTable(), [
         'workflow_step' => $truncated === [] ? MigrationProfile::STEP_VALUES_CONFIGURED : MigrationProfile::STEP_MAPPING_CONFIGURED,
         'is_ready' => 0,
+        'options' => json_encode($profileOptions, JSON_THROW_ON_ERROR),
     ], ['id' => $profileId]);
     Session::addMessageAfterRedirect(
         $truncated === [] ? __('Value mappings saved.', 'ticketmigration') : __('Value mappings saved, but the distinct-value limit was reached.', 'ticketmigration'),
@@ -115,6 +160,7 @@ if (isset($_POST['save_values'])) {
 $saved = $valueRepository->forProfile($profileId);
 $optionProvider = new GlpiValueOptions();
 $fields = [];
+$position = 0;
 foreach ($fieldMappings as $index => $mapping) {
     $targetKey = (string) $mapping['target_key'];
     $definition = $definitions[$targetKey];
@@ -137,10 +183,32 @@ foreach ($fieldMappings as $index => $mapping) {
             $selected = $entry['target_itemtype']
                 ? 'ref:' . $entry['target_itemtype'] . ':' . $entry['target_id']
                 : ($entry['target_value'] === '__ignore__' ? 'ignore' : 'value:' . $entry['target_value']);
+            if ($entry['target_itemtype'] && !isset($options[$selected])) {
+                $selected = 'manual';
+            }
+        } elseif (count($options) === 1) {
+            $selected = (string) array_key_first($options);
         }
-        $rows[] = ['source' => $value, 'options' => $options, 'selected' => $selected];
+        $manualDropdown = '';
+        if ($definition['value_kind'] === 'reference') {
+            $savedId = isset($saved[$targetKey][$hash]) ? (int) ($saved[$targetKey][$hash]['target_id'] ?? 0) : 0;
+            $dropdownOptions = [
+                'name' => 'manual_reference_' . $position,
+                'value' => $savedId,
+                'display' => false,
+                'width' => '100%',
+                'entity' => (int) $profile->fields['entities_id'],
+                'entity_sons' => (bool) $profile->fields['is_recursive'],
+                'placeholder' => sprintf(__('Search all GLPI %s', 'ticketmigration'), $definition['label']),
+            ];
+            $manualDropdown = $definition['itemtype'] === 'User'
+                ? (string) User::dropdown($dropdownOptions + ['right' => 'all'])
+                : (string) Dropdown::show($definition['itemtype'], $dropdownOptions);
+        }
+        $rows[] = ['source' => $value, 'options' => $options, 'selected' => $selected, 'manual_dropdown' => $manualDropdown, 'position' => $position];
+        $position++;
     }
-    $fields[] = ['target_key' => $targetKey, 'label' => $definition['label'], 'column' => $mapping['source_name'], 'rows' => $rows, 'truncated' => $sets[$index]->truncated];
+    $fields[] = ['target_key' => $targetKey, 'label' => $definition['label'], 'column' => $mapping['source_name'], 'rows' => $rows, 'truncated' => $sets[$index]->truncated, 'can_skip_unresolved' => str_starts_with($targetKey, 'actor.'), 'skip_unresolved' => in_array($targetKey, $savedSkipTargets, true)];
 }
 Html::header(__('Value correspondence', 'ticketmigration'), $_SERVER['PHP_SELF'], 'tools', Menu::class);
 Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration/mapping/values.html.twig', [

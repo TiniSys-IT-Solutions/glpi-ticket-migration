@@ -48,7 +48,12 @@ if (isset($_POST['save_mapping'])) {
         Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
     }
     try {
-        $repository->replace($profileId, $preview->columns, (array) ($_POST['target'] ?? []));
+        $repository->replace(
+            $profileId,
+            $preview->columns,
+            (array) ($_POST['target'] ?? []),
+            (array) ($_POST['multi_delimiter'] ?? []),
+        );
         $validIndexes = array_map(static fn ($column): int => (int) $column->index, $preview->columns);
         $excludedColumns = array_values(array_intersect(
             $validIndexes,
@@ -86,6 +91,11 @@ if (isset($_POST['save_mapping'])) {
     }
 }
 $mappings = $repository->forProfile($profileId);
+foreach ($mappings as &$mapping) {
+    $mappingConfiguration = json_decode((string) ($mapping['configuration'] ?? ''), true) ?: [];
+    $mapping['multi_delimiter'] = $mappingConfiguration['multi_delimiter'] ?? 'auto';
+}
+unset($mapping);
 $targets = [];
 foreach (TargetRegistry::definitions() as $key => $definition) {
     $targets[$definition['group']][$key] = $definition['label'];

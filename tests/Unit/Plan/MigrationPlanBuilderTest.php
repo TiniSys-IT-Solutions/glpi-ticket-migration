@@ -22,4 +22,23 @@ final class MigrationPlanBuilderTest extends TestCase
         self::assertSame('6', $plan->ticket['status']);
         self::assertTrue($plan->isExecutable());
     }
+
+    public function testSplitsAndOmitsUnresolvedActorsWhenProfilePolicyAllowsIt(): void
+    {
+        $mappings = [
+            0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct', 'configuration' => null],
+            1 => ['target_key' => 'ticket.name', 'strategy' => 'direct', 'configuration' => null],
+            2 => ['target_key' => 'actor.assignee', 'strategy' => 'direct', 'configuration' => json_encode(['multi_delimiter' => 'semicolon'])],
+        ];
+        $users = ['actor.assignee' => [hash('sha256', 'known@example.org') => ['target_itemtype' => 'User', 'target_id' => 42, 'target_value' => null]]];
+        $plan = (new MigrationPlanBuilder())->build(
+            new SourceRow(2, ['EXT-43', 'Ticket', 'known@example.org;missing@example.org']),
+            $mappings,
+            $users,
+            resolutionConfiguration: ['skip_unresolved_targets' => ['actor.assignee']],
+        );
+        self::assertSame([['itemtype' => 'User', 'id' => 42]], $plan->actors['assignee']);
+        self::assertCount(1, $plan->warnings);
+        self::assertTrue($plan->isExecutable());
+    }
 }

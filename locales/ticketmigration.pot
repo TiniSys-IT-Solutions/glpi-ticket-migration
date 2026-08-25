@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 12:15+0530\n"
+"POT-Creation-Date: 2026-08-25 12:54+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,7 +112,7 @@ msgstr ""
 msgid "No migration profile yet."
 msgstr ""
 
-#: templates/plan/preview.html.twig front/plan.preview.php:48
+#: templates/plan/preview.html.twig front/plan.preview.php:49
 msgid "First-row migration plan"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgid ""
 "ticket can be created from this screen."
 msgstr ""
 
-#: templates/mapping/values.html.twig front/value.form.php:145
+#: templates/mapping/values.html.twig front/value.form.php:213
 msgid "Value correspondence"
 msgstr ""
 
@@ -224,6 +224,10 @@ msgstr ""
 msgid ""
 "More than 200 distinct values were found. This field cannot be validated "
 "until its mapping strategy is refined."
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Import tickets without actors from this source field"
 msgstr ""
 
 #: templates/mapping/values.html.twig
@@ -243,7 +247,15 @@ msgid "Ignore this source value"
 msgstr ""
 
 #: templates/mapping/values.html.twig
+msgid "Use the manual GLPI selection below"
+msgstr ""
+
+#: templates/mapping/values.html.twig
 msgid "No exact or normalized exact GLPI match was found."
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Search the complete GLPI list"
 msgstr ""
 
 #: templates/mapping/values.html.twig
@@ -262,7 +274,7 @@ msgstr ""
 msgid "Preview first migration plan"
 msgstr ""
 
-#: templates/mapping/form.html.twig front/mapping.form.php:93
+#: templates/mapping/form.html.twig front/mapping.form.php:103
 msgid "CSV field mapping"
 msgstr ""
 
@@ -297,6 +309,22 @@ msgstr ""
 
 #: templates/mapping/form.html.twig
 msgid "Ignore this column"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Multiple actor separator"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Automatic (semicolon, pipe, or line break)"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Line break"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Used only for requester, technician, and actor-group targets."
 msgstr ""
 
 #: templates/mapping/form.html.twig
@@ -488,21 +516,26 @@ msgstr[1] ""
 msgid "A migration profile name is required."
 msgstr ""
 
-#: src/Plan/MigrationPlanBuilder.php:29
+#: src/Plan/MigrationPlanBuilder.php:38
+#, php-format
+msgid "Unresolved actor \"%s\" omitted for %s."
+msgstr ""
+
+#: src/Plan/MigrationPlanBuilder.php:41
 #, php-format
 msgid "Unresolved value \"%s\" for %s."
 msgstr ""
 
-#: src/Plan/MigrationPlanBuilder.php:33
+#: src/Plan/MigrationPlanBuilder.php:45
 #, php-format
 msgid "Value \"%s\" ignored for %s."
 msgstr ""
 
-#: src/Plan/MigrationPlanBuilder.php:49
+#: src/Plan/MigrationPlanBuilder.php:62
 msgid "External ticket identifier is empty."
 msgstr ""
 
-#: src/Plan/MigrationPlanBuilder.php:52
+#: src/Plan/MigrationPlanBuilder.php:65
 msgid "Ticket title is empty."
 msgstr ""
 
@@ -675,15 +708,15 @@ msgstr ""
 msgid "Select a CSV source before configuring mappings."
 msgstr ""
 
-#: front/mapping.form.php:66
+#: front/mapping.form.php:71
 msgid "Unable to save description consolidation settings."
 msgstr ""
 
-#: front/mapping.form.php:78
+#: front/mapping.form.php:83
 msgid "Mapping saved. The profile is ready for the future dry-run step."
 msgstr ""
 
-#: front/mapping.form.php:79
+#: front/mapping.form.php:84
 msgid "Mapping saved, but required targets are still missing."
 msgstr ""
 
@@ -717,28 +750,37 @@ msgstr ""
 msgid "Complete the required field mappings first."
 msgstr ""
 
-#: front/value.form.php:67 front/value.form.php:98
+#: front/value.form.php:88 front/value.form.php:95 front/value.form.php:141
 msgid "Every discovered source value must be explicitly resolved or ignored."
 msgstr ""
 
-#: front/value.form.php:72
+#: front/value.form.php:100
 msgid "Duplicate value mapping submission."
 msgstr ""
 
-#: front/value.form.php:83 front/value.form.php:87
+#: front/value.form.php:114
+msgid "Select a valid GLPI reference from the full list."
+msgstr ""
+
+#: front/value.form.php:121 front/value.form.php:125
 msgid "Invalid GLPI reference selection."
 msgstr ""
 
-#: front/value.form.php:92
+#: front/value.form.php:130
 msgid "Invalid value mapping selection."
 msgstr ""
 
-#: front/value.form.php:109
+#: front/value.form.php:154
 msgid "Value mappings saved."
 msgstr ""
 
-#: front/value.form.php:109
+#: front/value.form.php:154
 msgid "Value mappings saved, but the distinct-value limit was reached."
+msgstr ""
+
+#: front/value.form.php:202
+#, php-format
+msgid "Search all GLPI %s"
 msgstr ""
 
 #: front/preview.php:22

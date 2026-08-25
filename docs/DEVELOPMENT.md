@@ -8,6 +8,8 @@ GLPI production mode disables Twig template auto-reload. The installer therefore
 
 Development releases increment `0.0.x`; the first stabilized pre-production release will be `0.1.0`. A release is valid only when tests, build, and archive verification succeed before the commit and annotated tag are created.
 
+After a successful archive verification, the local build keeps only the five newest semantic-version ZIP files in `dist`. Published GitHub releases and their attached artifacts are unaffected.
+
 Plugin strings are authored in British English and always use the `ticketmigration` gettext domain. Locale maintenance follows GLPI's official plugin workflow through `glpi-project/tools`: `vendor/bin/extract-locales`, `msgmerge`, and `msgfmt`. Install GNU gettext locally before building; the release script rejects missing, invalid, or untranslated FR/EN catalogs.
 
 `tests/fixtures/csv/generic-helpdesk-acceptance.csv` is synthetic and contains representative multiline text, accents, mixed actor forms, dates and attachment URLs. It must remain vendor-neutral and contain no customer data.
