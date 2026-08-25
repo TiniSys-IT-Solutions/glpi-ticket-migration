@@ -43,6 +43,10 @@ $descriptionConfiguration = array_replace([
     'position' => 'before',
     'excluded_columns' => [],
 ], (array) ($profileOptions['description_consolidation'] ?? []));
+$titleFallbackConfiguration = array_replace([
+    'enabled' => true,
+    'word_count' => 12,
+], (array) ($profileOptions['title_fallback'] ?? []));
 if (isset($_POST['save_mapping'])) {
     if (!$profile->canUpdateItem()) {
         Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
@@ -67,6 +71,11 @@ if (isset($_POST['save_mapping'])) {
             'excluded_columns' => $excludedColumns,
         ];
         $profileOptions['description_consolidation'] = $descriptionConfiguration;
+        $titleFallbackConfiguration = [
+            'enabled' => isset($_POST['title_fallback_enabled']),
+            'word_count' => max(3, min(30, (int) ($_POST['title_fallback_word_count'] ?? 12))),
+        ];
+        $profileOptions['title_fallback'] = $titleFallbackConfiguration;
         if (!$profile->update(['id' => $profileId, 'options' => json_encode($profileOptions, JSON_THROW_ON_ERROR)])) {
             throw new RuntimeException(__('Unable to save description consolidation settings.', 'ticketmigration'));
         }
@@ -108,6 +117,10 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration
     'sample_row' => $preview->rows[0] ?? null,
     'mappings' => $mappings,
     'target_groups' => $targets,
+    'actor_targets' => array_values(array_filter(
+        array_keys(TargetRegistry::definitions()),
+        static fn (string $key): bool => str_starts_with($key, 'actor.'),
+    )),
     'required_targets' => TargetRegistry::requiredKeys(),
     'can_manage' => $profile->canUpdateItem(),
     'form_action' => WebUrl::front('mapping.form.php'),
@@ -116,5 +129,6 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration
     'values_url' => WebUrl::front('value.form.php') . '?profiles_id=' . $profileId,
     'can_continue' => $repository->missingRequiredTargets($profileId) === [],
     'description_configuration' => $descriptionConfiguration,
+    'title_fallback_configuration' => $titleFallbackConfiguration,
 ]);
 Html::footer();

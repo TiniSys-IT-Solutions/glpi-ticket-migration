@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 12:54+0530\n"
+"POT-Creation-Date: 2026-08-25 14:56+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,7 +112,7 @@ msgstr ""
 msgid "No migration profile yet."
 msgstr ""
 
-#: templates/plan/preview.html.twig front/plan.preview.php:49
+#: templates/plan/preview.html.twig front/plan.preview.php:50
 msgid "First-row migration plan"
 msgstr ""
 
@@ -210,14 +210,50 @@ msgid ""
 "ticket can be created from this screen."
 msgstr ""
 
-#: templates/mapping/values.html.twig front/value.form.php:213
+#: templates/mapping/values.html.twig front/value.form.php:262
 msgid "Value correspondence"
 msgstr ""
 
 #: templates/mapping/values.html.twig
 msgid ""
-"Confirm how every distinct source value corresponds to an existing GLPI "
-"value. Normalized exact matches are suggestions only until saved."
+"Unique exact GLPI matches are prepared automatically. Only values requiring "
+"a decision are listed below; saving the form validates all prepared and "
+"manual decisions."
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Distinct values analyzed"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Perfect automatic matches"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Decisions remaining"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Last saved analysis"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "automatic"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "remaining"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "distinct actors detected after separation"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+#, php-format
+msgid ""
+"%s perfect matches were prepared automatically and will be validated when "
+"this form is saved."
 msgstr ""
 
 #: templates/mapping/values.html.twig
@@ -259,6 +295,10 @@ msgid "Search the complete GLPI list"
 msgstr ""
 
 #: templates/mapping/values.html.twig
+msgid "No manual decision is required for this category."
+msgstr ""
+
+#: templates/mapping/values.html.twig
 msgid "No value correspondence is required for the current field mapping."
 msgstr ""
 
@@ -274,7 +314,7 @@ msgstr ""
 msgid "Preview first migration plan"
 msgstr ""
 
-#: templates/mapping/form.html.twig front/mapping.form.php:103
+#: templates/mapping/form.html.twig front/mapping.form.php:112
 msgid "CSV field mapping"
 msgstr ""
 
@@ -282,13 +322,6 @@ msgstr ""
 msgid ""
 "Map each positional CSV column to a functional GLPI target. Unselected "
 "columns are explicitly ignored."
-msgstr ""
-
-#: templates/mapping/form.html.twig
-msgid ""
-"Mapped and unmapped source fields can be consolidated into the GLPI ticket "
-"description. The main description remains a separate, clearly identified "
-"section."
 msgstr ""
 
 #: templates/mapping/form.html.twig
@@ -300,6 +333,10 @@ msgid "Sample value"
 msgstr ""
 
 #: templates/mapping/form.html.twig
+msgid "Separator"
+msgstr ""
+
+#: templates/mapping/form.html.twig
 msgid "GLPI target"
 msgstr ""
 
@@ -308,15 +345,7 @@ msgid "Historical description"
 msgstr ""
 
 #: templates/mapping/form.html.twig
-msgid "Ignore this column"
-msgstr ""
-
-#: templates/mapping/form.html.twig
-msgid "Multiple actor separator"
-msgstr ""
-
-#: templates/mapping/form.html.twig
-msgid "Automatic (semicolon, pipe, or line break)"
+msgid "Automatic"
 msgstr ""
 
 #: templates/mapping/form.html.twig
@@ -324,7 +353,7 @@ msgid "Line break"
 msgstr ""
 
 #: templates/mapping/form.html.twig
-msgid "Used only for requester, technician, and actor-group targets."
+msgid "Ignore this column"
 msgstr ""
 
 #: templates/mapping/form.html.twig
@@ -336,7 +365,33 @@ msgid "Required for dry run: external identifier and title."
 msgstr ""
 
 #: templates/mapping/form.html.twig
+msgid "Empty title fallback"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid ""
+"When a mapped title is empty, generate \"Ticket —\" followed by the first "
+"words of the main description. If the description is also empty, use the "
+"external identifier."
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Generate a title when the mapped value is empty"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Description words in generated title"
+msgstr ""
+
+#: templates/mapping/form.html.twig
 msgid "Description consolidation"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid ""
+"Mapped and unmapped source fields can be consolidated into the GLPI ticket "
+"description. The main description remains a separate, clearly identified "
+"section."
 msgstr ""
 
 #: templates/mapping/form.html.twig
@@ -535,8 +590,24 @@ msgstr ""
 msgid "External ticket identifier is empty."
 msgstr ""
 
-#: src/Plan/MigrationPlanBuilder.php:65
+#: src/Plan/MigrationPlanBuilder.php:71
+msgid ""
+"The empty ticket title was generated from the description or external "
+"identifier."
+msgstr ""
+
+#: src/Plan/MigrationPlanBuilder.php:73
 msgid "Ticket title is empty."
+msgstr ""
+
+#: src/Plan/MigrationPlanBuilder.php:97 src/Plan/MigrationPlanBuilder.php:99
+#: src/Mapping/TargetRegistry.php:11 src/Mapping/TargetRegistry.php:12
+#: src/Mapping/TargetRegistry.php:13 src/Mapping/TargetRegistry.php:14
+#: src/Mapping/TargetRegistry.php:15 src/Mapping/TargetRegistry.php:16
+#: src/Mapping/TargetRegistry.php:17 src/Mapping/TargetRegistry.php:18
+#: src/Mapping/TargetRegistry.php:19 src/Mapping/TargetRegistry.php:20
+#: src/Mapping/TargetRegistry.php:21
+msgid "Ticket"
 msgstr ""
 
 #: src/Plan/StructuredDescriptionBuilder.php:40
@@ -573,15 +644,6 @@ msgstr ""
 
 #: src/Mapping/TargetRegistry.php:11
 msgid "External ticket identifier"
-msgstr ""
-
-#: src/Mapping/TargetRegistry.php:11 src/Mapping/TargetRegistry.php:12
-#: src/Mapping/TargetRegistry.php:13 src/Mapping/TargetRegistry.php:14
-#: src/Mapping/TargetRegistry.php:15 src/Mapping/TargetRegistry.php:16
-#: src/Mapping/TargetRegistry.php:17 src/Mapping/TargetRegistry.php:18
-#: src/Mapping/TargetRegistry.php:19 src/Mapping/TargetRegistry.php:20
-#: src/Mapping/TargetRegistry.php:21
-msgid "Ticket"
 msgstr ""
 
 #: src/Mapping/TargetRegistry.php:12
@@ -708,15 +770,15 @@ msgstr ""
 msgid "Select a CSV source before configuring mappings."
 msgstr ""
 
-#: front/mapping.form.php:71
+#: front/mapping.form.php:80
 msgid "Unable to save description consolidation settings."
 msgstr ""
 
-#: front/mapping.form.php:83
+#: front/mapping.form.php:92
 msgid "Mapping saved. The profile is ready for the future dry-run step."
 msgstr ""
 
-#: front/mapping.form.php:84
+#: front/mapping.form.php:93
 msgid "Mapping saved, but required targets are still missing."
 msgstr ""
 
@@ -750,7 +812,7 @@ msgstr ""
 msgid "Complete the required field mappings first."
 msgstr ""
 
-#: front/value.form.php:88 front/value.form.php:95 front/value.form.php:141
+#: front/value.form.php:88 front/value.form.php:95 front/value.form.php:142
 msgid "Every discovered source value must be explicitly resolved or ignored."
 msgstr ""
 
@@ -758,27 +820,27 @@ msgstr ""
 msgid "Duplicate value mapping submission."
 msgstr ""
 
-#: front/value.form.php:114
+#: front/value.form.php:115
 msgid "Select a valid GLPI reference from the full list."
 msgstr ""
 
-#: front/value.form.php:121 front/value.form.php:125
+#: front/value.form.php:122 front/value.form.php:126
 msgid "Invalid GLPI reference selection."
 msgstr ""
 
-#: front/value.form.php:130
+#: front/value.form.php:131
 msgid "Invalid value mapping selection."
 msgstr ""
 
-#: front/value.form.php:154
+#: front/value.form.php:175
 msgid "Value mappings saved."
 msgstr ""
 
-#: front/value.form.php:154
+#: front/value.form.php:175
 msgid "Value mappings saved, but the distinct-value limit was reached."
 msgstr ""
 
-#: front/value.form.php:202
+#: front/value.form.php:229
 #, php-format
 msgid "Search all GLPI %s"
 msgstr ""

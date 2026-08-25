@@ -107,7 +107,8 @@ if (isset($_POST['save_values'])) {
             $decision['target_value'] = substr($resolution, 6);
         } elseif ($resolution === 'manual') {
             $definition = $definitions[$mappingKey];
-            $manualId = (int) ($_POST['manual_reference_' . $position] ?? 0);
+            $manualKey = hash('sha256', $mappingKey . "\0" . $sourceValue);
+            $manualId = (int) (($_POST['manual_reference'] ?? [])[$manualKey] ?? 0);
             $itemtype = (string) ($definition['itemtype'] ?? '');
             $referencedItem = $itemtype !== '' ? new $itemtype() : null;
             if ($manualId <= 0 || $referencedItem === null || !$referencedItem->getFromDB($manualId) || !$referencedItem->canViewItem()) {
@@ -144,6 +145,26 @@ if (isset($_POST['save_values'])) {
     $valueRepository->replace($profileId, $decisions);
     $truncated = array_filter($sets, static fn ($set, $index): bool => $set->truncated && !in_array((string) $fieldMappings[$index]['target_key'], $skipUnresolvedTargets, true), ARRAY_FILTER_USE_BOTH);
     $profileOptions['actor_resolution']['skip_unresolved_targets'] = $skipUnresolvedTargets;
+    $analysis = ['source_id' => (int) $source->getID(), 'filename' => (string) $source->fields['source_filename'], 'total' => 0, 'automatic' => 0, 'remaining' => 0, 'by_target' => []];
+    $analysisProvider = new GlpiValueOptions();
+    foreach ($fieldMappings as $index => $fieldMapping) {
+        $targetKey = (string) $fieldMapping['target_key'];
+        $definition = $definitions[$targetKey];
+        $total = count($sets[$index]->values);
+        $automatic = 0;
+        if ($definition['value_kind'] === 'reference') {
+            foreach ($sets[$index]->values as $sourceValue) {
+                if (count($analysisProvider->exactReferences($definition['itemtype'], $sourceValue)) === 1) {
+                    $automatic++;
+                }
+            }
+        }
+        $analysis['total'] += $total;
+        $analysis['automatic'] += $automatic;
+        $analysis['remaining'] += $total - $automatic;
+        $analysis['by_target'][$targetKey] = ['label' => $definition['label'], 'total' => $total, 'automatic' => $automatic, 'remaining' => $total - $automatic];
+    }
+    $profileOptions['last_value_analysis'] = $analysis;
     global $DB;
     $DB->update(MigrationProfile::getTable(), [
         'workflow_step' => $truncated === [] ? MigrationProfile::STEP_VALUES_CONFIGURED : MigrationProfile::STEP_MAPPING_CONFIGURED,
@@ -160,11 +181,13 @@ if (isset($_POST['save_values'])) {
 $saved = $valueRepository->forProfile($profileId);
 $optionProvider = new GlpiValueOptions();
 $fields = [];
+$statistics = ['total' => 0, 'automatic' => 0, 'remaining' => 0];
 $position = 0;
 foreach ($fieldMappings as $index => $mapping) {
     $targetKey = (string) $mapping['target_key'];
     $definition = $definitions[$targetKey];
     $rows = [];
+    $automaticRows = [];
     foreach ($sets[$index]->values as $value) {
         $hash = hash('sha256', $value);
         $options = [];
@@ -189,11 +212,15 @@ foreach ($fieldMappings as $index => $mapping) {
         } elseif (count($options) === 1) {
             $selected = (string) array_key_first($options);
         }
+        $isAutomatic = $definition['value_kind'] === 'reference'
+            && count($options) === 1
+            && $selected === (string) array_key_first($options);
         $manualDropdown = '';
         if ($definition['value_kind'] === 'reference') {
             $savedId = isset($saved[$targetKey][$hash]) ? (int) ($saved[$targetKey][$hash]['target_id'] ?? 0) : 0;
+            $manualKey = hash('sha256', $targetKey . "\0" . $value);
             $dropdownOptions = [
-                'name' => 'manual_reference_' . $position,
+                'name' => 'manual_reference[' . $manualKey . ']',
                 'value' => $savedId,
                 'display' => false,
                 'width' => '100%',
@@ -205,14 +232,37 @@ foreach ($fieldMappings as $index => $mapping) {
                 ? (string) User::dropdown($dropdownOptions + ['right' => 'all'])
                 : (string) Dropdown::show($definition['itemtype'], $dropdownOptions);
         }
-        $rows[] = ['source' => $value, 'options' => $options, 'selected' => $selected, 'manual_dropdown' => $manualDropdown, 'position' => $position];
+        $row = ['source' => $value, 'options' => $options, 'selected' => $selected, 'manual_dropdown' => $manualDropdown, 'position' => $position];
+        if ($isAutomatic) {
+            $automaticRows[] = $row;
+        } else {
+            $rows[] = $row;
+        }
         $position++;
     }
-    $fields[] = ['target_key' => $targetKey, 'label' => $definition['label'], 'column' => $mapping['source_name'], 'rows' => $rows, 'truncated' => $sets[$index]->truncated, 'can_skip_unresolved' => str_starts_with($targetKey, 'actor.'), 'skip_unresolved' => in_array($targetKey, $savedSkipTargets, true)];
+    $totalCount = count($sets[$index]->values);
+    $statistics['total'] += $totalCount;
+    $statistics['automatic'] += count($automaticRows);
+    $statistics['remaining'] += count($rows);
+    $fields[] = [
+        'target_key' => $targetKey,
+        'label' => $definition['label'],
+        'column' => $mapping['source_name'],
+        'rows' => $rows,
+        'automatic_rows' => $automaticRows,
+        'total_count' => $totalCount,
+        'automatic_count' => count($automaticRows),
+        'remaining_count' => count($rows),
+        'truncated' => $sets[$index]->truncated,
+        'can_skip_unresolved' => str_starts_with($targetKey, 'actor.'),
+        'is_multi_actor' => str_starts_with($targetKey, 'actor.'),
+        'skip_unresolved' => in_array($targetKey, $savedSkipTargets, true),
+    ];
 }
 Html::header(__('Value correspondence', 'ticketmigration'), $_SERVER['PHP_SELF'], 'tools', Menu::class);
 Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration/mapping/values.html.twig', [
-    'profile' => $profile->fields, 'source' => $source->fields, 'fields' => $fields,
+    'profile' => $profile->fields, 'source' => $source->fields, 'fields' => $fields, 'statistics' => $statistics,
+    'last_analysis' => (array) ($profileOptions['last_value_analysis'] ?? []),
     'can_manage' => $profile->canUpdateItem(), 'form_action' => WebUrl::front('value.form.php'),
     'mapping_url' => WebUrl::front('mapping.form.php') . '?profiles_id=' . $profileId,
     'plan_url' => WebUrl::front('plan.preview.php') . '?profiles_id=' . $profileId,

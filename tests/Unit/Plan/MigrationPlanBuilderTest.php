@@ -41,4 +41,30 @@ final class MigrationPlanBuilderTest extends TestCase
         self::assertCount(1, $plan->warnings);
         self::assertTrue($plan->isExecutable());
     }
+
+    public function testGeneratesEmptyTitleFromDescriptionAndFallsBackToExternalId(): void
+    {
+        $mappings = [
+            0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct'],
+            1 => ['target_key' => 'ticket.name', 'strategy' => 'direct'],
+            2 => ['target_key' => 'ticket.content', 'strategy' => 'direct'],
+        ];
+        $fromDescription = (new MigrationPlanBuilder())->build(
+            new SourceRow(2, ['EXT-44', '', 'The printer no longer responds in accounting']),
+            $mappings,
+            [],
+            titleFallbackConfiguration: ['enabled' => true, 'word_count' => 4],
+        );
+        self::assertSame('Ticket — The printer no longer…', $fromDescription->ticket['name']);
+        self::assertTrue($fromDescription->isExecutable());
+
+        $fromExternalId = (new MigrationPlanBuilder())->build(
+            new SourceRow(3, ['EXT-45', '', '']),
+            $mappings,
+            [],
+            titleFallbackConfiguration: ['enabled' => true],
+        );
+        self::assertSame('Ticket EXT-45', $fromExternalId->ticket['name']);
+        self::assertTrue($fromExternalId->isExecutable());
+    }
 }

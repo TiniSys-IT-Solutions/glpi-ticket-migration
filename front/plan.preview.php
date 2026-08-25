@@ -45,6 +45,7 @@ $plan = $row ? (new MigrationPlanBuilder())->build(
     $reader->columns(),
     (array) ($profileOptions['description_consolidation'] ?? []),
     (array) ($profileOptions['actor_resolution'] ?? []),
+    (array) ($profileOptions['title_fallback'] ?? []),
 ) : null;
 Html::header(__('First-row migration plan', 'ticketmigration'), $_SERVER['PHP_SELF'], 'tools', Menu::class);
 Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration/plan/preview.html.twig', [

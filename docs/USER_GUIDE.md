@@ -32,11 +32,15 @@ Select a functional GLPI target for each positional CSV column, or explicitly le
 
 Description consolidation is enabled by default for historical migrations. It produces a **Historical data imported** section from mapped and unmapped source fields, a safe HTML separator, then the original description in its own section. Empty values are omitted. You can include or exclude mapped/unmapped fields, position historical data before or after the main description, and exclude technical or sensitive columns individually. All source labels and values are escaped before HTML generation.
 
+The mapping page also enables an empty-title fallback by default. When the mapped title is empty for a row, the plugin generates `Ticket —` followed by the configured number of words from the main description. When the description is empty too, it uses `Ticket` followed by the external identifier. Existing non-empty titles are preserved unchanged.
+
 Direct positional mapping and controlled-value correspondence are enabled. Pilot execution, full dry run, and import remain disabled until the guarded GLPI executor is validated. The planned continuation is: inspect a first-row plan, perform an explicitly confirmed pilot import, execute a full dry run, then start the resumable import.
 
 ## Match controlled values
 
 After field mapping, **Continue to value correspondence** scans the active CSV in streaming mode and lists distinct values only for controlled targets. Map enumerations to official GLPI values and confirm suggested existing users, groups, entities, locations, or categories. When there is exactly one exact or normalized-exact match it is preselected, but it is accepted only when you save the form. If no useful suggestion exists, use the GLPI search field below the correspondence to find an authorized object in the complete GLPI list. Every discovered value must be resolved or explicitly ignored. No user is ever created by the plugin.
+
+The page summarizes analyzed, perfectly matched, and remaining values globally and by category. Perfect unique references are kept out of the manual worklist and are validated together when the form is saved. The complete GLPI selector appears only after choosing manual selection. The last saved analysis and its source filename remain visible, making it possible to compare the result after preparing and activating a revised CSV.
 
 For requester, assigned-technician, and actor-group columns, select how multiple actors are separated during field mapping. Automatic mode supports semicolons, pipes, and line breaks. Choose comma explicitly when the export uses commas, because automatic comma splitting would damage names formatted as `Last name, First name`.
 

@@ -4,6 +4,29 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.19] - 2026-08-25
+
+### Added
+
+- Add a configurable fallback for empty mapped titles using the first 3–30 words of the main description.
+- Fall back to `Ticket <external identifier>` when both the mapped title and main description are empty.
+- Report generated titles as migration-plan warnings for auditability.
+
+## [0.0.18] - 2026-08-25
+
+### Added
+
+- Add overall and per-category value-analysis statistics, including perfect automatic matches and decisions remaining.
+- Retain the last saved analysis summary and source filename so a revised CSV can be compared with the previous result.
+- Show the number of distinct actors detected after multi-value separation.
+
+### Changed
+
+- Hide unique exact reference matches from the manual worklist while submitting them as prepared decisions for explicit form validation.
+- Reveal the full GLPI selector only when manual selection is chosen and synchronize a manual GLPI choice with its resolution mode.
+- Move actor separators into a dedicated mapping-table column and display the selector only for requester, technician, and actor-group targets.
+- Move the historical-description explanation into the description-consolidation section.
+
 ## [0.0.17] - 2026-08-25
 
 ### Added
