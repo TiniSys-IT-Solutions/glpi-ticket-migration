@@ -3,10 +3,12 @@
   <form method="post" enctype="multipart/form-data" action="{{ form_action }}">
     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
     <input type="hidden" name="profiles_id" value="{{ profile_id }}">
+    <input type="hidden" name="MAX_FILE_SIZE" value="{{ max_upload_bytes }}">
     <div class="card-body row g-3">
       <div class="col-12">
         <label class="form-label" for="source-csv">{{ __('CSV file', 'ticketmigration') }}</label>
         <input class="form-control" id="source-csv" type="file" name="source_csv" accept=".csv,text/csv,text/plain" required>
+        <div class="form-hint">{{ __('Maximum size accepted by PHP and the plugin: %s', 'ticketmigration')|format(max_upload_size) }}</div>
       </div>
       <div class="col-md-4">
         <label class="form-label" for="delimiter">{{ __('Delimiter', 'ticketmigration') }}</label>

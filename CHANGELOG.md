@@ -4,6 +4,71 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.14] - 2026-08-25
+
+### Added
+
+- Add an explicit active CSV source per migration profile and automatically adopt the newest existing revision during upgrade.
+- Add a per-profile CSV revision manager with preview, activation, protected deletion, file metadata, and active-source status.
+- Add a persistent positional CSV-to-GLPI mapping screen backed by a stable functional target registry.
+- Add resumable workflow states and contextual next actions across profile, preview, mapping, and dashboard screens.
+
+### Changed
+
+- Show active sources separately from the total number of retained CSV revisions.
+- Preserve a mapping when selecting a revision with the same schema fingerprint and require remapping when the schema changes.
+- Store CSV parsing controls per source revision instead of relying only on the profile-wide fallback.
+
+## [0.0.13] - 2026-08-24
+
+### Added
+
+- Add complete British English and French gettext catalogs using the official GLPI plugin translation domain and tooling.
+
+### Changed
+
+- Validate, merge, and compile translation catalogs as a mandatory release-build step.
+- Make upload-error labels statically extractable by GLPI's locale extractor.
+
+## [0.0.12] - 2026-08-24
+
+### Fixed
+
+- Clear GLPI application, Symfony, compiled Twig, translation, and menu caches during plugin upgrades so packaged UI changes become visible immediately in production mode.
+- Revalidate and carry forward the complete 0.0.7–0.0.11 controller, upload, URL, dashboard, and bounded-preview corrections.
+
+## [0.0.11] - 2026-08-21
+
+### Changed
+
+- Make bounded preview behavior explicit, detect whether additional rows exist, and add profile/upload navigation actions.
+
+## [0.0.10] - 2026-08-21
+
+### Fixed
+
+- Use GLPI 11's namespaced error handler so upload failures remain recoverable and diagnostically useful.
+- Clear the consumed `$_FILES` entry after `move_uploaded_file()`, following GLPI/DataInjection request-lifecycle handling and preventing Symfony debug-profiler access to a stale temporary path.
+
+## [0.0.9] - 2026-08-21
+
+### Fixed
+
+- Do not catch GLPI 11 success redirects as upload failures.
+- Report PHP upload-limit and transfer errors explicitly, display the effective limit, and clean up stored files after failed preparation.
+
+## [0.0.8] - 2026-08-21
+
+### Fixed
+
+- Build canonical GLPI 11 plugin URLs through a scope-independent helper using the documented `/plugins/ticketmigration` public path.
+
+## [0.0.7] - 2026-08-21
+
+### Fixed
+
+- Import GLPI's global configuration explicitly in the profile and CSV source controllers when dispatched by GLPI 11.
+
 ## [0.0.6] - 2026-08-21
 
 ### Fixed

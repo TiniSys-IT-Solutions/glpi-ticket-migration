@@ -6,4 +6,6 @@ Templates accept fixed text and explicit column placeholders only. No `eval`, PH
 
 The target registry exposes stable functional concepts, not SQL columns. Each target declares its value type, cardinality, creation phase, resolver, compatible transformations, and dependencies. `Entity from resolved Location` is modeled as a dependency rather than a second source mapping.
 
+The first mapping UI persists one explicit decision for every positional source column: direct functional target or ignore. External ticket identifier and title are mandatory before the profile reaches `mapping_configured`. A target may only be selected once in this initial direct-mapping stage. Value maps, resolvers, transforms, structured descriptions, and repeated timeline contributions build on these persisted decisions in subsequent stages.
+
 Structured description values are escaped before safe markup is generated. Empty fields are omitted by default and unmapped-field inclusion is opt-in. A profile keeps all decisions so later delta files are interpreted identically.

@@ -28,7 +28,13 @@
     <div class="card-footer d-flex gap-2">
       <button class="btn btn-primary" type="submit" name="{{ profile_id ? 'update' : 'add' }}" value="1">{{ __('Save') }}</button>
       {% if profile_id %}
-        <a class="btn btn-outline-primary" href="{{ upload_url }}?profiles_id={{ profile_id }}">{{ __('Upload CSV', 'ticketmigration') }}</a>
+        {% if active_source %}
+          <a class="btn btn-primary" href="{{ mapping_url }}?profiles_id={{ profile_id }}">{{ profile.workflow_step == 'mapping_configured' ? __('Resume mapping', 'ticketmigration') : __('Continue to mapping', 'ticketmigration') }}</a>
+          <a class="btn btn-outline-primary" href="{{ preview_url }}?id={{ active_source.id }}">{{ __('Preview active CSV', 'ticketmigration') }}</a>
+          <a class="btn btn-outline-secondary" href="{{ sources_url }}?profiles_id={{ profile_id }}">{{ __('Manage CSV sources', 'ticketmigration') }}</a>
+        {% else %}
+          <a class="btn btn-outline-primary" href="{{ upload_url }}?profiles_id={{ profile_id }}">{{ __('Upload CSV', 'ticketmigration') }}</a>
+        {% endif %}
       {% endif %}
     </div>
   </form>

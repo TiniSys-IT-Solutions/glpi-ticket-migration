@@ -11,10 +11,28 @@ use GlpiPlugin\Ticketmigration\ProfileRight;
 use GlpiPlugin\Ticketmigration\Source\CsvConfiguration;
 use GlpiPlugin\Ticketmigration\Source\PreviewService;
 use GlpiPlugin\Ticketmigration\Source\SourceFileStorage;
+use GlpiPlugin\Ticketmigration\Source\UploadError;
 use GlpiPlugin\Ticketmigration\SourceFile;
+use GlpiPlugin\Ticketmigration\WebUrl;
+use Glpi\Error\ErrorHandler;
 
 if (!ProfileRight::canManageProfiles(UPDATE)) {
     Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
+}
+
+$phpUploadLimit = Toolbox::getPhpUploadSizeLimit();
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST'
+    && $phpUploadLimit > 0
+    && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > $phpUploadLimit) {
+    Session::addMessageAfterRedirect(
+        sprintf(
+            __('The request exceeds the PHP upload limit of %s.', 'ticketmigration'),
+            Toolbox::getSize($phpUploadLimit),
+        ),
+        false,
+        ERROR,
+    );
+    Html::back();
 }
 
 $profileId = (int) ($_REQUEST['profiles_id'] ?? 0);
@@ -25,11 +43,14 @@ if (!$profile->getFromDB($profileId) || !$profile->canUpdateItem()) {
 
 if (isset($_POST['upload'])) {
     $upload = $_FILES['source_csv'] ?? null;
-    if (!is_array($upload) || ($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
-        Session::addMessageAfterRedirect(__('The CSV upload failed.', 'ticketmigration'), false, ERROR);
-        Html::back();
+    $uploadError = is_array($upload) ? (int) ($upload['error'] ?? UPLOAD_ERR_NO_FILE) : UPLOAD_ERR_NO_FILE;
+    if ($uploadError !== UPLOAD_ERR_OK) {
+        Session::addMessageAfterRedirect(UploadError::describe($uploadError), false, ERROR);
+        Html::redirect(WebUrl::front('source.form.php') . '?profiles_id=' . $profileId);
     }
 
+    $stored = null;
+    $sourceId = 0;
     try {
         $configuration = new CsvConfiguration(
             delimiter: (string) ($_POST['delimiter'] ?? ';'),
@@ -51,6 +72,11 @@ if (isset($_POST['upload'])) {
             'filesize' => $stored->size,
             'mime_type' => $stored->mimeType,
             'schema_fingerprint' => $preview->schemaFingerprint,
+            'csv_config' => json_encode([
+                'delimiter' => $configuration->delimiter,
+                'has_header' => $configuration->hasHeader,
+                'encoding' => $configuration->encoding,
+            ], JSON_THROW_ON_ERROR),
             'uploaded_at' => date('Y-m-d H:i:s'),
             'expires_at' => date('Y-m-d H:i:s', strtotime('+30 days')),
         ]);
@@ -66,16 +92,32 @@ if (isset($_POST['upload'])) {
                 'encoding' => $configuration->encoding,
             ], JSON_THROW_ON_ERROR),
         ]);
-        Html::redirect($CFG_GLPI['root_doc'] . '/plugins/ticketmigration/front/preview.php?id=' . $sourceId);
+        if (!(new \GlpiPlugin\Ticketmigration\Source\SourceRevisionManager())->activate($profile, $sourceId)) {
+            throw new RuntimeException('Unable to select the uploaded CSV source.');
+        }
     } catch (Throwable $exception) {
         ErrorHandler::logCaughtException($exception);
+        if ($sourceId > 0) {
+            global $DB;
+            $DB->delete(SourceFile::getTable(), ['id' => $sourceId]);
+        }
+        if ($stored !== null && is_file($stored->path)) {
+            unlink($stored->path);
+        }
         Session::addMessageAfterRedirect(
             sprintf(__('Unable to prepare CSV preview: %s', 'ticketmigration'), $exception->getMessage()),
             false,
             ERROR,
         );
-        Html::back();
+        Html::redirect(WebUrl::front('source.form.php') . '?profiles_id=' . $profileId);
+    } finally {
+        // GLPI and its Symfony debug profiler may rebuild the request from
+        // superglobals during shutdown. DataInjection follows the same rule
+        // after moving an uploaded file: remove the stale $_FILES entry.
+        unset($_FILES['source_csv']);
     }
+
+    Html::redirect(WebUrl::front('preview.php') . '?id=' . $sourceId);
 }
 
 Html::header(__('Upload CSV source', 'ticketmigration'), $_SERVER['PHP_SELF'], 'tools', Menu::class);
@@ -84,7 +126,15 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display(
     [
         'profile' => $profile->fields,
         'profile_id' => $profileId,
-        'form_action' => $CFG_GLPI['root_doc'] . '/plugins/ticketmigration/front/source.form.php',
+        'form_action' => WebUrl::front('source.form.php'),
+        'max_upload_bytes' => $phpUploadLimit > 0
+            ? min($phpUploadLimit, SourceFileStorage::DEFAULT_MAX_BYTES)
+            : SourceFileStorage::DEFAULT_MAX_BYTES,
+        'max_upload_size' => Toolbox::getSize(
+            $phpUploadLimit > 0
+                ? min($phpUploadLimit, SourceFileStorage::DEFAULT_MAX_BYTES)
+                : SourceFileStorage::DEFAULT_MAX_BYTES,
+        ),
     ],
 );
 Html::footer();

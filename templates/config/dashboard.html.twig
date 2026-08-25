@@ -16,8 +16,9 @@
     </div>
     <div class="col-md-4">
       <div class="card h-100"><div class="card-body">
-        <div class="text-muted">{{ __('CSV sources', 'ticketmigration') }}</div>
-        <div class="display-6">{{ sources_count }}</div>
+        <div class="text-muted">{{ __('Active CSV sources', 'ticketmigration') }}</div>
+        <div class="display-6">{{ active_sources_count }}</div>
+        <div class="small text-muted">{{ __('%s stored revisions', 'ticketmigration')|format(sources_count) }}</div>
       </div></div>
     </div>
     <div class="col-md-4">
@@ -36,7 +37,8 @@
           <ol class="mb-4">
             <li class="mb-2">{{ __('Create a migration profile and save it.', 'ticketmigration') }}</li>
             <li class="mb-2">{{ __('Open the saved profile and select Upload CSV.', 'ticketmigration') }}</li>
-            <li>{{ __('Choose the CSV format, upload the file, and verify its bounded preview.', 'ticketmigration') }}</li>
+            <li class="mb-2">{{ __('Choose the CSV format, upload the file, and verify its bounded preview.', 'ticketmigration') }}</li>
+            <li>{{ __('Map positional CSV columns to functional GLPI targets.', 'ticketmigration') }}</li>
           </ol>
           <div class="d-flex flex-wrap gap-2">
             <a class="btn btn-primary" href="{{ profiles_url }}"><i class="ti ti-list me-1"></i>{{ __('Open profiles', 'ticketmigration') }}</a>
@@ -61,7 +63,7 @@
           <code class="d-block text-break">{{ storage_path }}</code>
           <hr>
           <div class="alert alert-warning mb-0">
-            {{ __('Mapping, dry run, and ticket creation are not enabled yet. No ticket can be created from this screen.', 'ticketmigration') }}
+            {{ __('Resolver validation, dry run, and ticket creation are not enabled yet. No ticket can be created from this screen.', 'ticketmigration') }}
           </div>
         </div>
       </div>

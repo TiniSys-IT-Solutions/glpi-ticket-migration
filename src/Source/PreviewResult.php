@@ -9,5 +9,6 @@ final readonly class PreviewResult
         public array $columns,
         public array $rows,
         public string $schemaFingerprint,
+        public bool $isTruncated,
     ) {}
 }

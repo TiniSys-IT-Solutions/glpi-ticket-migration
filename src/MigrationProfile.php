@@ -7,6 +7,11 @@ use Session;
 
 final class MigrationProfile extends CommonDBTM
 {
+    public const STEP_PROFILE_CREATED = 'profile_created';
+    public const STEP_SOURCE_SELECTED = 'source_selected';
+    public const STEP_MAPPING_CONFIGURED = 'mapping_configured';
+    public const STEP_DRY_RUN_VALIDATED = 'dry_run_validated';
+
     public static $rightname = ProfileRight::RIGHT_VIEW_PROFILES;
 
     public static function getTable($classname = null): string
@@ -21,16 +26,12 @@ final class MigrationProfile extends CommonDBTM
 
     public static function getFormURL($full = true): string
     {
-        global $CFG_GLPI;
-        $root = $full ? $CFG_GLPI['root_doc'] : '';
-        return $root . '/plugins/ticketmigration/front/profile.form.php';
+        return WebUrl::front('profile.form.php', $full);
     }
 
     public static function getSearchURL($full = true): string
     {
-        global $CFG_GLPI;
-        $root = $full ? $CFG_GLPI['root_doc'] : '';
-        return $root . '/plugins/ticketmigration/front/profile.php';
+        return WebUrl::front('profile.php', $full);
     }
 
     public function canViewItem(): bool
@@ -58,12 +59,13 @@ final class MigrationProfile extends CommonDBTM
         $input['users_id'] = Session::getLoginUserID();
         $input['entities_id'] ??= Session::getActiveEntity();
         $input['is_ready'] = 0;
+        $input['workflow_step'] = self::STEP_PROFILE_CREATED;
         return $this->normalizeInput($input);
     }
 
     public function prepareInputForUpdate($input): array|false
     {
-        unset($input['users_id'], $input['is_ready']);
+        unset($input['users_id'], $input['is_ready'], $input['sourcefiles_id'], $input['workflow_step']);
         return $this->normalizeInput($input);
     }
 

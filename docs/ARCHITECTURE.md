@@ -31,9 +31,13 @@ The domain never depends on HTTP or session state. The same plan-building path f
 
 Each uploaded source receives a schema fingerprint over CSV controls and ordered positional columns. This lets a profile reject structurally incompatible delta files without relying on unique header names.
 
+A profile explicitly references one active source revision through `sourcefiles_id`. Revisions remain auditable and selectable; choosing a structurally identical revision preserves positional mappings, while a different schema returns the workflow to mapping. Parsing controls are stored with each revision so preview and mapping always interpret that exact file consistently.
+
 ## Persistence
 
 Frequently filtered fields are normal columns and indexed. Extensible mapping/options payloads use JSON. `profiles_id + external_id` is unique and is the technical idempotency key. No core table schema is changed. Uninstalling the plugin drops plugin data only; migrated tickets remain GLPI-owned.
+
+Workflow state is persisted on the profile (`profile_created`, `source_selected`, `mapping_configured`, then later dry-run/import states). It drives navigation but never substitutes for validation: readiness remains derived from the required configuration and a successful dry run.
 
 ## Dependency rule
 

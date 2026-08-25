@@ -13,6 +13,16 @@ final class PreviewService
         }
         $reader = new CsvReader($path, $configuration);
         $columns = $reader->columns();
-        return new PreviewResult($columns, $reader->preview($limit), $this->fingerprint->compute($columns, $configuration));
+        $rows = $reader->preview($limit + 1);
+        $isTruncated = count($rows) > $limit;
+        if ($isTruncated) {
+            array_pop($rows);
+        }
+        return new PreviewResult(
+            $columns,
+            $rows,
+            $this->fingerprint->compute($columns, $configuration),
+            $isTruncated,
+        );
     }
 }

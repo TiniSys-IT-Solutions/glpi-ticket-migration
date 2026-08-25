@@ -1,0 +1,567 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-25 11:31+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: templates/profile/form.html.twig
+msgid "Edit migration profile"
+msgstr ""
+
+#: templates/profile/form.html.twig
+msgid "New migration profile"
+msgstr ""
+
+#: templates/profile/form.html.twig
+msgid "Logical source name"
+msgstr ""
+
+#: templates/profile/form.html.twig
+msgid "Private profile"
+msgstr ""
+
+#: templates/profile/form.html.twig templates/profile/index.html.twig
+msgid "Resume mapping"
+msgstr ""
+
+#: templates/profile/form.html.twig templates/source/preview.html.twig
+msgid "Continue to mapping"
+msgstr ""
+
+#: templates/profile/form.html.twig
+msgid "Preview active CSV"
+msgstr ""
+
+#: templates/profile/form.html.twig templates/mapping/form.html.twig
+#: templates/source/preview.html.twig
+msgid "Manage CSV sources"
+msgstr ""
+
+#: templates/profile/form.html.twig templates/profile/index.html.twig
+msgid "Upload CSV"
+msgstr ""
+
+#: templates/profile/index.html.twig templates/config/dashboard.html.twig
+#: src/Menu.php:34
+msgid "Migration profiles"
+msgstr ""
+
+#: templates/profile/index.html.twig templates/config/dashboard.html.twig
+msgid "New profile"
+msgstr ""
+
+#: templates/profile/index.html.twig
+msgid "Active CSV source"
+msgstr ""
+
+#: templates/profile/index.html.twig
+msgid "Workflow status"
+msgstr ""
+
+#: templates/profile/index.html.twig
+msgid "Next action"
+msgstr ""
+
+#: templates/profile/index.html.twig
+msgid "No source selected"
+msgstr ""
+
+#: templates/profile/index.html.twig
+msgid "Mapping configured"
+msgstr ""
+
+#: templates/profile/index.html.twig
+msgid "Source selected — mapping required"
+msgstr ""
+
+#: templates/profile/index.html.twig
+msgid "Profile created — source required"
+msgstr ""
+
+#: templates/profile/index.html.twig
+msgid "Configure mapping"
+msgstr ""
+
+#: templates/profile/index.html.twig
+msgid "No migration profile yet."
+msgstr ""
+
+#: templates/config/dashboard.html.twig src/ProfileRight.php:47
+#: src/ProfileRight.php:60 src/Menu.php:13 setup.php:34 front/profile.php:34
+msgid "Ticket Migration"
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Prepare and validate generic CSV ticket migrations."
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Active CSV sources"
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+#, php-format
+msgid "%s stored revisions"
+msgstr ""
+
+#: templates/config/dashboard.html.twig src/Menu.php:40 front/run.php:10
+msgid "Migration runs"
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Test the current workflow"
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Create a migration profile and save it."
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Open the saved profile and select Upload CSV."
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Choose the CSV format, upload the file, and verify its bounded preview."
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Map positional CSV columns to functional GLPI targets."
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Open profiles"
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "System status"
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Protected CSV storage"
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Ready"
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid "Unavailable"
+msgstr ""
+
+#: templates/config/dashboard.html.twig
+msgid ""
+"Resolver validation, dry run, and ticket creation are not enabled yet. No "
+"ticket can be created from this screen."
+msgstr ""
+
+#: templates/mapping/form.html.twig front/mapping.form.php:69
+msgid "CSV field mapping"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid ""
+"Map each positional CSV column to a functional GLPI target. Unselected "
+"columns are explicitly ignored."
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "CSV column"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Sample value"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "GLPI target"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Ignore this column"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Required for dry run: external identifier and title."
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Save mapping"
+msgstr ""
+
+#: templates/mapping/form.html.twig templates/source/preview.html.twig
+#: templates/source/index.html.twig
+msgid "Return to profile"
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Dry run is the next development step."
+msgstr ""
+
+#: templates/mapping/form.html.twig
+msgid "Continue to dry run"
+msgstr ""
+
+#: templates/source/preview.html.twig
+#, php-format
+msgid "CSV preview: %s"
+msgstr ""
+
+#: templates/source/preview.html.twig
+#, php-format
+msgid ""
+"This preview intentionally shows only the first %s data rows. The complete "
+"stored CSV has not been truncated."
+msgstr ""
+
+#: templates/source/preview.html.twig
+#, php-format
+msgid "The complete CSV contains no more than %s data rows."
+msgstr ""
+
+#: templates/source/preview.html.twig
+msgid "Schema fingerprint"
+msgstr ""
+
+#: templates/source/preview.html.twig
+msgid "No data row found."
+msgstr ""
+
+#: templates/source/preview.html.twig
+msgid "Replace or test another CSV"
+msgstr ""
+
+#: templates/source/upload.html.twig
+#, php-format
+msgid "CSV source for %s"
+msgstr ""
+
+#: templates/source/upload.html.twig
+msgid "CSV file"
+msgstr ""
+
+#: templates/source/upload.html.twig
+#, php-format
+msgid "Maximum size accepted by PHP and the plugin: %s"
+msgstr ""
+
+#: templates/source/upload.html.twig
+msgid "Delimiter"
+msgstr ""
+
+#: templates/source/upload.html.twig
+msgid "Tab"
+msgstr ""
+
+#: templates/source/upload.html.twig
+msgid "Encoding"
+msgstr ""
+
+#: templates/source/upload.html.twig
+msgid "First row contains headers"
+msgstr ""
+
+#: templates/source/upload.html.twig
+msgid "Upload and preview"
+msgstr ""
+
+#: templates/source/index.html.twig
+#, php-format
+msgid "CSV source revisions for %s"
+msgstr ""
+
+#: templates/source/index.html.twig
+msgid "Upload a new revision"
+msgstr ""
+
+#: templates/source/index.html.twig
+msgid "Uploaded at"
+msgstr ""
+
+#: templates/source/index.html.twig
+msgid "Active source"
+msgstr ""
+
+#: templates/source/index.html.twig
+msgid "Previous revision"
+msgstr ""
+
+#: templates/source/index.html.twig
+msgid "Use this source"
+msgstr ""
+
+#: templates/source/index.html.twig
+msgid "No CSV source uploaded yet."
+msgstr ""
+
+#: src/SourceFile.php:18
+msgid "Migration source file"
+msgid_plural "Migration source files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Source/UploadError.php:10
+msgid "The file exceeds the PHP upload_max_filesize limit."
+msgstr ""
+
+#: src/Source/UploadError.php:11
+msgid "The file exceeds the maximum size accepted by this form."
+msgstr ""
+
+#: src/Source/UploadError.php:12
+msgid "The file was only partially uploaded."
+msgstr ""
+
+#: src/Source/UploadError.php:13
+msgid "No file was uploaded."
+msgstr ""
+
+#: src/Source/UploadError.php:14
+msgid "The PHP upload temporary directory is missing."
+msgstr ""
+
+#: src/Source/UploadError.php:15
+msgid "PHP could not write the uploaded file to disk."
+msgstr ""
+
+#: src/Source/UploadError.php:16
+msgid "A PHP extension stopped the upload."
+msgstr ""
+
+#: src/Source/UploadError.php:18
+msgid "The CSV upload failed with an unknown error."
+msgstr ""
+
+#: src/MigrationProfile.php:24
+msgid "Migration profile"
+msgid_plural "Migration profiles"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/MigrationProfile.php:76
+msgid "A migration profile name is required."
+msgstr ""
+
+#: src/ProfileRight.php:76
+msgid "View migration profiles"
+msgstr ""
+
+#: src/ProfileRight.php:77
+msgid "Manage migration profiles"
+msgstr ""
+
+#: src/ProfileRight.php:84
+msgid "Run dry runs"
+msgstr ""
+
+#: src/ProfileRight.php:85
+msgid "Run imports"
+msgstr ""
+
+#: src/ProfileRight.php:86
+msgid "View migration history"
+msgstr ""
+
+#: src/ProfileRight.php:87
+msgid "Manage plugin configuration"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:11
+msgid "External ticket identifier"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:11 src/Mapping/TargetRegistry.php:12
+#: src/Mapping/TargetRegistry.php:13 src/Mapping/TargetRegistry.php:14
+#: src/Mapping/TargetRegistry.php:15 src/Mapping/TargetRegistry.php:16
+#: src/Mapping/TargetRegistry.php:17 src/Mapping/TargetRegistry.php:18
+#: src/Mapping/TargetRegistry.php:19 src/Mapping/TargetRegistry.php:20
+#: src/Mapping/TargetRegistry.php:21
+msgid "Ticket"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:12
+msgid "Title"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:13
+msgid "Description"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:14
+msgid "Opening date"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:15
+msgid "Closing date"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:16
+msgid "Resolution date"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:17
+msgid "Status"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:18
+msgid "Priority"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:19
+msgid "Urgency"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:20
+msgid "Impact"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:21
+msgid "Type"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:22
+msgid "Category"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:22 src/Mapping/TargetRegistry.php:23
+#: src/Mapping/TargetRegistry.php:24
+msgid "Classification"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:23
+msgid "Location"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:24
+msgid "Entity"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:25
+msgid "Requester"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:25 src/Mapping/TargetRegistry.php:26
+#: src/Mapping/TargetRegistry.php:27 src/Mapping/TargetRegistry.php:28
+msgid "Actors"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:26
+msgid "Assigned technician"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:27
+msgid "Requester group"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:28
+msgid "Assigned group"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:29
+msgid "Followups"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:29 src/Mapping/TargetRegistry.php:30
+#: src/Mapping/TargetRegistry.php:31
+msgid "Timeline"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:30
+msgid "Tasks"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:31
+msgid "Solution"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:32
+msgid "Document URLs"
+msgstr ""
+
+#: src/Mapping/TargetRegistry.php:32
+msgid "Documents"
+msgstr ""
+
+#: src/Menu.php:45
+msgid "Configuration"
+msgstr ""
+
+#: front/profile.form.php:30 front/mapping.form.php:23 front/preview.php:44
+#: front/source.php:20
+msgid "You do not have permission to view this migration profile."
+msgstr ""
+
+#: front/profile.form.php:40
+msgid "Migration profile details"
+msgstr ""
+
+#: front/config.php:25
+msgid "Ticket Migration configuration"
+msgstr ""
+
+#: front/mapping.form.php:27
+msgid "Select a CSV source before configuring mappings."
+msgstr ""
+
+#: front/mapping.form.php:54
+msgid "Mapping saved. The profile is ready for the future dry-run step."
+msgstr ""
+
+#: front/mapping.form.php:55
+msgid "Mapping saved, but required targets are still missing."
+msgstr ""
+
+#: front/run.php:11
+msgid "Migration run history is under development."
+msgstr ""
+
+#: front/source.form.php:29
+#, php-format
+msgid "The request exceeds the PHP upload limit of %s."
+msgstr ""
+
+#: front/source.form.php:41
+msgid "You do not have permission to update this migration profile."
+msgstr ""
+
+#: front/source.form.php:108
+#, php-format
+msgid "Unable to prepare CSV preview: %s"
+msgstr ""
+
+#: front/source.form.php:123
+msgid "Upload CSV source"
+msgstr ""
+
+#: front/preview.php:22
+msgid "You do not have permission to view this CSV source."
+msgstr ""
+
+#: front/preview.php:47
+msgid "CSV preview"
+msgstr ""
+
+#: front/source.php:25
+msgid "Unable to select this CSV source."
+msgstr ""
+
+#: front/source.php:31
+msgid "The active or previously used CSV source cannot be deleted."
+msgstr ""
+
+#: front/source.php:36
+msgid "CSV source revisions"
+msgstr ""

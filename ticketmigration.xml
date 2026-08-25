@@ -12,9 +12,9 @@
   <langs><lang>fr_FR</lang><lang>en_GB</lang></langs>
   <versions>
     <version>
-      <num>0.0.6</num>
+      <num>0.0.14</num>
       <compatibility>^11.0</compatibility>
-      <download_url>https://github.com/TiniSys-IT-Solutions/glpi-ticket-migration/releases/download/v0.0.6/glpi-ticket-migration-0.0.6.zip</download_url>
+      <download_url>https://github.com/TiniSys-IT-Solutions/glpi-ticket-migration/releases/download/v0.0.14/glpi-ticket-migration-0.0.14.zip</download_url>
     </version>
   </versions>
 </root>

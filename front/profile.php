@@ -7,6 +7,8 @@ if (!defined('GLPI_ROOT')) {
 use GlpiPlugin\Ticketmigration\Menu;
 use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\ProfileRight;
+use GlpiPlugin\Ticketmigration\SourceFile;
+use GlpiPlugin\Ticketmigration\WebUrl;
 
 if (!ProfileRight::canViewProfiles()) {
     Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
@@ -18,6 +20,13 @@ foreach ($DB->request(['FROM' => MigrationProfile::getTable(), 'ORDER' => ['name
     $profile = new MigrationProfile();
     $profile->fields = $data;
     if ($profile->canViewItem()) {
+        $data['active_source'] = null;
+        if ((int) ($data['sourcefiles_id'] ?? 0) > 0) {
+            $activeSource = new SourceFile();
+            if ($activeSource->getFromDB((int) $data['sourcefiles_id'])) {
+                $data['active_source'] = $activeSource->fields;
+            }
+        }
         $profiles[] = $data;
     }
 }
@@ -29,6 +38,8 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display(
         'profiles' => $profiles,
         'can_create' => ProfileRight::canManageProfiles(CREATE),
         'form_url' => MigrationProfile::getFormURL(),
+        'mapping_url' => WebUrl::front('mapping.form.php'),
+        'upload_url' => WebUrl::front('source.form.php'),
     ],
 );
 Html::footer();

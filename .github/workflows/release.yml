@@ -17,6 +17,7 @@ jobs:
           php-version: '8.2'
           extensions: fileinfo, iconv, mbstring
           coverage: none
+      - run: sudo apt-get update && sudo apt-get install --yes gettext
       - run: composer install --no-interaction --prefer-dist
       - run: ./scripts/build-release.sh "${GITHUB_REF_NAME}"
       - name: Publish GitHub release

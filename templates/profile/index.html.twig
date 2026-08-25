@@ -5,17 +5,18 @@
   </div>
   <div class="table-responsive">
     <table class="table table-striped table-hover mb-0">
-      <thead><tr><th>{{ __('Name') }}</th><th>{{ __('Source', 'ticketmigration') }}</th><th>{{ __('Visibility') }}</th><th>{{ __('Configuration status', 'ticketmigration') }}</th></tr></thead>
+      <thead><tr><th>{{ __('Name') }}</th><th>{{ __('Active CSV source', 'ticketmigration') }}</th><th>{{ __('Visibility') }}</th><th>{{ __('Workflow status', 'ticketmigration') }}</th><th>{{ __('Next action', 'ticketmigration') }}</th></tr></thead>
       <tbody>
       {% for profile in profiles %}
         <tr>
           <td><a href="{{ form_url }}?id={{ profile.id }}">{{ profile.name }}</a></td>
-          <td>{{ profile.source_name }}</td>
+          <td>{% if profile.active_source %}{{ profile.active_source.source_filename }}{% else %}<span class="text-muted">{{ __('No source selected', 'ticketmigration') }}</span>{% endif %}</td>
           <td>{{ profile.is_private ? __('Private') : __('Public') }}</td>
-          <td><span class="badge {{ profile.is_ready ? 'bg-green' : 'bg-orange' }}">{{ profile.is_ready ? __('Ready', 'ticketmigration') : __('Draft', 'ticketmigration') }}</span></td>
+          <td>{% if profile.workflow_step == 'mapping_configured' %}<span class="badge bg-blue">{{ __('Mapping configured', 'ticketmigration') }}</span>{% elseif profile.workflow_step == 'source_selected' %}<span class="badge bg-orange">{{ __('Source selected — mapping required', 'ticketmigration') }}</span>{% else %}<span class="badge bg-secondary">{{ __('Profile created — source required', 'ticketmigration') }}</span>{% endif %}</td>
+          <td>{% if profile.active_source %}<a class="btn btn-sm btn-primary" href="{{ mapping_url }}?profiles_id={{ profile.id }}">{{ profile.workflow_step == 'mapping_configured' ? __('Resume mapping', 'ticketmigration') : __('Configure mapping', 'ticketmigration') }}</a>{% else %}<a class="btn btn-sm btn-primary" href="{{ upload_url }}?profiles_id={{ profile.id }}">{{ __('Upload CSV', 'ticketmigration') }}</a>{% endif %}</td>
         </tr>
       {% else %}
-        <tr><td colspan="4" class="text-muted text-center">{{ __('No migration profile yet.', 'ticketmigration') }}</td></tr>
+        <tr><td colspan="5" class="text-muted text-center">{{ __('No migration profile yet.', 'ticketmigration') }}</td></tr>
       {% endfor %}
       </tbody>
     </table>

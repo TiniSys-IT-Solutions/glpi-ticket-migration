@@ -1,8 +1,16 @@
 <div class="card m-3">
-  <div class="card-header">
+  <div class="card-header d-flex justify-content-between align-items-center">
     <h2 class="card-title">{{ __('CSV preview: %s', 'ticketmigration')|format(source.source_filename) }}</h2>
+    <span class="badge bg-blue-lt text-blue">v{{ plugin_version }}</span>
   </div>
   <div class="card-body">
+    <div class="alert alert-info">
+      {% if is_truncated %}
+        {{ __('This preview intentionally shows only the first %s data rows. The complete stored CSV has not been truncated.', 'ticketmigration')|format(preview_limit) }}
+      {% else %}
+        {{ __('The complete CSV contains no more than %s data rows.', 'ticketmigration')|format(preview_limit) }}
+      {% endif %}
+    </div>
     <p class="text-muted">{{ __('Schema fingerprint', 'ticketmigration') }}: <code>{{ fingerprint }}</code></p>
     <div class="table-responsive">
       <table class="table table-striped table-hover">
@@ -16,5 +24,12 @@
         </tbody>
       </table>
     </div>
+  </div>
+  <div class="card-footer d-flex flex-wrap gap-2">
+    <a class="btn btn-primary" href="{{ profile_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Return to profile', 'ticketmigration') }}</a>
+    {% if can_manage %}
+      <a class="btn btn-outline-primary" href="{{ upload_url }}"><i class="ti ti-file-upload me-1"></i>{{ __('Replace or test another CSV', 'ticketmigration') }}</a>
+    {% endif %}
+    {% if is_active %}<a class="btn btn-success" href="{{ mapping_url }}"><i class="ti ti-arrow-right me-1"></i>{{ __('Continue to mapping', 'ticketmigration') }}</a>{% else %}<a class="btn btn-outline-secondary" href="{{ sources_url }}">{{ __('Manage CSV sources', 'ticketmigration') }}</a>{% endif %}
   </div>
 </div>

@@ -12,15 +12,15 @@ use GlpiPlugin\Ticketmigration\Install\SourceDirectory;
 use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\ProfileRight;
 use GlpiPlugin\Ticketmigration\SourceFile;
-
-global $CFG_GLPI;
+use GlpiPlugin\Ticketmigration\WebUrl;
 
 $profilesCount = countElementsInTable(MigrationProfile::getTable());
 $sourcesCount = countElementsInTable(SourceFile::getTable(), ['deleted_at' => null]);
+$activeSourcesCount = countElementsInTable(MigrationProfile::getTable(), ['NOT' => ['sourcefiles_id' => null]]);
 $runsCount = countElementsInTable('glpi_plugin_ticketmigration_runs');
 $storagePath = SourceDirectory::path();
 $canManageProfiles = ProfileRight::canManageProfiles(UPDATE);
-$root = $CFG_GLPI['root_doc'] . '/plugins/ticketmigration/front';
+$root = WebUrl::plugin() . '/front';
 
 Html::header(__('Ticket Migration configuration', 'ticketmigration'), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Ticketmigration\Menu::class);
 Glpi\Application\View\TemplateRenderer::getInstance()->display(
@@ -29,6 +29,7 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display(
         'version' => PLUGIN_TICKETMIGRATION_VERSION,
         'profiles_count' => $profilesCount,
         'sources_count' => $sourcesCount,
+        'active_sources_count' => $activeSourcesCount,
         'runs_count' => $runsCount,
         'storage_path' => $storagePath,
         'storage_ready' => is_dir($storagePath) && is_writable($storagePath),

@@ -17,7 +17,7 @@ VERSION="${TAG_NAME#v}"
 [[ "${VERSION}" == "${PLUGIN_VERSION}" ]] || { echo "Version mismatch: ${VERSION} != ${PLUGIN_VERSION}" >&2; exit 1; }
 ARCHIVE="${DIST_DIR}/${REPOSITORY_NAME}-${VERSION}.zip"
 
-for command in composer php rsync python3; do
+for command in composer php rsync python3 xgettext msgmerge msgfmt msgattrib; do
   command -v "${command}" >/dev/null 2>&1 || { echo "Missing command: ${command}" >&2; exit 1; }
 done
 
@@ -25,6 +25,19 @@ composer validate --strict --no-check-publish
 php vendor/bin/phpunit
 
 rm -rf "${BUILD_DIR}"
+vendor/bin/extract-locales
+msgattrib --clear-fuzzy --output-file=locales/en_GB.po locales/en_GB.po
+msgmerge --no-fuzzy-matching locales/fr_FR.po locales/ticketmigration.pot -o locales/fr_FR.po.new
+mv locales/fr_FR.po.new locales/fr_FR.po
+msgfmt --check --check-format --statistics -o locales/en_GB.mo locales/en_GB.po
+msgfmt --check --check-format --statistics -o locales/fr_FR.mo locales/fr_FR.po
+for locale in en_GB fr_FR; do
+  if msgattrib --untranslated "locales/${locale}.po" | grep -q '^msgid '; then
+    echo "${locale} catalog contains untranslated messages" >&2
+    exit 1
+  fi
+done
+
 mkdir -p "${PACKAGE_DIR}"
 rm -f "${ARCHIVE}"
 
@@ -32,6 +45,7 @@ rsync -a ./ "${PACKAGE_DIR}/" \
   --exclude '.git/' --exclude '.github/' --exclude 'dist/' \
   --exclude 'vendor/' --exclude 'tests/' --exclude 'scripts/' \
   --exclude '.gitignore' --exclude '.phpunit.cache/' \
+  --exclude '*~' \
   --exclude '.phpunit.result.cache' --exclude 'AGENTS.md' \
   --exclude 'phpunit.xml'
 
@@ -69,4 +83,3 @@ with zipfile.ZipFile(archive) as package:
         raise SystemExit('Development files found in archive')
 print(f'Verified {archive}: {len(names)} entries')
 PY
-

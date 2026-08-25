@@ -40,7 +40,7 @@ final class SourceFileStorage
             ? move_uploaded_file($temporaryPath, $destination)
             : rename($temporaryPath, $destination);
         if (!$moved) {
-            throw new \RuntimeException('Unable to move uploaded CSV into protected plugin storage.');
+            throw new \RuntimeException('Unable to transfer uploaded CSV into protected plugin storage.');
         }
         chmod($destination, 0640);
         $mime = (new \finfo(FILEINFO_MIME_TYPE))->file($destination) ?: 'application/octet-stream';

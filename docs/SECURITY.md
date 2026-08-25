@@ -3,6 +3,7 @@
 - Every front/AJAX action checks a dedicated GLPI right, entity visibility, and CSRF token before mutation.
 - Plugin rights are bootstrapped once for profiles that already hold GLPI configuration-update permission. Later profile-right changes are preserved. GLPI administrators retain a page-level recovery path through their native configuration-update permission; all other profiles require the dedicated plugin rights.
 - Uploaded files use a random internal name under a GLPI-approved plugin data directory; extension, MIME, size and upload provenance are validated, while source name, SHA-256, owner and retention metadata are persisted.
+- HTTP uploads are validated with `is_uploaded_file()`, transferred with `move_uploaded_file()`, and removed from `$_FILES` immediately after consumption so GLPI/Symfony cannot reuse a stale temporary path during request shutdown.
 - CSV is streamed. Full files and large row collections never enter `$_SESSION`.
 - Remote attachments accept HTTP(S) only, resolve and reject loopback/link-local/private destinations by default, revalidate redirects, enforce allowlists, timeouts, byte limits, MIME checks, and sanitized names.
 - Source text is escaped/sanitized for GLPI-compatible HTML. Error CSV exports neutralize spreadsheet-formula prefixes.
