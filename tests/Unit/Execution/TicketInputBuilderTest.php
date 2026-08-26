@@ -34,6 +34,7 @@ final class TicketInputBuilderTest extends TestCase
         self::assertTrue($input['_disablenotif']);
         self::assertTrue($input['_skip_rules']);
         self::assertTrue($input['_skip_auto_assign']);
+        self::assertSame(0, $input['_contracts_id']);
         self::assertSame(18, $input['entities_id']);
         self::assertSame(30, $input['locations_id']);
         self::assertSame(4, $input['itilcategories_id']);

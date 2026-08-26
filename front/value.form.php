@@ -254,6 +254,7 @@ if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
 }
 $optionProvider = new GlpiValueOptions();
 $locationEntityRows = [];
+$mappedLocationEntityCount = 0;
 $defaultEntityId = (int) $profile->fields['entities_id'];
 $defaultEntityLabel = sprintf(
     '%s (#%d)',
@@ -269,11 +270,15 @@ foreach ($resolvedLocationIds as $locationId) {
     $nativeEntityLabel = $nativeEntityId > 0
         ? Dropdown::getDropdownName('glpi_entities', $nativeEntityId)
         : __('Global location without a specific GLPI entity', 'ticketmigration');
+    if (isset($savedLocationEntities[$locationId])) {
+        $mappedLocationEntityCount++;
+    }
     $locationEntityRows[] = [
         'location_id' => $locationId,
         'location_label' => sprintf('%s (#%d)', $location->getName(), $locationId),
         'native_entity_label' => $nativeEntityLabel,
         'override_entity_id' => (int) ($savedLocationEntities[$locationId] ?? 0),
+        'is_mapped' => isset($savedLocationEntities[$locationId]),
         'entity_dropdown' => (string) Dropdown::show('Entity', [
             'name' => 'location_entity[' . $locationId . ']',
             // Entity 0 is GLPI's root entity and is also used by its dropdown
@@ -401,6 +406,7 @@ Html::header(__('Value correspondence', 'ticketmigration'), $_SERVER['PHP_SELF']
 Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration/mapping/values.html.twig', [
     'profile' => $profile->fields, 'source' => $source->fields, 'fields' => $fields, 'statistics' => $statistics,
     'location_entity_rows' => $locationEntityRows,
+    'mapped_location_entity_count' => $mappedLocationEntityCount,
     'default_entity_label' => $defaultEntityLabel,
     'last_analysis' => (array) ($profileOptions['last_value_analysis'] ?? []),
     'can_manage' => $profile->canUpdateItem(), 'form_action' => WebUrl::front('value.form.php'),

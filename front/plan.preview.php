@@ -78,10 +78,14 @@ if (isset($_POST['import_pilot'])) {
     }
     try {
         $result = (new PilotImportService())->execute($profile, $source, $row, $plan);
-        if ($result->inProgress) {
-            Session::addMessageAfterRedirect(__('This pilot row is already being imported. Refresh the page in a moment; no second ticket will be created.', 'ticketmigration'), false, INFO);
-            Html::redirect(WebUrl::front('plan.preview.php') . '?profiles_id=' . $profileId . '&row_offset=' . $requestedOffset);
-        }
+    } catch (\Throwable $exception) {
+        ErrorHandler::logCaughtException($exception);
+        Session::addMessageAfterRedirect(__('GLPI refused the pilot ticket creation. No import reference was registered.', 'ticketmigration'), false, ERROR);
+        Html::redirect(WebUrl::front('plan.preview.php') . '?profiles_id=' . $profileId . '&row_offset=' . $requestedOffset);
+    }
+    if ($result->inProgress) {
+        Session::addMessageAfterRedirect(__('This pilot row is already being imported. Refresh the page in a moment; no second ticket will be created.', 'ticketmigration'), false, INFO);
+    } else {
         Session::addMessageAfterRedirect(
             $result->alreadyImported
                 ? sprintf(__('This source row was already imported as GLPI ticket #%d and will be skipped by the final import.', 'ticketmigration'), $result->ticketId)
@@ -89,12 +93,11 @@ if (isset($_POST['import_pilot'])) {
             false,
             INFO,
         );
-        Html::redirect(WebUrl::front('plan.preview.php') . '?profiles_id=' . $profileId . '&row_offset=' . $requestedOffset);
-    } catch (\Throwable $exception) {
-        ErrorHandler::logCaughtException($exception);
-        Session::addMessageAfterRedirect(__('GLPI refused the pilot ticket creation. No import reference was registered.', 'ticketmigration'), false, ERROR);
-        Html::redirect(WebUrl::front('plan.preview.php') . '?profiles_id=' . $profileId . '&row_offset=' . $requestedOffset);
     }
+    // GLPI implements redirects by throwing RedirectException. Keep this call
+    // outside the execution catch block so a successful import cannot be
+    // misreported as a creation failure.
+    Html::redirect(WebUrl::front('plan.preview.php') . '?profiles_id=' . $profileId . '&row_offset=' . $requestedOffset);
 }
 $sourceValues = [];
 foreach ($fieldMappings as $sourceIndex => $mapping) {
@@ -174,5 +177,7 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration
     'can_import_pilot' => ProfileRight::canRunImports() && \Ticket::canCreate() && $plan !== null && $plan->isExecutable(),
     'imported_ticket_id' => $importedTicketId,
     'imported_ticket_url' => $importedTicketUrl,
+    'final_import_url' => WebUrl::front('import.form.php') . '?profiles_id=' . $profileId,
+    'can_prepare_final' => ProfileRight::canRunImports() && \Ticket::canCreate(),
 ]);
 Html::footer();

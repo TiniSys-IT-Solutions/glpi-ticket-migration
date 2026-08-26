@@ -1,0 +1,27 @@
+{% set active = run.status in ['queued', 'running'] %}
+<div class="container-fluid p-3"><div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center"><div><h2 class="card-title">{{ __('Final migration run #%s', 'ticketmigration')|format(run.id) }}</h2><div class="text-muted">{{ profile.name }} — {{ run.source_filename }}</div></div><span class="badge {{ run.status == 'completed' ? 'bg-success' : (run.status == 'completed_with_issues' ? 'bg-warning text-dark' : (run.status == 'paused' ? 'bg-secondary' : 'bg-primary')) }}">{{ run.status_label }}</span></div>
+  <div class="card-body">
+    <div class="progress mb-2" style="height:1.5rem"><div class="progress-bar" style="width:{{ progress }}%">{{ progress }}%</div></div><div class="text-muted mb-4">{{ __('%1$s of %2$s rows processed', 'ticketmigration')|format(run.processed_rows, run.total_rows) }}</div>
+    <div class="row g-3 mb-4">
+      {% set counters = [
+        [__('Imported', 'ticketmigration'), run.success_count, 'success', 'ti-circle-check'],
+        [__('Already imported', 'ticketmigration'), run.skipped_count, 'info', 'ti-skip-forward'],
+        [__('Changed', 'ticketmigration'), run.changed_count, 'warning', 'ti-arrows-diff'],
+        [__('Errors', 'ticketmigration'), run.failed_count, 'danger', 'ti-alert-circle']
+      ] %}
+      {% for counter in counters %}<div class="col-lg-3 col-md-6"><div class="card border-{{ counter[2] }}"><div class="card-body"><div class="text-{{ counter[2] }}"><i class="ti {{ counter[3] }} me-1"></i>{{ counter[0] }}</div><div class="display-6">{{ counter[1] }}</div></div></div></div>{% endfor %}
+    </div>
+    <div class="alert alert-info"><i class="ti ti-bell-off me-1"></i>{{ __('Individual ticket notifications are disabled. This page provides the single global import summary.', 'ticketmigration') }}</div>
+    <h3>{{ __('Latest processed rows', 'ticketmigration') }}</h3>
+    <div class="table-responsive"><table class="table table-striped"><thead><tr><th>{{ __('Row', 'ticketmigration') }}</th><th>{{ __('External ID', 'ticketmigration') }}</th><th>{{ __('Status', 'ticketmigration') }}</th><th>{{ __('GLPI ticket', 'ticketmigration') }}</th><th>{{ __('Trace', 'ticketmigration') }}</th></tr></thead><tbody>
+      {% for item in items %}<tr><td>{{ item.row_number }}</td><td>{{ item.external_id|default('—') }}</td><td><span class="badge {{ item.status == 'success' ? 'bg-success' : (item.status == 'failed' ? 'bg-danger' : (item.status == 'changed' ? 'bg-warning text-dark' : 'bg-info')) }}">{{ item.status_label }}</span></td><td>{% if item.ticket_url %}<a href="{{ item.ticket_url }}">#{{ item.tickets_id }}</a>{% else %}—{% endif %}</td><td>{{ item.message_label }}</td></tr>{% else %}<tr><td colspan="5" class="text-muted text-center">{{ __('No row processed yet.', 'ticketmigration') }}</td></tr>{% endfor %}
+    </tbody></table></div>
+    {% if run.status == 'completed_with_issues' %}<div class="alert alert-warning">{{ __('The run finished without stopping on individual errors. Correct the profile or source, then start a new final run: registered successes will be skipped and unresolved rows will be attempted again.', 'ticketmigration') }}</div>{% endif %}
+  </div>
+  <div class="card-footer d-flex flex-wrap gap-2"><a class="btn btn-outline-secondary" href="{{ history_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Back to run history', 'ticketmigration') }}</a><a class="btn btn-outline-primary" href="{{ export_url }}"><i class="ti ti-download me-1"></i>{{ __('Export row trace', 'ticketmigration') }}</a>
+    {% if can_control and run.status == 'paused' %}<form method="post" action="{{ form_action }}" class="ms-auto"><input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="id" value="{{ run.id }}"><button class="btn btn-primary" name="resume" value="1"><i class="ti ti-player-play me-1"></i>{{ __('Resume import', 'ticketmigration') }}</button></form>
+    {% elseif can_control and active %}<form method="post" action="{{ form_action }}" class="ms-auto"><input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="id" value="{{ run.id }}"><button class="btn btn-outline-warning" name="pause" value="1"><i class="ti ti-player-pause me-1"></i>{{ __('Pause import', 'ticketmigration') }}</button></form>{% endif %}
+  </div>
+</div></div>
+{% if active and can_control %}<form method="post" action="{{ form_action }}" data-next-batch><input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="id" value="{{ run.id }}"><input type="hidden" name="process_batch" value="1"></form><script>setTimeout(()=>document.querySelector('[data-next-batch]')?.submit(),400);</script>{% endif %}

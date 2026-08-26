@@ -28,6 +28,7 @@ final class Installer
         $profilesTable = \GlpiPlugin\Ticketmigration\MigrationProfile::getTable();
         $sourcesTable = \GlpiPlugin\Ticketmigration\SourceFile::getTable();
         $runItemsTable = 'glpi_plugin_ticketmigration_runitems';
+        $runsTable = 'glpi_plugin_ticketmigration_runs';
         if (!$DB->fieldExists($sourcesTable, 'csv_config')) {
             $migration->addField($sourcesTable, 'csv_config', 'JSON DEFAULT NULL', ['after' => 'schema_fingerprint']);
         }
@@ -56,6 +57,17 @@ final class Installer
         }
         if (!$DB->fieldExists($runItemsTable, 'validations')) {
             $migration->addField($runItemsTable, 'validations', 'JSON DEFAULT NULL', ['after' => 'information']);
+        }
+        if (!$DB->fieldExists($runsTable, 'sourcefiles_id')) {
+            $migration->addField($runsTable, 'sourcefiles_id', 'BIGINT UNSIGNED DEFAULT NULL', ['after' => 'profiles_id']);
+            $migration->addKey($runsTable, 'sourcefiles_id', 'sourcefile');
+        }
+        if (!$DB->fieldExists($runsTable, 'backup_confirmed_at')) {
+            $migration->addField($runsTable, 'backup_confirmed_at', 'timestamp', ['after' => 'finished_at']);
+            $migration->addField($runsTable, 'backup_confirmed_by', 'INT UNSIGNED DEFAULT NULL', ['after' => 'backup_confirmed_at']);
+        }
+        if (!$DB->fieldExists($runsTable, 'configuration_snapshot')) {
+            $migration->addField($runsTable, 'configuration_snapshot', 'LONGTEXT DEFAULT NULL', ['after' => 'source_hash']);
         }
         if (!(new ProfileRightSynchronizer())->synchronize()) {
             return false;

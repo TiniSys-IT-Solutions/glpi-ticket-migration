@@ -43,4 +43,12 @@ final class CsvReaderTest extends TestCase
         self::assertStringContainsString("Description synthétique multiligne", (string) $rows[0]->value(11));
         self::assertSame('REQUESTER@EXAMPLE.ORG', $rows[0]->value(7));
     }
+
+    public function testCountsAndReadsStableBatches(): void
+    {
+        $reader = new CsvReader(dirname(__DIR__) . '/fixtures/csv/generic-helpdesk-acceptance.csv');
+        self::assertSame(2, $reader->countRows());
+        self::assertSame([3], array_map(static fn ($row) => $row->number, $reader->batch(1, 25)));
+        self::assertSame([], $reader->batch(2, 25));
+    }
 }

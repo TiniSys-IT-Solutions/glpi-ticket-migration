@@ -42,7 +42,7 @@ Choose a **Default ticket entity** when creating or editing a migration profile.
 
 Mapped opening, resolution, and closing dates are normalized from supported French or ISO forms to GLPI's date-time format. Invalid dates block the plan, while their original source representation remains visible in the structured historical description.
 
-Direct positional mapping and controlled-value correspondence are enabled. Pilot execution, full dry run, and import remain disabled until the guarded GLPI executor is validated. The planned continuation is: inspect a first-row plan, perform an explicitly confirmed pilot import, execute a full dry run, then start the resumable import.
+Direct positional mapping, controlled-value correspondence, pilot execution, and guarded final import are enabled. The recommended sequence is to inspect several row plans, perform one explicitly confirmed pilot import, verify the resulting GLPI ticket, then prepare the resumable final import.
 
 ## Match controlled values
 
@@ -51,6 +51,8 @@ After field mapping, **Continue to value correspondence** scans the active CSV i
 When locations are mapped, the same screen displays **Location and entity associations**. GLPI stores an `entities_id` scope on each location, normally inherited from the active entity when the location is created. GLPI 11 does not expose this value as a standard editable field on the Location form, so it must not be mistaken for an explicit business mapping visible to administrators. For a legacy/global location, select an optional entity association scoped to this migration profile. This is a safeguard for tickets without a usable requester that must be routed to a child of the project's main entity: a resolved requester entity always takes precedence. When no association is selected, the screen names the project default entity explicitly instead of displaying GLPI's ambiguous root entity value.
 
 Value-mapping categories are displayed as expandable blocks. Each header reports `processed/total`; for example, `5/7` means that two source values still require a decision. Completed blocks remain easy to identify without keeping large correspondence tables open.
+
+The optional location/entity safeguard uses the same visual convention: saved explicit associations are highlighted in green with an **Association saved** badge, a changed selection is marked **Ready to save**, and the expandable header reports the number of explicit associations over the number of resolved GLPI locations. The migration-profile form provides direct access to field mapping as soon as an active CSV source exists; reopening value correspondence is no longer required merely to navigate backwards.
 
 The page summarizes analyzed values, perfect automatic matches, saved manual associations, and remaining decisions globally and by category. A saved manual reference or explicit ignore is counted as completed manual work. Perfect unique references are kept out of the manual worklist and are validated together when the form is saved. The complete GLPI selector appears only after choosing manual selection. The last saved analysis and its source filename remain visible, making it possible to compare the result after preparing and activating a revised CSV.
 
@@ -73,3 +75,13 @@ An operator with both the Ticket Migration import right and GLPI's ticket-creati
 Workflow footers use the same convention on every step: neutral outlined buttons on the left go back or open secondary management pages, blue buttons save the current work, and the green button on the right advances or performs the explicitly confirmed pilot action.
 
 Replaying the same external IDs with identical canonical row hashes skips them. Changed rows are reported and are not updated automatically in V1.
+
+## Run the final import
+
+From the migration-plan preview, select **Prepare final import**. The preparation page counts the complete CSV and explains notification and recovery behavior. The plugin does not create or inspect a backup: the mandatory checkbox records only that the connected operator accepts responsibility for suitable backup preparation. The server stores that GLPI user and timestamp on the run.
+
+The progress page processes 25 rows per short request. It can be closed and reopened from **Tools > Ticket Migration > Migration runs** without losing completed work. Pause stops before the next batch; resume continues at the persisted offset using the source file and complete mapping snapshot frozen when the run was created.
+
+Every source row receives an auditable state: imported, already imported, changed, or failed. Individual failures do not stop later rows. Notifications are disabled on every created ticket; the progress page is the single overall result notification. **Export row trace** downloads all status and diagnostic codes without copying ticket descriptions.
+
+If a failure requires a source or mapping correction, allow the run to collect the other errors, correct the profile, and start a new final run. Previously registered external identifiers with the same row hash are skipped, while failed rows are attempted again. A known identifier with changed source content is deliberately reported for manual review and is never updated automatically.

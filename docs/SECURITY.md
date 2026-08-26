@@ -24,6 +24,8 @@ Historical metadata restoration is disabled until a version/schema-guarded imple
 
 The configuration dashboard permanently recommends a recent, verified, restorable backup of the complete GLPI environment, or at minimum the complete MySQL database. GLPI file storage must also be covered whenever documents or attachments are in scope. The plugin does not execute database dumps or store database credentials.
 
-The final import UI and server-side execution service must reject execution until the operator explicitly confirms a backup. That acknowledgement will be immutable run metadata containing the confirming GLPI user, timestamp, and an optional external backup reference. A client-side checkbox alone is never considered sufficient authorization.
+The final import UI and server-side execution service reject execution until the operator explicitly accepts responsibility for backup preparation. The plugin neither proves that a dump exists nor claims that it is restorable. The acknowledgement is immutable run metadata containing the confirming GLPI user and timestamp; a client-side checkbox alone is not considered sufficient authorization.
+
+Final runs freeze mappings, options, entity context, source identifier, and source SHA-256 at creation. Short batches and per-row records make browser interruption recoverable. Database advisory locks serialize a run and each profile/external-reference pair. A retry is a new frozen run: the permanent ledger skips successes and prevents corrected work from duplicating them.
 
 CSV retention cleanup never targets the active revision or a hash referenced by a run. It removes only an expired inactive payload from protected storage and keeps soft-deleted metadata. Project cloning copies configuration and mapping decisions but deliberately does not duplicate the potentially large or sensitive CSV payload.

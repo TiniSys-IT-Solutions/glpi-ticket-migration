@@ -26,10 +26,12 @@ Before this execution sequence, the configuration workflow is persisted and resu
 
 Before pilot execution, the operator can navigate the same immutable plan builder row by row and compare essential actor, location, entity, and generated-title resolutions with their CSV source values. The **Import this pilot row** action rebuilds and executes that exact plan, creates one real GLPI ticket, fills its native GLPI **External ID**, records a one-row pilot run, and registers its external reference and canonical row hash in one transaction. Reopening that source row links to the created ticket instead of offering a second creation. A short per-reference database lock prevents double-clicks or concurrent tabs from creating competing runs. The final classifier therefore sees the same external reference as already imported and skips an unchanged pilot row; a changed row is reported as `CHANGED` and is never automatically duplicated or updated.
 
-After a successful dry run and before final bulk execution, the operator must acknowledge a recent restorable backup. The confirmation records the GLPI user, timestamp, and optional backup reference in the run. Both the UI and execution service block final import when this immutable acknowledgement is absent.
+Before final bulk execution, the operator explicitly acknowledges responsibility for suitable backup preparation. The plugin records the GLPI user and timestamp but neither creates nor verifies a dump. The UI and server-side controller block final import when this acknowledgement is absent.
 
 Classification precedes execution: unknown external ID is `NEW`; known ID with the same canonical hash is `SKIP`; known ID with a different hash is `CHANGED`. V1 does not update `CHANGED` tickets automatically.
 
 Conceptual creation order is ticket, actors, followups, tasks, documents, solution, relations, final status, guarded historical restoration, then external-reference registration. Integration tests against GLPI 11.0.8 must validate the exact lifecycle before enabling execution.
 
 Runs and each row state are persisted after every batch. Closing the browser must not lose progress. Dry run may write technical report state but creates no GLPI business object.
+
+Final execution uses short browser-driven batches. Each row ends as imported, already imported, changed, or failed; one row failure does not stop the remaining source. A browser can resume the same frozen run. If mappings or source data must be corrected, the operator starts a new run: the external-reference ledger skips successful rows and attempts only unresolved work. A semicolon-delimited trace export exposes all per-row diagnostics without ticket content and neutralizes spreadsheet formula prefixes.

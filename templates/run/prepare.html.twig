@@ -1,0 +1,18 @@
+<div class="container-fluid p-3"><div class="card">
+  <div class="card-header"><div><h2 class="card-title">{{ __('Prepare final import', 'ticketmigration') }}</h2><div class="text-muted">{{ profile.name }} — {{ source.source_filename }}</div></div></div>
+  <div class="card-body">
+    <div class="row g-3 mb-4">
+      <div class="col-md-4"><div class="card h-100"><div class="card-body"><div class="text-muted">{{ __('CSV data rows', 'ticketmigration') }}</div><div class="display-6">{{ total_rows }}</div></div></div></div>
+      <div class="col-md-4"><div class="card h-100"><div class="card-body"><div class="text-muted">{{ __('Notifications', 'ticketmigration') }}</div><div class="h3 text-success mt-2"><i class="ti ti-bell-off me-1"></i>{{ __('Disabled per imported ticket', 'ticketmigration') }}</div></div></div></div>
+      <div class="col-md-4"><div class="card h-100"><div class="card-body"><div class="text-muted">{{ __('Recovery', 'ticketmigration') }}</div><div class="h3 text-success mt-2"><i class="ti ti-refresh me-1"></i>{{ __('Resumable and idempotent', 'ticketmigration') }}</div></div></div></div>
+    </div>
+    <div class="alert alert-info"><i class="ti ti-info-circle me-1"></i>{{ __('Rows already registered by a pilot or an earlier run are never recreated. Changed rows and failures are collected for review.', 'ticketmigration') }}</div>
+    <div class="alert alert-warning"><h3 class="h4"><i class="ti ti-database-exclamation me-1"></i>{{ __('Backup responsibility', 'ticketmigration') }}</h3>{{ __('The plugin does not create or verify backups. By checking the box below, you confirm that you have taken the backup measures appropriate to your GLPI environment.', 'ticketmigration') }}</div>
+    <form method="post" action="{{ form_action }}" data-final-import-form>
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="profiles_id" value="{{ profile.id }}">
+      <label class="form-check p-3 border rounded"><input class="form-check-input" type="checkbox" name="backup_confirmed" value="1" required data-backup-confirmed><span class="form-check-label fw-semibold">{{ __('I confirm that backup preparation is my responsibility and that I am ready to start this import.', 'ticketmigration') }}</span></label>
+      <div class="d-flex flex-wrap gap-2 mt-4"><a class="btn btn-outline-secondary" href="{{ preview_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Back to plan preview', 'ticketmigration') }}</a><button class="btn btn-success ms-auto" name="start_final_import" value="1" disabled data-start-import><i class="ti ti-player-play me-1"></i>{{ __('Start final import', 'ticketmigration') }}</button></div>
+    </form>
+  </div>
+</div></div>
+<script>{const check=document.querySelector('[data-backup-confirmed]'),button=document.querySelector('[data-start-import]');check?.addEventListener('change',()=>button.disabled=!check.checked);document.querySelector('[data-final-import-form]')?.addEventListener('submit',event=>{if(!confirm('{{ __('Start the final ticket import now?', 'ticketmigration')|e('js') }}')){event.preventDefault();return;}button.disabled=true;});</script>

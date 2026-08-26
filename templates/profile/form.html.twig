@@ -33,6 +33,7 @@
       <a class="btn btn-outline-secondary" href="{{ profiles_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Back to projects', 'ticketmigration') }}</a>
       {% if profile_id %}
         {% if active_source %}
+          <a class="btn btn-outline-primary" href="{{ mapping_url }}?profiles_id={{ profile_id }}"><i class="ti ti-adjustments me-1"></i>{{ __('Field mapping', 'ticketmigration') }}</a>
           <a class="btn btn-outline-primary" href="{{ preview_url }}?id={{ active_source.id }}">{{ __('Preview active CSV', 'ticketmigration') }}</a>
           <a class="btn btn-outline-secondary" href="{{ sources_url }}?profiles_id={{ profile_id }}">{{ __('Manage CSV sources', 'ticketmigration') }}</a>
         {% else %}

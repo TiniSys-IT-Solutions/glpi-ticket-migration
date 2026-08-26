@@ -60,6 +60,7 @@
         <button class="btn btn-success" data-pilot-import-button {% if not can_import_pilot %}disabled{% endif %}><i class="ti ti-ticket me-1"></i><span>{{ __('Import this pilot row', 'ticketmigration') }}</span></button>
       </form>
     {% endif %}
+    {% if can_prepare_final %}<a class="btn btn-primary ms-auto" href="{{ final_import_url }}"><i class="ti ti-player-play me-1"></i>{{ __('Prepare final import', 'ticketmigration') }}</a>{% endif %}
   </div>
 </div>
 <script>document.querySelector('[data-pilot-import-form]')?.addEventListener('submit',event=>{if(!confirm('{{ __('Create one real GLPI ticket with notifications disabled and register this row as imported?', 'ticketmigration')|e('js') }}')){event.preventDefault();return;}const button=event.currentTarget.querySelector('[data-pilot-import-button]');button.disabled=true;button.querySelector('span').textContent='{{ __('Pilot import in progress…', 'ticketmigration')|e('js') }}';});</script>

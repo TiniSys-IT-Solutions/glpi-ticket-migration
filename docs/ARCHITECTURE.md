@@ -32,6 +32,8 @@ The domain never depends on HTTP or session state. The same plan-building path f
 
 CSV rows are never duplicated into SQL tables. Field mappings store one compact row per source column, value mappings store one row per distinct controlled source value, and location/entity bridges store one row per resolved GLPI location requiring an override. Run items retain status, hashes, warnings, errors, and created-object identifiers rather than complete source payloads. External references and completed run history are permanent audit data.
 
+Final runs snapshot field/value mappings, options, and the permission-checked entity-resolution context. A browser-driven worker handles bounded batches and commits a terminal state for each row. Recovering an interrupted run reuses that snapshot; applying corrected configuration creates a new run whose ledger classification skips earlier successes. This separates resumability from configuration changes and keeps each execution reproducible.
+
 Each uploaded source receives a schema fingerprint over CSV controls and ordered positional columns. This lets a profile reject structurally incompatible delta files without relying on unique header names.
 
 A profile explicitly references one active source revision through `sourcefiles_id`. Revisions remain auditable and selectable; choosing a structurally identical revision preserves positional mappings, while a different schema returns the workflow to mapping. Parsing controls are stored with each revision so preview and mapping always interpret that exact file consistently.

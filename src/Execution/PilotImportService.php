@@ -50,6 +50,7 @@ final class PilotImportService
         $now = $_SESSION['glpi_currenttime'] ?? date('Y-m-d H:i:s');
         $DB->insert('glpi_plugin_ticketmigration_runs', [
             'profiles_id' => $profileId,
+            'sourcefiles_id' => (int) $source->getID(),
             'users_id' => (int) \Session::getLoginUserID(),
             'entities_id' => (int) $plan->ticket['entity']['id'],
             'source_filename' => (string) $source->fields['source_filename'],

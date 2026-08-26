@@ -14,6 +14,7 @@ final class TicketInputBuilder
             '_skip_auto_assign' => true,
             '_skip_default_contract' => true,
             '_skip_rules' => true,
+            '_contracts_id' => 0,
             'externalid' => trim((string) ($plan->externalReference['external_id'] ?? '')),
         ];
         foreach (['name', 'content', 'date', 'closedate', 'solvedate', 'status', 'priority', 'urgency', 'impact', 'type'] as $field) {

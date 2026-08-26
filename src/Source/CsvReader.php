@@ -53,6 +53,28 @@ final class CsvReader implements SourceReaderInterface
         return $rows;
     }
 
+    public function countRows(): int
+    {
+        $count = 0;
+        foreach ($this->rows() as $_row) { $count++; }
+        return $count;
+    }
+
+    /** @return list<SourceRow> */
+    public function batch(int $offset, int $limit): array
+    {
+        $rows = [];
+        $offset = max(0, $offset);
+        $limit = max(1, min(100, $limit));
+        $position = 0;
+        foreach ($this->rows() as $row) {
+            if ($position++ < $offset) { continue; }
+            $rows[] = $row;
+            if (count($rows) >= $limit) { break; }
+        }
+        return $rows;
+    }
+
     /** @return array{row: ?SourceRow, previous_offset: ?int, next_offset: ?int, offset: int} */
     public function rowWindow(int $offset): array
     {

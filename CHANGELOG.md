@@ -4,6 +4,38 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.41] - 2026-08-26
+
+### Added
+
+- Add a backup-responsibility acknowledgement before final import; the plugin records the GLPI user and timestamp without creating or verifying a dump.
+- Add resumable 25-row final-import batches, live progress counters, pause/resume controls, per-row persisted status and a CSV trace export.
+- Continue after individual plan or ticket errors and collect every failed or changed row for correction and a later retry run.
+- Add a migration-run history screen and links to created GLPI tickets.
+
+### Changed
+
+- Freeze field mappings, value mappings, options and entity-resolution context in every final run so browser-based resume cannot silently change its behavior.
+- Disable notifications on each created ticket and present one global completion notification and summary instead of generating thousands of individual notifications.
+- Reuse the external-reference ledger across pilot and final runs: unchanged successes are skipped and changed rows are reported without automatic updates.
+
+### Security
+
+- Require import, ticket-creation, profile-visibility and target-entity rights throughout preparation and execution.
+- Serialize final-run creation, each batch and each external reference with database advisory locks, and neutralize spreadsheet formulas in exported traces.
+
+## [0.0.40] - 2026-08-26
+
+### Fixed
+
+- Stop catching GLPI 11's successful `RedirectException` as a pilot-creation failure, which previously displayed contradictory success and error messages after one valid POST.
+- Initialize `_contracts_id` to `0` in the GLPI ticket input to avoid the core `Ticket::prepareInputForAdd()` undefined-key warning when default contracts are intentionally skipped.
+
+### Added
+
+- Show saved and ready-to-save visual states on explicit location/entity association rows, with an association counter on the collapsible section.
+- Add a direct **Field mapping** button to an existing migration profile with an active CSV source.
+
 ## [0.0.39] - 2026-08-26
 
 ### Fixed
