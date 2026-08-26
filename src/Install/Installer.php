@@ -33,6 +33,14 @@ final class Installer
             $migration->addField($profilesTable, 'sourcefiles_id', 'BIGINT UNSIGNED DEFAULT NULL', ['after' => 'is_ready']);
             $migration->addKey($profilesTable, 'sourcefiles_id', 'active_source');
         }
+        if (!$DB->fieldExists($profilesTable, 'is_archived')) {
+            $migration->addField($profilesTable, 'is_archived', 'bool', ['value' => 0, 'after' => 'is_ready']);
+            $migration->addField($profilesTable, 'archived_at', 'timestamp', ['after' => 'is_archived']);
+            $migration->addKey($profilesTable, ['is_archived', 'archived_at'], 'archive');
+        }
+        if (!$DB->fieldExists($profilesTable, 'schema_fingerprint')) {
+            $migration->addField($profilesTable, 'schema_fingerprint', 'CHAR(64) DEFAULT NULL', ['after' => 'sourcefiles_id']);
+        }
         if (!$DB->fieldExists($profilesTable, 'workflow_step')) {
             $migration->addField(
                 $profilesTable,
@@ -50,6 +58,10 @@ final class Installer
             INNER JOIN `$profilesTable` AS profiles ON profiles.id = sources.profiles_id
             SET sources.csv_config = profiles.csv_config
             WHERE sources.csv_config IS NULL");
+        $DB->doQuery("UPDATE `$profilesTable` AS profiles
+            INNER JOIN `$sourcesTable` AS sources ON sources.id = profiles.sourcefiles_id
+            SET profiles.schema_fingerprint = sources.schema_fingerprint
+            WHERE profiles.schema_fingerprint IS NULL");
 
         // Upgrade existing profiles without losing their upload history. The
         // most recent non-deleted revision becomes the explicit active source.

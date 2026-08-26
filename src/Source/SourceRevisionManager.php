@@ -19,17 +19,33 @@ final class SourceRevisionManager
 
         $step = MigrationProfile::STEP_SOURCE_SELECTED;
         $current = new SourceFile();
-        if ($current->getFromDB((int) ($profile->fields['sourcefiles_id'] ?? 0))
-            && $current->fields['schema_fingerprint'] === $source->fields['schema_fingerprint']
+        $currentId = (int) ($profile->fields['sourcefiles_id'] ?? 0);
+        $currentMatches = $current->getFromDB($currentId)
+            && $current->fields['schema_fingerprint'] === $source->fields['schema_fingerprint'];
+        $profileMatches = (string) ($profile->fields['schema_fingerprint'] ?? '') !== ''
+            && $profile->fields['schema_fingerprint'] === $source->fields['schema_fingerprint'];
+        if (($currentMatches || $profileMatches)
             && countElementsInTable('glpi_plugin_ticketmigration_fieldmappings', ['profiles_id' => (int) $profile->getID()]) > 0) {
             $step = MigrationProfile::STEP_MAPPING_CONFIGURED;
         }
-
-        return $DB->update(MigrationProfile::getTable(), [
+        $DB->beginTransaction();
+        try {
+            if ($currentId > 0 && $currentId !== $sourceId) {
+                $DB->update(SourceFile::getTable(), ['expires_at' => date('Y-m-d H:i:s', strtotime('+30 days'))], ['id' => $currentId]);
+            }
+            $DB->update(SourceFile::getTable(), ['expires_at' => null], ['id' => $sourceId]);
+            $updated = $DB->update(MigrationProfile::getTable(), [
             'sourcefiles_id' => $sourceId,
+            'schema_fingerprint' => $source->fields['schema_fingerprint'],
             'workflow_step' => $step,
             'is_ready' => 0,
-        ], ['id' => (int) $profile->getID()]);
+            ], ['id' => (int) $profile->getID()]);
+            $DB->commit();
+            return $updated;
+        } catch (\Throwable $exception) {
+            $DB->rollBack();
+            throw $exception;
+        }
     }
 
     public function revisions(MigrationProfile $profile): array

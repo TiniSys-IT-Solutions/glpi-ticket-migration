@@ -25,14 +25,18 @@ The domain never depends on HTTP or session state. The same plan-building path f
 - **Mapping**: field, constant, value-map, resolver, template, transform, structured-description, and ignore strategies produce typed target values.
 - **Resolvers**: exact, normalized exact, then fuzzy suggestions. Suggestions are never automatically applied.
 - **Plan**: immutable ticket aggregate containing actors, timeline, documents, relations, external reference, warnings, and errors.
-- **Plan context**: permission-checked GLPI location and user-entity metadata is collected outside the domain builder, which applies deterministic entity precedence without issuing database queries itself.
+- **Plan context**: permission-checked GLPI location and user-entity metadata is collected outside the domain builder, which applies deterministic entity precedence without issuing database queries itself. Globally scoped locations may resolve to one child entity through an exact name shared by their location ancestry and the configured profile-entity subtree; ambiguous matches are discarded.
 - **Execution**: creates GLPI objects in a controlled lifecycle with `_disablenotif`; it isolates a failed source row from subsequent rows.
 - **Persistence**: profiles, mappings, runs, row states, and external references remain in plugin-prefixed tables.
 - **Source storage**: random internal names under `GLPI_PLUGIN_DOC_DIR/ticketmigration/sources`; metadata and retention state live in `sourcefiles`.
 
+CSV rows are never duplicated into SQL tables. Field mappings store one compact row per source column, and value mappings store one row per distinct controlled source value. Run items retain status, hashes, warnings, errors, and created-object identifiers rather than complete source payloads. External references and completed run history are permanent audit data.
+
 Each uploaded source receives a schema fingerprint over CSV controls and ordered positional columns. This lets a profile reject structurally incompatible delta files without relying on unique header names.
 
 A profile explicitly references one active source revision through `sourcefiles_id`. Revisions remain auditable and selectable; choosing a structurally identical revision preserves positional mappings, while a different schema returns the workflow to mapping. Parsing controls are stored with each revision so preview and mapping always interpret that exact file consistently.
+
+When a new revision becomes active, the previous revision receives a 30-day retention deadline. Cleanup is limited to expired, inactive payloads that are not referenced by a migration run; their small metadata record and hash remain soft-deleted for traceability. The active source and every executed source are excluded. Archived projects are read-only and retain profiles, mappings, sources, runs, and external references.
 
 ## Persistence
 

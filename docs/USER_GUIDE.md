@@ -12,11 +12,15 @@ To delegate access, open **Administration > Profiles**, select a central-interfa
 
 Open **Tools > Ticket Migration > Profiles**, select **New profile**, provide a name and logical source, then save. Private profiles are visible only to their owner and remain scoped to the active GLPI entity.
 
+The profile list follows GLPI's selection and massive-action pattern. Select one or more projects to archive, restore, clone their configuration, or delete projects that have no execution history. Archived projects move to a separate read-only view and keep their complete audit trail. Clones preserve configuration and mapping decisions without copying the CSV file; upload a structurally matching revision to reuse those mappings. Deletion is refused as soon as a run or external reference exists.
+
 ## Upload and preview a CSV
 
 Open the saved profile and select **Upload CSV**. Choose the delimiter, encoding, and whether the first logical row contains headers. The uploaded source is stored under GLPI protected plugin storage with a random internal name; only a bounded ten-row preview is rendered.
 
 The preview reads at most eleven data rows to determine whether the display is truncated, then renders no more than ten. This limit affects only the screen: the complete CSV remains stored for later mapping, dry run, and execution. Use **Return to profile** or **Replace or test another CSV** to continue navigating the current workflow.
+
+Only CSV payloads materially consume storage. Activating a replacement starts a 30-day retention period for the preceding revision. The configuration dashboard reports stored bytes and cleanup candidates; administrators with deletion rights may clean only revisions that are expired, inactive, and unused by every run. Mapping, run, and external-reference audit records are retained.
 
 The preview displays positional column identities and a schema fingerprint. Duplicate header names remain distinct because their numeric positions are part of the schema. A validated upload becomes the profile's active source and enables **Continue to mapping**.
 
@@ -34,7 +38,7 @@ Description consolidation is enabled by default for historical migrations. It pr
 
 The mapping page also enables an empty-title fallback by default. When the mapped title is empty for a row, the plugin generates `Ticket —` followed by the configured number of words from the main description. When the description is empty too, it uses `Ticket` followed by the external identifier. Existing non-empty titles are preserved unchanged.
 
-Choose a **Default ticket entity** when creating or editing a migration profile. The plan first honors an explicitly mapped entity, otherwise uses the resolved location's GLPI entity, otherwise a requester's single unambiguous entity, and finally this profile default. If a requester belongs to several entities, the profile default is used with a warning.
+Choose a **Default ticket entity** when creating or editing a migration profile. The plan first honors an explicitly mapped entity, otherwise uses the resolved location's non-root GLPI entity. For a global location, an exact and unique name shared by that location (or one of its parents) and an entity below the profile default can infer the child entity. Ambiguous or absent location matches are never guessed. The plan then uses a requester's single unambiguous entity and finally the profile default. If a requester belongs to several entities, the profile default is used with a warning.
 
 Mapped opening, resolution, and closing dates are normalized from supported French or ISO forms to GLPI's date-time format. Invalid dates block the plan, while their original source representation remains visible in the structured historical description.
 
@@ -58,6 +62,6 @@ The distinct-value display is limited to 200 values per field. Reaching that lim
 
 ## Preview the first migration plan
 
-After saving all value correspondences, preview the immutable plan generated for the first CSV data row. It shows ticket data, actors, external reference, warnings, and errors. This preview is read-only and creates no GLPI ticket. Pilot import remains disabled until the guarded executor is validated against GLPI 11.0.8.
+After saving all value correspondences, inspect immutable plans row by row with the previous and next controls. A prominent summary shows the source and resolved GLPI requester, technician, location, and entity, including the entity-resolution origin. Warnings and errors remain visible, followed by the complete authoritative JSON plan. Navigation streams only up to the requested row and never stores CSV rows in the PHP session. This preview is read-only and creates no GLPI ticket. Pilot import remains disabled until the guarded executor is validated against GLPI 11.0.8.
 
 Replaying the same external IDs with identical canonical row hashes skips them. Changed rows are reported and are not updated automatically in V1.

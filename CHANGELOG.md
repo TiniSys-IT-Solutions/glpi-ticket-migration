@@ -4,6 +4,38 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.34] - 2026-08-26
+
+### Added
+
+- Add GLPI-native multi-selection actions to archive, restore, clone configuration, and safely delete execution-free migration projects.
+- Add an archived-project view and make archived projects read-only while preserving their complete audit data.
+- Add storage reporting and explicit cleanup for expired, inactive CSV revisions that are not referenced by a run.
+- Preserve cloned field and value mappings without duplicating source CSV payloads, and reuse them when a structurally matching CSV is uploaded.
+
+### Changed
+
+- Start a 30-day retention period on the preceding source revision only when a replacement becomes active; active sources never expire.
+- Reject permanent project deletion once a run or external reference exists.
+
+## [0.0.33] - 2026-08-25
+
+### Added
+
+- Add streaming previous/next navigation across CSV rows in the immutable-plan preview.
+- Add a prominent resolved-information summary for requesters, technicians, location, entity, source values, and entity-resolution origin.
+
+## [0.0.32] - 2026-08-25
+
+### Fixed
+
+- Prevent a globally scoped GLPI location (entity `0`) from overriding a migration profile's non-root default entity.
+
+### Added
+
+- Infer a child entity only from one exact normalized name match between the resolved location hierarchy and the profile entity subtree.
+- Distinguish direct location ownership from hierarchy-name inference in immutable-plan warnings.
+
 ## [0.0.31] - 2026-08-25
 
 ### Added

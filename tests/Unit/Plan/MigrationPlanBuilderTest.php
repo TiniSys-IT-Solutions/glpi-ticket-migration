@@ -137,4 +137,46 @@ final class MigrationPlanBuilderTest extends TestCase
         self::assertSame(['itemtype' => 'Entity', 'id' => 2], $plan->ticket['entity']);
         self::assertStringContainsString('multiple entities', implode(' ', $plan->warnings));
     }
+
+    public function testGlobalLocationDoesNotOverrideProfileDefaultEntity(): void
+    {
+        $mappings = [
+            0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct'],
+            1 => ['target_key' => 'ticket.name', 'strategy' => 'direct'],
+            2 => ['target_key' => 'ticket.location', 'strategy' => 'direct'],
+        ];
+        $values = ['ticket.location' => [hash('sha256', 'Mende') => ['target_itemtype' => 'Location', 'target_id' => 30, 'target_value' => null]]];
+        $plan = (new MigrationPlanBuilder())->build(
+            new SourceRow(2, ['EXT-49', 'Ticket', 'Mende']),
+            $mappings,
+            $values,
+            entityContext: ['default_entity_id' => 1, 'location_entities' => []],
+        );
+
+        self::assertSame(['itemtype' => 'Entity', 'id' => 1], $plan->ticket['entity']);
+        self::assertStringNotContainsString('derived from the resolved location', implode(' ', $plan->warnings));
+    }
+
+    public function testUsesExactLocationHierarchyEntityMatchWithExplicitWarning(): void
+    {
+        $mappings = [
+            0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct'],
+            1 => ['target_key' => 'ticket.name', 'strategy' => 'direct'],
+            2 => ['target_key' => 'ticket.location', 'strategy' => 'direct'],
+        ];
+        $values = ['ticket.location' => [hash('sha256', 'Mende') => ['target_itemtype' => 'Location', 'target_id' => 30, 'target_value' => null]]];
+        $plan = (new MigrationPlanBuilder())->build(
+            new SourceRow(2, ['EXT-50', 'Ticket', 'Mende']),
+            $mappings,
+            $values,
+            entityContext: [
+                'default_entity_id' => 1,
+                'location_entities' => [30 => 7],
+                'location_entity_sources' => [30 => 'hierarchy_name'],
+            ],
+        );
+
+        self::assertSame(['itemtype' => 'Entity', 'id' => 7], $plan->ticket['entity']);
+        self::assertStringContainsString('exact match', implode(' ', $plan->warnings));
+    }
 }

@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ticket Migration 0.0.31\n"
+"Project-Id-Version: Ticket Migration 0.0.34\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 18:34+0530\n"
-"PO-Revision-Date: 2026-08-25 00:00+0000\n"
+"POT-Creation-Date: 2026-08-26 10:00+0530\n"
+"PO-Revision-Date: 2026-08-26 00:00+0000\n"
 "Last-Translator: TiniSys IT Solutions\n"
 "Language-Team: English (United Kingdom)\n"
 "Language: en_GB\n"
@@ -80,6 +80,14 @@ msgid "New profile"
 msgstr "New profile"
 
 #: templates/profile/index.html.twig
+msgid "Active projects"
+msgstr "Active projects"
+
+#: templates/profile/index.html.twig
+msgid "Archived projects"
+msgstr "Archived projects"
+
+#: templates/profile/index.html.twig
 msgid "Active CSV source"
 msgstr "Active CSV source"
 
@@ -94,6 +102,10 @@ msgstr "Next action"
 #: templates/profile/index.html.twig
 msgid "No source selected"
 msgstr "No source selected"
+
+#: templates/profile/index.html.twig
+msgid "Archived"
+msgstr "Archived"
 
 #: templates/profile/index.html.twig
 msgid "Values configured"
@@ -112,6 +124,10 @@ msgid "Profile created — source required"
 msgstr "Profile created — source required"
 
 #: templates/profile/index.html.twig
+msgid "Use Actions to restore this project."
+msgstr "Use Actions to restore this project."
+
+#: templates/profile/index.html.twig
 msgid "Configure values"
 msgstr "Configure values"
 
@@ -120,12 +136,33 @@ msgid "Configure mapping"
 msgstr "Configure mapping"
 
 #: templates/profile/index.html.twig
+msgid "No archived migration project."
+msgstr "No archived migration project."
+
+#: templates/profile/index.html.twig
 msgid "No migration profile yet."
 msgstr "No migration profile yet."
 
-#: templates/plan/preview.html.twig front/plan.preview.php:53
-msgid "First-row migration plan"
-msgstr "First-row migration plan"
+#: templates/plan/preview.html.twig front/plan.preview.php:103
+msgid "Migration plan preview"
+msgstr "Migration plan preview"
+
+#: templates/plan/preview.html.twig
+msgid "CSV row navigation"
+msgstr "CSV row navigation"
+
+#: templates/plan/preview.html.twig
+msgid "Previous row"
+msgstr "Previous row"
+
+#: templates/plan/preview.html.twig
+#, php-format
+msgid "Data row %s"
+msgstr "Data row %s"
+
+#: templates/plan/preview.html.twig
+msgid "Next row"
+msgstr "Next row"
 
 #: templates/plan/preview.html.twig
 msgid ""
@@ -136,12 +173,57 @@ msgstr ""
 "created."
 
 #: templates/plan/preview.html.twig
-msgid "Source row"
-msgstr "Source row"
+msgid "CSV source row"
+msgstr "CSV source row"
 
 #: templates/plan/preview.html.twig
-msgid "Immutable migration plan"
-msgstr "Immutable migration plan"
+msgid "Essential resolved information"
+msgstr "Essential resolved information"
+
+#: templates/plan/preview.html.twig src/Mapping/TargetRegistry.php:25
+msgid "Requester"
+msgstr "Requester"
+
+#: templates/plan/preview.html.twig src/Mapping/TargetRegistry.php:26
+msgid "Assigned technician"
+msgstr "Assigned technician"
+
+#: templates/plan/preview.html.twig src/Mapping/TargetRegistry.php:23
+msgid "Location"
+msgstr "Location"
+
+#: templates/plan/preview.html.twig src/Mapping/TargetRegistry.php:24
+msgid "Entity"
+msgstr "Entity"
+
+#: templates/plan/preview.html.twig
+msgid "Resolved"
+msgstr "Resolved"
+
+#: templates/plan/preview.html.twig
+msgid "Not resolved"
+msgstr "Not resolved"
+
+#: templates/plan/preview.html.twig
+#, php-format
+msgid "CSV value: %s"
+msgstr "CSV value: %s"
+
+#: templates/plan/preview.html.twig
+msgid "No GLPI association retained"
+msgstr "No GLPI association retained"
+
+#: templates/plan/preview.html.twig
+msgid "Complete immutable migration plan"
+msgstr "Complete immutable migration plan"
+
+#: templates/plan/preview.html.twig
+msgid ""
+"This technical representation remains the authoritative plan used by dry run "
+"and execution."
+msgstr ""
+"This technical representation remains the authoritative plan used by dry run "
+"and execution."
 
 #: templates/plan/preview.html.twig
 msgid "The CSV contains no data row."
@@ -156,7 +238,7 @@ msgid "Import this pilot row"
 msgstr "Import this pilot row"
 
 #: templates/config/dashboard.html.twig src/ProfileRight.php:47
-#: src/ProfileRight.php:60 src/Menu.php:13 setup.php:34 front/profile.php:34
+#: src/ProfileRight.php:60 src/Menu.php:13 setup.php:34 front/profile.php:36
 msgid "Ticket Migration"
 msgstr "Ticket Migration"
 
@@ -237,6 +319,22 @@ msgstr "Ready"
 #: templates/config/dashboard.html.twig
 msgid "Unavailable"
 msgstr "Unavailable"
+
+#: templates/config/dashboard.html.twig
+msgid "Stored CSV payloads"
+msgstr "Stored CSV payloads"
+
+#: templates/config/dashboard.html.twig
+msgid "Expired unused revisions"
+msgstr "Expired unused revisions"
+
+#: templates/config/dashboard.html.twig
+msgid "Clean only expired, inactive and unreferenced CSV revisions?"
+msgstr "Clean only expired, inactive and unreferenced CSV revisions?"
+
+#: templates/config/dashboard.html.twig
+msgid "Clean expired revisions"
+msgstr "Clean expired revisions"
 
 #: templates/config/dashboard.html.twig
 msgid ""
@@ -604,6 +702,11 @@ msgstr "Use this source"
 msgid "No CSV source uploaded yet."
 msgstr "No CSV source uploaded yet."
 
+#: src/ProfileLifecycleManager.php:27
+#, php-format
+msgid "Copy of %s"
+msgstr "Copy of %s"
+
 #: src/SourceFile.php:18
 msgid "Migration source file"
 msgid_plural "Migration source files"
@@ -648,11 +751,53 @@ msgid_plural "Migration profiles"
 msgstr[0] "Migration profile"
 msgstr[1] "Migration profiles"
 
-#: src/MigrationProfile.php:77
+#: src/MigrationProfile.php:65
+msgid "Archive"
+msgstr "Archive"
+
+#: src/MigrationProfile.php:69
+msgid "Clone configuration"
+msgstr "Clone configuration"
+
+#: src/MigrationProfile.php:72
+msgid "Delete project without execution history"
+msgstr "Delete project without execution history"
+
+#: src/MigrationProfile.php:80
+msgid "Archived projects remain fully traceable and can be restored."
+msgstr "Archived projects remain fully traceable and can be restored."
+
+#: src/MigrationProfile.php:81
+msgid "Restore the selected projects to the active list?"
+msgstr "Restore the selected projects to the active list?"
+
+#: src/MigrationProfile.php:82
+msgid ""
+"Configuration and mappings are copied without duplicating the CSV payload."
+msgstr ""
+"Configuration and mappings are copied without duplicating the CSV payload."
+
+#: src/MigrationProfile.php:83
+msgid ""
+"Deletion is permanent and is refused when an execution run or external "
+"reference exists."
+msgstr ""
+"Deletion is permanent and is refused when an execution run or external "
+"reference exists."
+
+#: src/MigrationProfile.php:111
+msgid ""
+"A selected project was retained because execution history exists or "
+"permissions are insufficient."
+msgstr ""
+"A selected project was retained because execution history exists or "
+"permissions are insufficient."
+
+#: src/MigrationProfile.php:136
 msgid "A migration profile name is required."
 msgstr "A migration profile name is required."
 
-#: src/MigrationProfile.php:82
+#: src/MigrationProfile.php:141
 msgid "You do not have permission to use the selected default entity."
 msgstr "You do not have permission to use the selected default entity."
 
@@ -702,15 +847,23 @@ msgstr "Ticket title is empty."
 msgid "Ticket"
 msgstr "Ticket"
 
-#: src/Plan/MigrationPlanBuilder.php:119
+#: src/Plan/MigrationPlanBuilder.php:121
+msgid ""
+"Ticket entity derived from an exact match with the resolved location "
+"hierarchy."
+msgstr ""
+"Ticket entity derived from an exact match with the resolved location "
+"hierarchy."
+
+#: src/Plan/MigrationPlanBuilder.php:122
 msgid "Ticket entity derived from the resolved location."
 msgstr "Ticket entity derived from the resolved location."
 
-#: src/Plan/MigrationPlanBuilder.php:131
+#: src/Plan/MigrationPlanBuilder.php:134
 msgid "Ticket entity derived from the requester unique entity."
 msgstr "Ticket entity derived from the requester unique entity."
 
-#: src/Plan/MigrationPlanBuilder.php:135
+#: src/Plan/MigrationPlanBuilder.php:138
 msgid ""
 "Requester belongs to multiple entities; the migration profile default entity "
 "was used."
@@ -803,26 +956,10 @@ msgstr "Category"
 msgid "Classification"
 msgstr "Classification"
 
-#: src/Mapping/TargetRegistry.php:23
-msgid "Location"
-msgstr "Location"
-
-#: src/Mapping/TargetRegistry.php:24
-msgid "Entity"
-msgstr "Entity"
-
-#: src/Mapping/TargetRegistry.php:25
-msgid "Requester"
-msgstr "Requester"
-
 #: src/Mapping/TargetRegistry.php:25 src/Mapping/TargetRegistry.php:26
 #: src/Mapping/TargetRegistry.php:27 src/Mapping/TargetRegistry.php:28
 msgid "Actors"
 msgstr "Actors"
-
-#: src/Mapping/TargetRegistry.php:26
-msgid "Assigned technician"
-msgstr "Assigned technician"
 
 #: src/Mapping/TargetRegistry.php:27
 msgid "Requester group"
@@ -870,7 +1007,14 @@ msgstr "You do not have permission to view this migration profile."
 msgid "Migration profile details"
 msgstr "Migration profile details"
 
-#: front/config.php:25
+#: front/config.php:21
+#, php-format
+msgid "%d expired CSV revision was cleaned."
+msgid_plural "%d expired CSV revisions were cleaned."
+msgstr[0] "%d expired CSV revision was cleaned."
+msgstr[1] "%d expired CSV revisions were cleaned."
+
+#: front/config.php:33
 msgid "Ticket Migration configuration"
 msgstr "Ticket Migration configuration"
 
@@ -988,3 +1132,19 @@ msgstr "Complete value correspondence before previewing a migration plan."
 #: front/plan.preview.php:33
 msgid "The active CSV source is unavailable."
 msgstr "The active CSV source is unavailable."
+
+#: front/plan.preview.php:92
+msgid "Explicit CSV entity mapping"
+msgstr "Explicit CSV entity mapping"
+
+#: front/plan.preview.php:95
+msgid "Exact location hierarchy match"
+msgstr "Exact location hierarchy match"
+
+#: front/plan.preview.php:96
+msgid "Entity owning the resolved location"
+msgstr "Entity owning the resolved location"
+
+#: front/plan.preview.php:98
+msgid "Requester entity or migration profile default"
+msgstr "Requester entity or migration profile default"

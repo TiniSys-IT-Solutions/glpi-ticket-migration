@@ -53,6 +53,37 @@ final class CsvReader implements SourceReaderInterface
         return $rows;
     }
 
+    /** @return array{row: ?SourceRow, previous_offset: ?int, next_offset: ?int, offset: int} */
+    public function rowWindow(int $offset): array
+    {
+        $offset = max(0, $offset);
+        $current = null;
+        $last = null;
+        $position = 0;
+        $hasNext = false;
+        foreach ($this->rows() as $row) {
+            $last = $row;
+            if ($position === $offset) {
+                $current = $row;
+            } elseif ($position > $offset) {
+                $hasNext = true;
+                break;
+            }
+            $position++;
+        }
+        if ($current === null && $last !== null) {
+            $current = $last;
+            $offset = max(0, $position - 1);
+        }
+
+        return [
+            'row' => $current,
+            'previous_offset' => $current !== null && $offset > 0 ? $offset - 1 : null,
+            'next_offset' => $current !== null && $hasNext ? $offset + 1 : null,
+            'offset' => $offset,
+        ];
+    }
+
     private function normalize(string $value): string
     {
         $value = str_starts_with($value, "\xEF\xBB\xBF") ? substr($value, 3) : $value;

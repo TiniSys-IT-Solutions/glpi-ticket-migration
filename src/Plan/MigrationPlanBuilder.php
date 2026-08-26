@@ -116,7 +116,10 @@ final class MigrationPlanBuilder
         $locationId = (int) ($ticket['location']['id'] ?? 0);
         if ($locationId > 0 && array_key_exists($locationId, (array) ($context['location_entities'] ?? []))) {
             $ticket['entity'] = ['itemtype' => 'Entity', 'id' => (int) $context['location_entities'][$locationId]];
-            $warnings[] = __('Ticket entity derived from the resolved location.', 'ticketmigration');
+            $source = (string) (($context['location_entity_sources'] ?? [])[$locationId] ?? 'ownership');
+            $warnings[] = $source === 'hierarchy_name'
+                ? __('Ticket entity derived from an exact match with the resolved location hierarchy.', 'ticketmigration')
+                : __('Ticket entity derived from the resolved location.', 'ticketmigration');
             return;
         }
         $requesterEntities = [];

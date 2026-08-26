@@ -1,6 +1,8 @@
 # Security model
 
 - Every front/AJAX action checks a dedicated GLPI right, entity visibility, and CSRF token before mutation.
+- Location-based entity inference is restricted to the migration profile's authorized entity subtree and accepts only one exact normalized hierarchy-name match; it never selects an ambiguous or out-of-scope entity.
+- Bulk profile actions re-check item visibility and the dedicated CREATE, UPDATE, or DELETE right for every selected project. Permanent project deletion is refused when any run or external reference exists.
 - Plugin rights are bootstrapped once for profiles that already hold GLPI configuration-update permission. Later profile-right changes are preserved. GLPI administrators retain a page-level recovery path through their native configuration-update permission; all other profiles require the dedicated plugin rights.
 - Uploaded files use a random internal name under a GLPI-approved plugin data directory; extension, MIME, size and upload provenance are validated, while source name, SHA-256, owner and retention metadata are persisted.
 - HTTP uploads are validated with `is_uploaded_file()`, transferred with `move_uploaded_file()`, and removed from `$_FILES` immediately after consumption so GLPI/Symfony cannot reuse a stale temporary path during request shutdown.
@@ -21,3 +23,5 @@ Historical metadata restoration is disabled until a version/schema-guarded imple
 The configuration dashboard permanently recommends a recent, verified, restorable backup of the complete GLPI environment, or at minimum the complete MySQL database. GLPI file storage must also be covered whenever documents or attachments are in scope. The plugin does not execute database dumps or store database credentials.
 
 The final import UI and server-side execution service must reject execution until the operator explicitly confirms a backup. That acknowledgement will be immutable run metadata containing the confirming GLPI user, timestamp, and an optional external backup reference. A client-side checkbox alone is never considered sufficient authorization.
+
+CSV retention cleanup never targets the active revision or a hash referenced by a run. It removes only an expired inactive payload from protected storage and keeps soft-deleted metadata. Project cloning copies configuration and mapping decisions but deliberately does not duplicate the potentially large or sensitive CSV payload.
