@@ -9,6 +9,7 @@ final class Installer
     private const TABLES = [
         'glpi_plugin_ticketmigration_runitems', 'glpi_plugin_ticketmigration_externalrefs',
         'glpi_plugin_ticketmigration_runs', 'glpi_plugin_ticketmigration_valuemappings',
+        'glpi_plugin_ticketmigration_locationentitymappings',
         'glpi_plugin_ticketmigration_fieldmappings', 'glpi_plugin_ticketmigration_profiles',
         'glpi_plugin_ticketmigration_sourcefiles',
         'glpi_plugin_ticketmigration_configs',

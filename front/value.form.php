@@ -11,6 +11,7 @@ use GlpiPlugin\Ticketmigration\Mapping\ReferenceSelection;
 use GlpiPlugin\Ticketmigration\Mapping\TargetRegistry;
 use GlpiPlugin\Ticketmigration\Mapping\UserDropdownScope;
 use GlpiPlugin\Ticketmigration\Mapping\ValueMappingRepository;
+use GlpiPlugin\Ticketmigration\Mapping\LocationEntityMappingRepository;
 use GlpiPlugin\Ticketmigration\Menu;
 use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\ProfileRight;
@@ -67,6 +68,27 @@ foreach ($fieldMappings as $index => $mapping) {
 }
 $valueRepository = new ValueMappingRepository();
 $saved = $valueRepository->forProfile($profileId);
+$locationEntityRepository = new LocationEntityMappingRepository();
+$savedLocationEntities = $locationEntityRepository->forProfile($profileId);
+$resolvedLocationIds = [];
+foreach ((array) ($saved['ticket.location'] ?? []) as $entry) {
+    if (($entry['target_itemtype'] ?? '') === 'Location' && (int) ($entry['target_id'] ?? 0) > 0) {
+        $resolvedLocationIds[] = (int) $entry['target_id'];
+    }
+}
+foreach ($fieldMappings as $index => $fieldMapping) {
+    if (($fieldMapping['target_key'] ?? '') !== 'ticket.location') {
+        continue;
+    }
+    $locationMatcher = new GlpiValueOptions();
+    foreach ($sets[$index]->values as $sourceValue) {
+        $matches = $locationMatcher->exactReferences('Location', $sourceValue);
+        if (count($matches) === 1) {
+            $resolvedLocationIds[] = (int) array_key_first($matches);
+        }
+    }
+}
+$resolvedLocationIds = array_values(array_unique($resolvedLocationIds));
 $profileOptions = json_decode((string) ($profile->fields['options'] ?? ''), true) ?: [];
 $savedSkipTargets = (array) ($profileOptions['actor_resolution']['skip_unresolved_targets'] ?? []);
 if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
@@ -164,6 +186,15 @@ if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
         }
     }
     $valueRepository->merge($profileId, $decisions);
+    try {
+        $locationEntityRepository->merge(
+            $profileId,
+            $resolvedLocationIds,
+            (array) ($_POST['location_entity'] ?? []),
+        );
+    } catch (\InvalidArgumentException) {
+        Html::displayErrorAndDie(__('Select a valid entity for each submitted location association.', 'ticketmigration'));
+    }
     $truncated = array_filter($sets, static fn ($set, $index): bool => $set->truncated && !in_array((string) $fieldMappings[$index]['target_key'], $skipUnresolvedTargets, true), ARRAY_FILTER_USE_BOTH);
     $profileOptions['actor_resolution']['skip_unresolved_targets'] = $skipUnresolvedTargets;
     $analysis = ['source_id' => (int) $source->getID(), 'filename' => (string) $source->fields['source_filename'], 'total' => 0, 'automatic' => 0, 'manual' => 0, 'omitted' => 0, 'remaining' => 0, 'by_target' => []];
@@ -222,6 +253,47 @@ if (isset($_POST['save_values']) || isset($_POST['save_draft'])) {
     Html::redirect(WebUrl::front('value.form.php') . '?profiles_id=' . $profileId);
 }
 $optionProvider = new GlpiValueOptions();
+$locationEntityRows = [];
+$defaultEntityId = (int) $profile->fields['entities_id'];
+$defaultEntityLabel = sprintf(
+    '%s (#%d)',
+    Dropdown::getDropdownName('glpi_entities', $defaultEntityId),
+    $defaultEntityId,
+);
+foreach ($resolvedLocationIds as $locationId) {
+    $location = new Location();
+    if (!$location->getFromDB($locationId) || !$location->canViewItem()) {
+        continue;
+    }
+    $nativeEntityId = (int) $location->fields['entities_id'];
+    $nativeEntityLabel = $nativeEntityId > 0
+        ? Dropdown::getDropdownName('glpi_entities', $nativeEntityId)
+        : __('Global location without a specific GLPI entity', 'ticketmigration');
+    $locationEntityRows[] = [
+        'location_id' => $locationId,
+        'location_label' => sprintf('%s (#%d)', $location->getName(), $locationId),
+        'native_entity_label' => $nativeEntityLabel,
+        'override_entity_id' => (int) ($savedLocationEntities[$locationId] ?? 0),
+        'entity_dropdown' => (string) Dropdown::show('Entity', [
+            'name' => 'location_entity[' . $locationId . ']',
+            // Entity 0 is GLPI's root entity and is also used by its dropdown
+            // as the empty value. Use -1 to make the absence of a migration
+            // association visually unambiguous; the repository treats it as
+            // no explicit association.
+            'value' => isset($savedLocationEntities[$locationId])
+                ? (int) $savedLocationEntities[$locationId]
+                : -1,
+            'display' => false,
+            'display_emptychoice' => true,
+            'emptylabel' => sprintf(
+                __('Project default entity: %s, or choose manually', 'ticketmigration'),
+                $defaultEntityLabel,
+            ),
+            'width' => '100%',
+            'disabled' => !$profile->canUpdateItem(),
+        ]),
+    ];
+}
 $fields = [];
 $statistics = ['total' => 0, 'automatic' => 0, 'manual' => 0, 'omitted' => 0, 'remaining' => 0];
 $position = 0;
@@ -318,6 +390,7 @@ foreach ($fieldMappings as $index => $mapping) {
         'manual_count' => $manualCount,
         'omitted_count' => $omittedCount,
         'remaining_count' => $remainingCount,
+        'processed_count' => max(0, $totalCount - $remainingCount),
         'truncated' => $sets[$index]->truncated,
         'can_skip_unresolved' => str_starts_with($targetKey, 'actor.'),
         'is_multi_actor' => str_starts_with($targetKey, 'actor.'),
@@ -327,6 +400,8 @@ foreach ($fieldMappings as $index => $mapping) {
 Html::header(__('Value correspondence', 'ticketmigration'), $_SERVER['PHP_SELF'], 'tools', Menu::class);
 Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration/mapping/values.html.twig', [
     'profile' => $profile->fields, 'source' => $source->fields, 'fields' => $fields, 'statistics' => $statistics,
+    'location_entity_rows' => $locationEntityRows,
+    'default_entity_label' => $defaultEntityLabel,
     'last_analysis' => (array) ($profileOptions['last_value_analysis'] ?? []),
     'can_manage' => $profile->canUpdateItem(), 'form_action' => WebUrl::front('value.form.php'),
     'mapping_url' => WebUrl::front('mapping.form.php') . '?profiles_id=' . $profileId,

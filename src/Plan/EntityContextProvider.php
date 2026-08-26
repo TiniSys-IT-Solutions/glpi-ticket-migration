@@ -4,12 +4,13 @@ namespace GlpiPlugin\Ticketmigration\Plan;
 
 final class EntityContextProvider
 {
-    public function build(int $defaultEntityId, array $valueMappings): array
+    public function build(int $defaultEntityId, array $valueMappings, array $locationEntityMappings = []): array
     {
         global $DB;
         $locationEntities = [];
         $locationEntitySources = [];
         $userEntities = [];
+        $userPreferredEntities = [];
         foreach ($valueMappings as $entries) {
             foreach ($entries as $entry) {
                 $itemtype = (string) ($entry['target_itemtype'] ?? '');
@@ -21,7 +22,10 @@ final class EntityContextProvider
                     $location = new \Location();
                     if ($location->getFromDB($id) && $location->canViewItem()) {
                         $locationEntityId = (int) $location->fields['entities_id'];
-                        if ($locationEntityId > 0 || $defaultEntityId === 0) {
+                        if (isset($locationEntityMappings[$id])) {
+                            $locationEntities[$id] = (int) $locationEntityMappings[$id];
+                            $locationEntitySources[$id] = 'profile_mapping';
+                        } elseif ($locationEntityId > 0 || $defaultEntityId === 0) {
                             $locationEntities[$id] = $locationEntityId;
                             $locationEntitySources[$id] = 'ownership';
                         } elseif (($matchedEntityId = $this->matchLocationHierarchyToEntity($id, $defaultEntityId)) !== null) {
@@ -30,16 +34,32 @@ final class EntityContextProvider
                         }
                     }
                 } elseif ($itemtype === 'User' && !array_key_exists($id, $userEntities)) {
-                    $entities = [];
-                    foreach ($DB->request([
-                        'SELECT' => ['entities_id'],
-                        'DISTINCT' => true,
-                        'FROM' => 'glpi_profiles_users',
-                        'WHERE' => ['users_id' => $id],
-                    ]) as $profileUser) {
-                        $entities[] = (int) $profileUser['entities_id'];
+                    $entities = array_values(array_unique(array_map(
+                        'intval',
+                        \Profile_User::getUserEntities($id, false, true),
+                    )));
+                    $entities = array_values(array_filter(
+                        $entities,
+                        static fn (int $entityId): bool => \Session::haveAccessToEntity($entityId),
+                    ));
+                    $eligibleEntities = array_values(array_unique(array_map(
+                        'intval',
+                        \Profile_User::getUserEntities($id, true, true),
+                    )));
+                    $eligibleEntities = array_values(array_filter(
+                        $eligibleEntities,
+                        static fn (int $entityId): bool => \Session::haveAccessToEntity($entityId),
+                    ));
+                    $user = new \User();
+                    if ($user->getFromDB($id)) {
+                        $preferred = (int) $user->fields['entities_id'];
+                        if (in_array($preferred, $eligibleEntities, true)) {
+                            $userPreferredEntities[$id] = $preferred;
+                        } elseif (count($entities) === 1) {
+                            $userPreferredEntities[$id] = $entities[0];
+                        }
                     }
-                    $userEntities[$id] = array_values(array_unique($entities));
+                    $userEntities[$id] = $entities;
                 }
             }
         }
@@ -48,6 +68,7 @@ final class EntityContextProvider
             'location_entities' => $locationEntities,
             'location_entity_sources' => $locationEntitySources,
             'user_entities' => $userEntities,
+            'user_preferred_entities' => $userPreferredEntities,
         ];
     }
 

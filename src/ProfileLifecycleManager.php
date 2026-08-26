@@ -42,7 +42,7 @@ final class ProfileLifecycleManager
             $DB->update(MigrationProfile::getTable(), [
                 'schema_fingerprint' => $source->fields['schema_fingerprint'] ?? null,
             ], ['id' => $cloneId]);
-            foreach (['glpi_plugin_ticketmigration_fieldmappings', 'glpi_plugin_ticketmigration_valuemappings'] as $table) {
+            foreach (['glpi_plugin_ticketmigration_fieldmappings', 'glpi_plugin_ticketmigration_valuemappings', 'glpi_plugin_ticketmigration_locationentitymappings'] as $table) {
                 foreach ($DB->request(['FROM' => $table, 'WHERE' => ['profiles_id' => (int) $source->getID()]]) as $row) {
                     unset($row['id']);
                     $row['profiles_id'] = $cloneId;
@@ -84,6 +84,7 @@ final class ProfileLifecycleManager
         try {
             $DB->delete('glpi_plugin_ticketmigration_valuemappings', ['profiles_id' => $profileId]);
             $DB->delete('glpi_plugin_ticketmigration_fieldmappings', ['profiles_id' => $profileId]);
+            $DB->delete('glpi_plugin_ticketmigration_locationentitymappings', ['profiles_id' => $profileId]);
             $DB->delete(SourceFile::getTable(), ['profiles_id' => $profileId]);
             $deleted = $DB->delete(MigrationProfile::getTable(), ['id' => $profileId]);
             $DB->commit();

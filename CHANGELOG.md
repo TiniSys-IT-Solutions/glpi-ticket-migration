@@ -4,6 +4,35 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.36] - 2026-08-26
+
+### Added
+
+- Group value-mapping categories into compact expandable blocks with processed/total progress counters.
+- Display the resulting ticket title prominently in the row-by-row migration-plan preview.
+
+### Changed
+
+- Present location/entity associations as a safeguard for tickets without a usable requester and show the project default entity explicitly when no association is selected.
+
+### Fixed
+
+- Prevent GLPI's root entity ID `0` from looking like an explicitly selected location/entity association when the profile association is actually empty.
+
+## [0.0.35] - 2026-08-26
+
+### Fixed
+
+- Resolve requester authorizations through GLPI's official `Profile_User::getUserEntities()` mechanism instead of reading raw entity IDs without preference semantics.
+- Give a requester's valid preferred or unique Habilitation precedence over native, mapped, or inferred location entities.
+- Report requester/location entity conflicts instead of silently selecting the location hierarchy match.
+
+### Added
+
+- Add explicit per-profile GLPI location-to-entity associations for legacy or globally scoped locations.
+- Show the native GLPI location entity scope and optional migration association on the value-correspondence screen, while clarifying that GLPI 11 does not expose this scope as a standard editable Location field.
+- Display requester authorization as a distinct entity origin in the row-by-row plan preview.
+
 ## [0.0.34] - 2026-08-26
 
 ### Added

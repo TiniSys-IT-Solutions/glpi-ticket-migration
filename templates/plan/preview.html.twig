@@ -32,6 +32,13 @@
           </div></div></div>
         {% endfor %}
       </div>
+      <div class="card border-primary mb-4">
+        <div class="card-body">
+          <div class="text-muted"><i class="ti ti-heading me-1"></i>{{ __('Resulting GLPI ticket title', 'ticketmigration') }}</div>
+          <div class="h3 mb-0 mt-2 text-break">{{ plan.ticket.name|default(__('No title generated', 'ticketmigration')) }}</div>
+          {% if source_values['ticket.name']|default('') == '' %}<div class="small text-muted mt-2">{{ __('The CSV title is empty; the configured fallback rule generated this title.', 'ticketmigration') }}</div>{% endif %}
+        </div>
+      </div>
       {% for error in plan.errors %}<div class="alert alert-danger"><i class="ti ti-alert-circle me-1"></i>{{ error }}</div>{% endfor %}
       {% for warning in plan.warnings %}<div class="alert alert-warning"><i class="ti ti-alert-triangle me-1"></i>{{ warning }}</div>{% endfor %}
       <h3>{{ __('Complete immutable migration plan', 'ticketmigration') }}</h3>

@@ -25,12 +25,12 @@ The domain never depends on HTTP or session state. The same plan-building path f
 - **Mapping**: field, constant, value-map, resolver, template, transform, structured-description, and ignore strategies produce typed target values.
 - **Resolvers**: exact, normalized exact, then fuzzy suggestions. Suggestions are never automatically applied.
 - **Plan**: immutable ticket aggregate containing actors, timeline, documents, relations, external reference, warnings, and errors.
-- **Plan context**: permission-checked GLPI location and user-entity metadata is collected outside the domain builder, which applies deterministic entity precedence without issuing database queries itself. Globally scoped locations may resolve to one child entity through an exact name shared by their location ancestry and the configured profile-entity subtree; ambiguous matches are discarded.
+- **Plan context**: permission-checked GLPI location and official `Profile_User` authorization metadata is collected outside the domain builder, which applies deterministic entity precedence without issuing database queries itself. Requester preference/unique authorization precedes location evidence. Profile-level location/entity bridges support legacy global locations; an exact unique hierarchy-name match remains only the last location fallback.
 - **Execution**: creates GLPI objects in a controlled lifecycle with `_disablenotif`; it isolates a failed source row from subsequent rows.
 - **Persistence**: profiles, mappings, runs, row states, and external references remain in plugin-prefixed tables.
 - **Source storage**: random internal names under `GLPI_PLUGIN_DOC_DIR/ticketmigration/sources`; metadata and retention state live in `sourcefiles`.
 
-CSV rows are never duplicated into SQL tables. Field mappings store one compact row per source column, and value mappings store one row per distinct controlled source value. Run items retain status, hashes, warnings, errors, and created-object identifiers rather than complete source payloads. External references and completed run history are permanent audit data.
+CSV rows are never duplicated into SQL tables. Field mappings store one compact row per source column, value mappings store one row per distinct controlled source value, and location/entity bridges store one row per resolved GLPI location requiring an override. Run items retain status, hashes, warnings, errors, and created-object identifiers rather than complete source payloads. External references and completed run history are permanent audit data.
 
 Each uploaded source receives a schema fingerprint over CSV controls and ordered positional columns. This lets a profile reject structurally incompatible delta files without relying on unique header names.
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 10:00+0530\n"
+"POT-Creation-Date: 2026-08-26 10:52+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -142,7 +142,7 @@ msgstr ""
 msgid "No migration profile yet."
 msgstr ""
 
-#: templates/plan/preview.html.twig front/plan.preview.php:103
+#: templates/plan/preview.html.twig front/plan.preview.php:114
 msgid "Migration plan preview"
 msgstr ""
 
@@ -208,6 +208,19 @@ msgstr ""
 
 #: templates/plan/preview.html.twig
 msgid "No GLPI association retained"
+msgstr ""
+
+#: templates/plan/preview.html.twig
+msgid "Resulting GLPI ticket title"
+msgstr ""
+
+#: templates/plan/preview.html.twig
+msgid "No title generated"
+msgstr ""
+
+#: templates/plan/preview.html.twig
+msgid ""
+"The CSV title is empty; the configured fallback rule generated this title."
 msgstr ""
 
 #: templates/plan/preview.html.twig
@@ -334,7 +347,7 @@ msgid ""
 "ticket can be created from this screen."
 msgstr ""
 
-#: templates/mapping/values.html.twig front/value.form.php:327
+#: templates/mapping/values.html.twig front/value.form.php:400
 msgid "Value correspondence"
 msgstr ""
 
@@ -375,6 +388,15 @@ msgstr ""
 
 #: templates/mapping/values.html.twig
 msgid "remaining"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "processed"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+#, php-format
+msgid "processed — %s remaining"
 msgstr ""
 
 #: templates/mapping/values.html.twig
@@ -440,6 +462,35 @@ msgstr ""
 
 #: templates/mapping/values.html.twig
 msgid "No value correspondence is required for the current field mapping."
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Location and entity associations"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "resolved locations"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+#, php-format
+msgid ""
+"This association is a safeguard for tickets without a usable requester that "
+"must be routed to a child entity of the migration project. A resolved "
+"requester entity always takes precedence. Without an explicit association, "
+"the final fallback is the project default entity: %s."
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Resolved GLPI location"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Native GLPI entity scope"
+msgstr ""
+
+#: templates/mapping/values.html.twig
+msgid "Migration profile association"
 msgstr ""
 
 #: templates/mapping/values.html.twig
@@ -813,24 +864,39 @@ msgstr ""
 msgid "Ticket"
 msgstr ""
 
-#: src/Plan/MigrationPlanBuilder.php:121
+#: src/Plan/MigrationPlanBuilder.php:139
+msgid "Ticket entity derived from the requester preferred GLPI entity."
+msgstr ""
+
+#: src/Plan/MigrationPlanBuilder.php:140
+msgid "Ticket entity derived from the requester unique GLPI authorization."
+msgstr ""
+
+#: src/Plan/MigrationPlanBuilder.php:142
+msgid ""
+"The resolved location points to another entity; the requester entity took "
+"precedence."
+msgstr ""
+
+#: src/Plan/MigrationPlanBuilder.php:147
+msgid ""
+"Requester has several GLPI entity authorizations without one usable "
+"preference."
+msgstr ""
+
+#: src/Plan/MigrationPlanBuilder.php:153
+msgid ""
+"Ticket entity derived from the migration profile location/entity mapping."
+msgstr ""
+
+#: src/Plan/MigrationPlanBuilder.php:154
 msgid ""
 "Ticket entity derived from an exact match with the resolved location "
 "hierarchy."
 msgstr ""
 
-#: src/Plan/MigrationPlanBuilder.php:122
+#: src/Plan/MigrationPlanBuilder.php:155
 msgid "Ticket entity derived from the resolved location."
-msgstr ""
-
-#: src/Plan/MigrationPlanBuilder.php:134
-msgid "Ticket entity derived from the requester unique entity."
-msgstr ""
-
-#: src/Plan/MigrationPlanBuilder.php:138
-msgid ""
-"Requester belongs to multiple entities; the migration profile default entity "
-"was used."
 msgstr ""
 
 #: src/Plan/StructuredDescriptionBuilder.php:40
@@ -960,8 +1026,8 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: front/profile.form.php:30 front/mapping.form.php:23 front/value.form.php:28
-#: front/preview.php:44 front/source.php:20 front/plan.preview.php:25
+#: front/profile.form.php:30 front/mapping.form.php:23 front/value.form.php:29
+#: front/preview.php:44 front/source.php:20 front/plan.preview.php:26
 msgid "You do not have permission to view this migration profile."
 msgstr ""
 
@@ -1018,51 +1084,64 @@ msgstr ""
 msgid "Upload CSV source"
 msgstr ""
 
-#: front/value.form.php:32
+#: front/value.form.php:33
 msgid "Select a CSV source before configuring value mappings."
 msgstr ""
 
-#: front/value.form.php:36
+#: front/value.form.php:37
 msgid "Complete the required field mappings first."
 msgstr ""
 
-#: front/value.form.php:108
+#: front/value.form.php:130
 msgid "Invalid value mapping submission key."
 msgstr ""
 
-#: front/value.form.php:114 front/value.form.php:179
+#: front/value.form.php:136 front/value.form.php:210
 msgid "Every discovered source value must be explicitly resolved or ignored."
 msgstr ""
 
-#: front/value.form.php:122
+#: front/value.form.php:144
 msgid "Duplicate value mapping submission."
 msgstr ""
 
-#: front/value.form.php:140
+#: front/value.form.php:162
 msgid "Select a valid GLPI reference from the full list."
 msgstr ""
 
-#: front/value.form.php:147 front/value.form.php:151
+#: front/value.form.php:169 front/value.form.php:173
 msgid "Invalid GLPI reference selection."
 msgstr ""
 
-#: front/value.form.php:156
+#: front/value.form.php:178
 msgid "Invalid value mapping selection."
 msgstr ""
 
-#: front/value.form.php:214
+#: front/value.form.php:196
+msgid "Select a valid entity for each submitted location association."
+msgstr ""
+
+#: front/value.form.php:245
 msgid "Value correspondence progress saved. You can resume this work later."
 msgstr ""
 
-#: front/value.form.php:217
+#: front/value.form.php:248
 msgid "Value mappings saved."
 msgstr ""
 
-#: front/value.form.php:217
+#: front/value.form.php:248
 msgid "Value mappings saved, but the distinct-value limit was reached."
 msgstr ""
 
 #: front/value.form.php:271
+msgid "Global location without a specific GLPI entity"
+msgstr ""
+
+#: front/value.form.php:289
+#, php-format
+msgid "Project default entity: %s, or choose manually"
+msgstr ""
+
+#: front/value.form.php:343
 #, php-format
 msgid "Search all GLPI %s"
 msgstr ""
@@ -1087,26 +1166,34 @@ msgstr ""
 msgid "CSV source revisions"
 msgstr ""
 
-#: front/plan.preview.php:28
+#: front/plan.preview.php:29
 msgid "Complete value correspondence before previewing a migration plan."
 msgstr ""
 
-#: front/plan.preview.php:33
+#: front/plan.preview.php:34
 msgid "The active CSV source is unavailable."
 msgstr ""
 
-#: front/plan.preview.php:92
+#: front/plan.preview.php:94
 msgid "Explicit CSV entity mapping"
 msgstr ""
 
-#: front/plan.preview.php:95
+#: front/plan.preview.php:101
+msgid "Requester GLPI authorization"
+msgstr ""
+
+#: front/plan.preview.php:104
+msgid "Migration profile location/entity mapping"
+msgstr ""
+
+#: front/plan.preview.php:105
 msgid "Exact location hierarchy match"
 msgstr ""
 
-#: front/plan.preview.php:96
+#: front/plan.preview.php:106
 msgid "Entity owning the resolved location"
 msgstr ""
 
-#: front/plan.preview.php:98
+#: front/plan.preview.php:109
 msgid "Requester entity or migration profile default"
 msgstr ""

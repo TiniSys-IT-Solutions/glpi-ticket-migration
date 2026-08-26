@@ -6,6 +6,7 @@ if (!defined('GLPI_ROOT')) {
 
 use GlpiPlugin\Ticketmigration\Mapping\FieldMappingRepository;
 use GlpiPlugin\Ticketmigration\Mapping\ValueMappingRepository;
+use GlpiPlugin\Ticketmigration\Mapping\LocationEntityMappingRepository;
 use GlpiPlugin\Ticketmigration\Menu;
 use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\Plan\MigrationPlanBuilder;
@@ -42,7 +43,8 @@ $row = $window['row'];
 $profileOptions = json_decode((string) ($profile->fields['options'] ?? ''), true) ?: [];
 $valueMappings = (new ValueMappingRepository())->forProfile($profileId);
 $fieldMappings = (new FieldMappingRepository())->forProfile($profileId);
-$entityContext = (new EntityContextProvider())->build((int) $profile->fields['entities_id'], $valueMappings);
+$locationEntityMappings = (new LocationEntityMappingRepository())->forProfile($profileId);
+$entityContext = (new EntityContextProvider())->build((int) $profile->fields['entities_id'], $valueMappings, $locationEntityMappings);
 $plan = $row ? (new MigrationPlanBuilder())->build(
     $row,
     $fieldMappings,
@@ -90,10 +92,19 @@ if ($plan !== null) {
         $locationId = (int) ($plan->ticket['location']['id'] ?? 0);
         if (($sourceValues['ticket.entity'] ?? '') !== '') {
             $summary['entity_origin'] = __('Explicit CSV entity mapping', 'ticketmigration');
+        } elseif (count(array_filter((array) ($plan->actors['requester'] ?? []), static function (array $requester) use ($entityContext, $entityId): bool {
+            $requesterId = (int) ($requester['id'] ?? 0);
+            $preferred = ($entityContext['user_preferred_entities'] ?? [])[$requesterId] ?? null;
+            $authorizations = (array) (($entityContext['user_entities'] ?? [])[$requesterId] ?? []);
+            return (int) $preferred === $entityId || (count($authorizations) === 1 && (int) $authorizations[0] === $entityId);
+        })) > 0) {
+            $summary['entity_origin'] = __('Requester GLPI authorization', 'ticketmigration');
         } elseif ($locationId > 0 && (($entityContext['location_entities'][$locationId] ?? null) === $entityId)) {
-            $summary['entity_origin'] = (($entityContext['location_entity_sources'][$locationId] ?? '') === 'hierarchy_name')
-                ? __('Exact location hierarchy match', 'ticketmigration')
-                : __('Entity owning the resolved location', 'ticketmigration');
+            $summary['entity_origin'] = match ($entityContext['location_entity_sources'][$locationId] ?? '') {
+                'profile_mapping' => __('Migration profile location/entity mapping', 'ticketmigration'),
+                'hierarchy_name' => __('Exact location hierarchy match', 'ticketmigration'),
+                default => __('Entity owning the resolved location', 'ticketmigration'),
+            };
         } else {
             $summary['entity_origin'] = __('Requester entity or migration profile default', 'ticketmigration');
         }

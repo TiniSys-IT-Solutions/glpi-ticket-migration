@@ -116,7 +116,8 @@ final class MigrationPlanBuilderTest extends TestCase
         );
         self::assertSame('2026-08-11 00:00:00', $plan->ticket['date']);
         self::assertSame('2026-08-11 11:53:00', $plan->ticket['closedate']);
-        self::assertSame(['itemtype' => 'Entity', 'id' => 7], $plan->ticket['entity']);
+        self::assertSame(['itemtype' => 'Entity', 'id' => 8], $plan->ticket['entity']);
+        self::assertStringContainsString('requester', implode(' ', $plan->warnings));
         self::assertTrue($plan->isExecutable());
     }
 
@@ -135,7 +136,7 @@ final class MigrationPlanBuilderTest extends TestCase
             entityContext: ['default_entity_id' => 2, 'user_entities' => [50 => [7, 8]]],
         );
         self::assertSame(['itemtype' => 'Entity', 'id' => 2], $plan->ticket['entity']);
-        self::assertStringContainsString('multiple entities', implode(' ', $plan->warnings));
+        self::assertStringContainsString('several GLPI entity authorizations', implode(' ', $plan->warnings));
     }
 
     public function testGlobalLocationDoesNotOverrideProfileDefaultEntity(): void
@@ -178,5 +179,35 @@ final class MigrationPlanBuilderTest extends TestCase
 
         self::assertSame(['itemtype' => 'Entity', 'id' => 7], $plan->ticket['entity']);
         self::assertStringContainsString('exact match', implode(' ', $plan->warnings));
+    }
+
+    public function testRequesterPreferredEntityWinsOverConflictingLocationInference(): void
+    {
+        $mappings = [
+            0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct'],
+            1 => ['target_key' => 'ticket.name', 'strategy' => 'direct'],
+            2 => ['target_key' => 'ticket.location', 'strategy' => 'direct'],
+            3 => ['target_key' => 'actor.requester', 'strategy' => 'direct'],
+        ];
+        $values = [
+            'ticket.location' => [hash('sha256', 'Issoire') => ['target_itemtype' => 'Location', 'target_id' => 19, 'target_value' => null]],
+            'actor.requester' => [hash('sha256', 'requester@example.org') => ['target_itemtype' => 'User', 'target_id' => 317, 'target_value' => null]],
+        ];
+        $plan = (new MigrationPlanBuilder())->build(
+            new SourceRow(15, ['EXT-51', 'Ticket', 'Issoire', 'requester@example.org']),
+            $mappings,
+            $values,
+            entityContext: [
+                'default_entity_id' => 1,
+                'location_entities' => [19 => 1],
+                'location_entity_sources' => [19 => 'hierarchy_name'],
+                'user_entities' => [317 => [18]],
+                'user_preferred_entities' => [317 => 18],
+            ],
+        );
+
+        self::assertSame(['itemtype' => 'Entity', 'id' => 18], $plan->ticket['entity']);
+        self::assertStringContainsString('requester preferred', implode(' ', $plan->warnings));
+        self::assertStringContainsString('location points to another entity', implode(' ', $plan->warnings));
     }
 }
