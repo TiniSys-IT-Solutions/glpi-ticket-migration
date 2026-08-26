@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 16:25+0530\n"
+"POT-Creation-Date: 2026-08-26 16:42+0530\n"
 "Language: fr_FR\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -188,6 +188,10 @@ msgstr "Configurer les valeurs"
 #: templates/profile/index.html.twig
 msgid "Configure mapping"
 msgstr "Configurer le mappage"
+
+#: templates/profile/index.html.twig
+msgid "View import progress"
+msgstr "Voir la progression de l’import"
 
 #: templates/profile/index.html.twig templates/run/progress.html.twig
 msgid "Resume import"

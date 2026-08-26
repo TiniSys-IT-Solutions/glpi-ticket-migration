@@ -22,7 +22,7 @@ $profile = new MigrationProfile();
 if (!$profile->getFromDB((int) $run['profiles_id']) || !$profile->canViewItem()) { $respond(['error' => __('You do not have permission to view this migration profile.', 'ticketmigration')], 403); }
 $source = new SourceFile();
 if (!$source->getFromDB((int) $run['sourcefiles_id']) || !$source->canViewItem()) { $respond(['error' => __('The source snapshot for this run is unavailable.', 'ticketmigration')], 404); }
-if (!in_array($run['status'], ['queued', 'running'], true)) { $respond(['status' => $run['status'], 'finished' => true]); }
+if (!in_array($run['status'], ['queued', 'running'], true)) { $respond(['status' => $run['status'], 'finished' => in_array($run['status'], ['completed', 'completed_with_issues'], true)]); }
 $token = bin2hex(random_bytes(32));
 if (!$repository->claimBatch($runId, $token)) { $respond(['status' => $run['status'], 'busy' => true], 409); }
 try {

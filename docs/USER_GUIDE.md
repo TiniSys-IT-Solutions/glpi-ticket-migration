@@ -84,7 +84,7 @@ Replaying the same external IDs with identical canonical row hashes skips them. 
 
 From the migration-plan preview, select **Prepare final import**. The preparation page counts the complete CSV and explains notification and recovery behavior. The plugin does not create or inspect a backup: the mandatory checkbox records only that the connected operator accepts responsibility for suitable backup preparation. The server stores that GLPI user and timestamp on the run.
 
-The progress page processes 25 rows per short request. It can be closed and reopened from **Tools > Ticket Migration > Migration runs** without losing completed work. Pause stops before the next batch; resume continues at the persisted offset using the source file and complete mapping snapshot frozen when the run was created.
+The progress page starts a queued run automatically and processes 10 rows per short request. It can be closed and reopened from **Tools > Ticket Migration > Migration runs** without losing completed work. Pause stops before the next batch; resume continues at the persisted offset using the source file and complete mapping snapshot frozen when the run was created. A batch that cannot consume a source row or advance its offset is paused visibly instead of being retried indefinitely.
 
 Every source row receives an auditable state: imported, already imported, changed, or failed. Individual failures do not stop later rows. Notifications are disabled on every created ticket; the progress page is the single overall result notification. **Export row trace** downloads all status and diagnostic codes without copying ticket descriptions.
 

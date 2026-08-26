@@ -95,7 +95,7 @@ function startTicketMigrationRun(worker) {
                     completeAlert.classList.remove('d-none');
                     return;
                 }
-                window.setTimeout(processBatch, 100);
+                window.setTimeout(processBatch, 500);
             },
             error: function (xhr) {
                 if (xhr.status === 409) {

@@ -4,6 +4,21 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.48] - 2026-08-26
+
+### Fixed
+
+- Stop and visibly pause a final run when a batch returns no CSV row or cannot advance its persisted offset, instead of issuing an unbounded stream of identical AJAX requests.
+- Clarify View progress, Pause, and Resume actions while retaining automatic startup for a newly queued import.
+- Reduce the batch request frequency so GLPI debug mode does not generate avoidable diagnostic traffic during a healthy import.
+
+## [0.0.47] - 2026-08-26
+
+### Fixed
+
+- Make the migration-profile secondary actions explicit with a labelled GLPI-style button instead of a nearly invisible standalone arrow.
+- Open row actions above the profile table and restrict horizontal table scrolling to smaller viewports so the dropdown is no longer trapped inside a small scrolling area on desktop.
+
 ## [0.0.46] - 2026-08-26
 
 ### Fixed

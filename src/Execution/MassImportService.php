@@ -36,7 +36,16 @@ final class MassImportService
         $options = (array) ($snapshot['options'] ?? []);
         $context = (array) ($snapshot['entity_context'] ?? []);
         $builder = new MigrationPlanBuilder();
-        foreach ($reader->batch((int) $run['current_offset'], $limit) as $row) {
+        $offsetBeforeBatch = (int) $run['current_offset'];
+        $rows = $reader->batch($offsetBeforeBatch, $limit);
+        if ($rows === [] && $offsetBeforeBatch < (int) $run['total_rows']) {
+            throw new \RuntimeException(sprintf(
+                'The CSV reader returned no row at offset %d while the run expects %d rows.',
+                $offsetBeforeBatch,
+                (int) $run['total_rows'],
+            ));
+        }
+        foreach ($rows as $row) {
             $plan = $builder->build($row, $fieldMappings, $valueMappings, $reader->columns(),
                 (array) ($options['description_consolidation'] ?? []),
                 (array) ($options['actor_resolution'] ?? []),
@@ -45,6 +54,9 @@ final class MassImportService
             $run = $repository->get($runId) ?? $run;
         }
         $run = $repository->get($runId) ?? $run;
+        if ($rows !== [] && (int) $run['current_offset'] <= $offsetBeforeBatch) {
+            throw new \RuntimeException(sprintf('The migration batch did not advance beyond offset %d.', $offsetBeforeBatch));
+        }
         if ((int) $run['current_offset'] >= (int) $run['total_rows']) {
             $repository->update($runId, [
                 'status' => (int) $run['failed_count'] > 0 || (int) $run['changed_count'] > 0 ? 'completed_with_issues' : 'completed',
