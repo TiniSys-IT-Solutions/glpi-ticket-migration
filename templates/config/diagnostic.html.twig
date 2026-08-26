@@ -1,0 +1,24 @@
+{% include '@ticketmigration/layout/tabs.html.twig' %}
+<div class="container-fluid px-3 pb-3">
+  <div class="d-flex justify-content-between align-items-center mb-3"><div><h1 class="h2 mb-1"><i class="ti ti-stethoscope me-2"></i>{{ __('Diagnostic', 'ticketmigration') }}</h1><p class="text-muted mb-0">{{ __('Read-only technical checks for the migration environment.', 'ticketmigration') }}</p></div><span class="badge bg-blue-lt text-blue">v{{ version }}</span></div>
+  {% set healthy = missing_tables|length == 0 and missing_fields|length == 0 and missing_payloads == 0 and storage_ready %}
+  <div class="alert {{ healthy ? 'alert-success' : 'alert-warning' }}"><i class="ti {{ healthy ? 'ti-circle-check' : 'ti-alert-triangle' }} me-1"></i>{{ healthy ? __('No blocking consistency problem was detected.', 'ticketmigration') : __('One or more consistency checks require attention.', 'ticketmigration') }}</div>
+  <div class="row g-3 mb-3">
+    <div class="col-md-3"><div class="card h-100"><div class="card-body"><div class="text-muted">{{ __('GLPI version', 'ticketmigration') }}</div><div class="h3 mt-2">{{ glpi_version }}</div></div></div></div>
+    <div class="col-md-3"><div class="card h-100"><div class="card-body"><div class="text-muted">{{ __('PHP version', 'ticketmigration') }}</div><div class="h3 mt-2">{{ php_version }}</div></div></div></div>
+    <div class="col-md-3"><div class="card h-100"><div class="card-body"><div class="text-muted">{{ __('Database schema', 'ticketmigration') }}</div><div class="h3 mt-2 {{ missing_tables|length + missing_fields|length ? 'text-danger' : 'text-success' }}">{{ missing_tables|length + missing_fields|length ? __('Incomplete', 'ticketmigration') : __('Ready', 'ticketmigration') }}</div></div></div></div>
+    <div class="col-md-3"><div class="card h-100"><div class="card-body"><div class="text-muted">{{ __('Protected CSV storage', 'ticketmigration') }}</div><div class="h3 mt-2 {{ storage_ready and missing_payloads == 0 ? 'text-success' : 'text-danger' }}">{{ storage_ready and missing_payloads == 0 ? __('Ready', 'ticketmigration') : __('Attention required', 'ticketmigration') }}</div></div></div></div>
+  </div>
+  <div class="row g-3">
+    <div class="col-lg-6"><div class="card h-100"><div class="card-header"><h2 class="card-title">{{ __('Consistency checks', 'ticketmigration') }}</h2></div><div class="card-body">
+      <div class="d-flex justify-content-between mb-2"><span>{{ __('Missing plugin tables', 'ticketmigration') }}</span><strong>{{ missing_tables|length }}</strong></div>{% for item in missing_tables %}<code class="d-block text-danger">{{ item }}</code>{% endfor %}
+      <div class="d-flex justify-content-between mt-3 mb-2"><span>{{ __('Missing required columns', 'ticketmigration') }}</span><strong>{{ missing_fields|length }}</strong></div>{% for item in missing_fields %}<code class="d-block text-danger">{{ item }}</code>{% endfor %}
+      <div class="d-flex justify-content-between mt-3"><span>{{ __('Missing stored CSV payloads', 'ticketmigration') }}</span><strong class="{{ missing_payloads ? 'text-danger' : 'text-success' }}">{{ missing_payloads }}</strong></div>
+      <code class="d-block text-break mt-3">{{ storage_path }}</code>
+    </div></div></div>
+    <div class="col-lg-6"><div class="card h-100"><div class="card-header"><h2 class="card-title">{{ __('Execution and PHP', 'ticketmigration') }}</h2></div><div class="card-body">
+      <div class="d-flex justify-content-between mb-2"><span>{{ __('Running imports', 'ticketmigration') }}</span><strong>{{ running_runs }}</strong></div><div class="d-flex justify-content-between mb-2"><span>{{ __('Paused imports', 'ticketmigration') }}</span><strong>{{ paused_runs }}</strong></div><div class="d-flex justify-content-between mb-3"><span>{{ __('Runs completed with issues', 'ticketmigration') }}</span><strong>{{ issue_runs }}</strong></div>
+      {% for name, value in php_limits %}<div class="d-flex justify-content-between mb-2"><code>{{ name }}</code><strong>{{ value }}</strong></div>{% endfor %}
+    </div></div></div>
+  </div>
+</div>

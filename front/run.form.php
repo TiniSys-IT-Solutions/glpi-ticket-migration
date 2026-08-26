@@ -24,8 +24,8 @@ $canControl = ProfileRight::canRunImports() && Ticket::canCreate();
 if (isset($_POST['pause']) && $canControl && $run['status'] === 'running') { $repository->update($runId, ['status' => 'paused']); Html::redirect(WebUrl::front('run.form.php') . '?id=' . $runId); }
 if (isset($_POST['resume']) && $canControl && $run['status'] === 'paused') { $repository->update($runId, ['status' => 'running']); Html::redirect(WebUrl::front('run.form.php') . '?id=' . $runId); }
 if (isset($_POST['process_batch']) && $canControl && in_array($run['status'], ['queued', 'running'], true)) {
-    global $DB; $lock = 'tm_run_' . $runId;
-    if ($DB->getLock($lock)) {
+    $token = bin2hex(random_bytes(32));
+    if ($repository->claimBatch($runId, $token)) {
         try {
             $config = json_decode((string) $source->fields['csv_config'], true) ?: [];
             $reader = new CsvReader($source->getProtectedPath(), new CsvConfiguration(delimiter: (string) ($config['delimiter'] ?? ';'), hasHeader: (bool) ($config['has_header'] ?? true), encoding: (string) ($config['encoding'] ?? 'UTF-8')));
@@ -38,7 +38,7 @@ if (isset($_POST['process_batch']) && $canControl && in_array($run['status'], ['
                 ), false, INFO);
             }
         } catch (Throwable $exception) { ErrorHandler::logCaughtException($exception); $repository->update($runId, ['status' => 'paused']); Session::addMessageAfterRedirect(__('The batch was paused after a technical error. No completed line will be repeated.', 'ticketmigration'), false, ERROR); }
-        finally { $DB->releaseLock($lock); }
+        finally { $repository->releaseBatch($runId, $token); }
     }
     Html::redirect(WebUrl::front('run.form.php') . '?id=' . $runId);
 }
@@ -64,5 +64,7 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display('@ticketmigration
     'run' => $run, 'profile' => $profile->fields, 'items' => $items, 'progress' => $progress, 'can_control' => $canControl,
     'form_action' => WebUrl::front('run.form.php'), 'history_url' => WebUrl::front('run.php'),
     'export_url' => WebUrl::front('run.export.php') . '?id=' . $runId,
+    'batch_url' => WebUrl::ajax('run.batch.php'),
+    'progress_script_url' => WebUrl::plugin() . '/public/js/run_progress.js',
 ]);
 Html::footer();

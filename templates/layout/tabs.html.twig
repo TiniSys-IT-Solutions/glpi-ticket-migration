@@ -1,0 +1,6 @@
+<ul class="nav nav-tabs px-3 pt-3 mb-3">
+  {% if tabs.can_dashboard %}<li class="nav-item"><a class="nav-link {{ tabs.current == 'dashboard' ? 'active' : '' }}" href="{{ tabs.dashboard_url }}"><i class="ti ti-layout-dashboard me-1"></i>{{ __('Dashboard', 'ticketmigration') }}</a></li>{% endif %}
+  {% if tabs.can_profiles %}<li class="nav-item"><a class="nav-link {{ tabs.current == 'profiles' ? 'active' : '' }}" href="{{ tabs.profiles_url }}"><i class="ti ti-transfer me-1"></i>{{ __('Migration profiles', 'ticketmigration') }}</a></li>{% endif %}
+  {% if tabs.can_runs %}<li class="nav-item"><a class="nav-link {{ tabs.current == 'runs' ? 'active' : '' }}" href="{{ tabs.runs_url }}"><i class="ti ti-history me-1"></i>{{ __('Migration runs', 'ticketmigration') }}</a></li>{% endif %}
+  {% if tabs.can_diagnostic %}<li class="nav-item"><a class="nav-link {{ tabs.current == 'diagnostic' ? 'active' : '' }}" href="{{ tabs.diagnostic_url }}"><i class="ti ti-stethoscope me-1"></i>{{ __('Diagnostic', 'ticketmigration') }}</a></li>{% endif %}
+</ul>

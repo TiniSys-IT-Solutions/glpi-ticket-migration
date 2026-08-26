@@ -69,6 +69,12 @@ final class Installer
         if (!$DB->fieldExists($runsTable, 'configuration_snapshot')) {
             $migration->addField($runsTable, 'configuration_snapshot', 'LONGTEXT DEFAULT NULL', ['after' => 'source_hash']);
         }
+        if (!$DB->fieldExists($runsTable, 'batch_token')) {
+            $migration->addField($runsTable, 'batch_token', 'CHAR(64) DEFAULT NULL', ['after' => 'backup_confirmed_by']);
+        }
+        if (!$DB->fieldExists($runsTable, 'batch_started_at')) {
+            $migration->addField($runsTable, 'batch_started_at', 'timestamp', ['after' => 'batch_token']);
+        }
         if (!(new ProfileRightSynchronizer())->synchronize()) {
             return false;
         }

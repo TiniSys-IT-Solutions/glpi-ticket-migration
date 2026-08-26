@@ -4,6 +4,53 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.46] - 2026-08-26
+
+### Fixed
+
+- Replace the silent connection-scoped final-run lock with a persisted, expiring batch lease so an abandoned PHP worker cannot leave a run reloading forever at zero.
+- Replace full-page batch POST/redirect cycles with an AJAX worker that updates progress, counters, statuses, ticket links, and recent row traces without page flicker.
+- Surface busy workers and technical batch failures instead of silently repeating the same request.
+
+### Changed
+
+- Limit browser-driven batches to ten tickets to stay safely below common PHP request timeouts while retaining per-row persistence and resume behavior.
+- Align the progress worker with GLPI DataInjection's established AJAX batch convention: no-cache endpoint, central-interface access check, external jQuery worker, and an animated Bootstrap progress bar.
+
+## [0.0.45] - 2026-08-26
+
+### Added
+
+- Add a shared GLPI-style navigation portal with Dashboard, Migration profiles, Migration runs, and administrator-only Diagnostic tabs.
+- Add a read-only diagnostic for plugin schema, protected CSV payload consistency, active execution counts, and relevant PHP limits.
+- Derive a profile's operational migration state from its persisted pilot and final runs, including progress and issue counts.
+
+### Changed
+
+- Separate configuration readiness from migration execution status in the profile list.
+- Replace the misleading single next action with a contextual primary action and a compact secondary-action menu.
+- Make successful pilots lead to final-import preparation while retaining direct access to another pilot, mappings, sources, and filtered execution history.
+- Use contextual status colors consistently in execution history.
+
+## [0.0.44] - 2026-08-26
+
+### Fixed
+
+- Preserve the `start_final_import` POST action in an independent hidden field when the visible submit button is disabled after confirmation, allowing GLPI to create the run and redirect to its progress page.
+
+## [0.0.43] - 2026-08-26
+
+### Fixed
+
+- Make the final-import button react directly to the required backup checkbox without depending on GLPI executing an inline initialization script.
+- Clarify the operator confirmation as an explicit declaration that a GLPI backup was completed before the import task.
+
+## [0.0.42] - 2026-08-26
+
+### Fixed
+
+- Keep the final-import backup acknowledgement checkbox inside its bordered confirmation panel by separating the Bootstrap `form-check` positioning context from the panel padding.
+
 ## [0.0.41] - 2026-08-26
 
 ### Added

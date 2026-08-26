@@ -23,9 +23,9 @@ final class Menu extends CommonGLPI
 
         $menu = [
             'title' => self::getMenuName(),
-            'page' => $canViewProfiles
-                ? '/plugins/ticketmigration/front/profile.php'
-                : '/plugins/ticketmigration/front/config.php',
+            'page' => $canConfigure
+                ? '/plugins/ticketmigration/front/config.php'
+                : '/plugins/ticketmigration/front/profile.php',
             'icon' => 'ti ti-transfer',
             'options' => [],
         ];

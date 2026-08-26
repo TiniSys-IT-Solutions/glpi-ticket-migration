@@ -1,11 +1,29 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 14:43+0530\n"
+"POT-Creation-Date: 2026-08-26 16:25+0530\n"
 "Language: fr_FR\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: templates/layout/tabs.html.twig
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: templates/layout/tabs.html.twig templates/profile/index.html.twig
+#: templates/config/dashboard.html.twig src/Menu.php:34
+msgid "Migration profiles"
+msgstr "Profils de migration"
+
+#: templates/layout/tabs.html.twig templates/config/dashboard.html.twig
+#: templates/run/index.html.twig src/Menu.php:40 front/run.php:21
+msgid "Migration runs"
+msgstr "Exécutions de migration"
+
+#: templates/layout/tabs.html.twig templates/config/diagnostic.html.twig
+msgid "Diagnostic"
+msgstr "Diagnostic"
 
 #: templates/profile/form.html.twig
 msgid "Edit migration profile"
@@ -39,7 +57,7 @@ msgstr "Profil privé"
 msgid "Back to projects"
 msgstr "Retour aux projets"
 
-#: templates/profile/form.html.twig
+#: templates/profile/form.html.twig templates/profile/index.html.twig
 msgid "Field mapping"
 msgstr "Mappage des champs"
 
@@ -47,8 +65,8 @@ msgstr "Mappage des champs"
 msgid "Preview active CSV"
 msgstr "Prévisualiser le CSV actif"
 
-#: templates/profile/form.html.twig templates/mapping/form.html.twig
-#: templates/source/preview.html.twig
+#: templates/profile/form.html.twig templates/profile/index.html.twig
+#: templates/mapping/form.html.twig templates/source/preview.html.twig
 msgid "Manage CSV sources"
 msgstr "Gérer les sources CSV"
 
@@ -56,7 +74,7 @@ msgstr "Gérer les sources CSV"
 msgid "Upload CSV"
 msgstr "Téléverser un CSV"
 
-#: templates/profile/form.html.twig templates/profile/index.html.twig
+#: templates/profile/form.html.twig
 msgid "Resume value correspondence"
 msgstr "Reprendre la correspondance des valeurs"
 
@@ -67,11 +85,6 @@ msgstr "Continuer vers la correspondance des valeurs"
 #: templates/profile/form.html.twig templates/source/preview.html.twig
 msgid "Continue to mapping"
 msgstr "Continuer vers le mappage"
-
-#: templates/profile/index.html.twig templates/config/dashboard.html.twig
-#: src/Menu.php:34
-msgid "Migration profiles"
-msgstr "Profils de migration"
 
 #: templates/profile/index.html.twig templates/config/dashboard.html.twig
 msgid "New profile"
@@ -89,13 +102,13 @@ msgstr "Projets archivés"
 msgid "Active CSV source"
 msgstr "Source CSV active"
 
-#: templates/profile/index.html.twig
-msgid "Workflow status"
-msgstr "État du parcours"
+#: templates/profile/index.html.twig src/Menu.php:45
+msgid "Configuration"
+msgstr "Configuration"
 
 #: templates/profile/index.html.twig
-msgid "Next action"
-msgstr "Action suivante"
+msgid "Migration status"
+msgstr "État de migration"
 
 #: templates/profile/index.html.twig
 msgid "No source selected"
@@ -105,21 +118,64 @@ msgstr "Aucune source sélectionnée"
 msgid "Archived"
 msgstr "Archivé"
 
-#: templates/profile/index.html.twig
-msgid "Values configured"
-msgstr "Valeurs configurées"
+#: templates/profile/index.html.twig templates/config/dashboard.html.twig
+#: templates/config/diagnostic.html.twig
+msgid "Ready"
+msgstr "Prêt"
 
 #: templates/profile/index.html.twig
-msgid "Mapping configured — values required"
-msgstr "Mappage configuré — valeurs requises"
+msgid "Values required"
+msgstr "Valeurs requises"
 
 #: templates/profile/index.html.twig
-msgid "Source selected — mapping required"
-msgstr "Source sélectionnée — mappage requis"
+msgid "Mapping required"
+msgstr "Mappage requis"
 
 #: templates/profile/index.html.twig
-msgid "Profile created — source required"
-msgstr "Profil créé — source requise"
+msgid "CSV source required"
+msgstr "Source CSV requise"
+
+#: templates/profile/index.html.twig
+msgid "Ready for pilot validation"
+msgstr "Prêt pour la validation pilote"
+
+#: templates/profile/index.html.twig
+#, php-format
+msgid "%d successful pilot"
+msgid_plural "%d successful pilots"
+msgstr[0] "%d pilote réussi"
+msgstr[1] "%d pilotes réussis"
+
+#: templates/profile/index.html.twig
+msgid "Final import queued"
+msgstr "Import final en attente"
+
+#: templates/profile/index.html.twig
+#, php-format
+msgid "Final import in progress — %1$d/%2$d"
+msgstr "Import final en cours — %1$d/%2$d"
+
+#: templates/profile/index.html.twig
+#, php-format
+msgid "Final import paused — %1$d/%2$d"
+msgstr "Import final suspendu — %1$d/%2$d"
+
+#: templates/profile/index.html.twig
+#, php-format
+msgid "Completed — %1$d errors, %2$d changed"
+msgstr "Terminé — %1$d erreurs, %2$d modifiés"
+
+#: templates/profile/index.html.twig
+msgid "Final import completed"
+msgstr "Import final terminé"
+
+#: templates/profile/index.html.twig
+msgid "Final import failed"
+msgstr "Échec de l’import final"
+
+#: templates/profile/index.html.twig
+msgid "Configuration incomplete"
+msgstr "Configuration incomplète"
 
 #: templates/profile/index.html.twig
 msgid "Use Actions to restore this project."
@@ -132,6 +188,40 @@ msgstr "Configurer les valeurs"
 #: templates/profile/index.html.twig
 msgid "Configure mapping"
 msgstr "Configurer le mappage"
+
+#: templates/profile/index.html.twig templates/run/progress.html.twig
+msgid "Resume import"
+msgstr "Reprendre l’import"
+
+#: templates/profile/index.html.twig
+msgid "View import result"
+msgstr "Voir le résultat de l’import"
+
+#: templates/profile/index.html.twig templates/plan/preview.html.twig
+#: templates/run/prepare.html.twig front/import.form.php:34
+msgid "Prepare final import"
+msgstr "Préparer l’import final"
+
+#: templates/profile/index.html.twig
+msgid "Test a pilot row"
+msgstr "Tester une ligne pilote"
+
+#: templates/profile/index.html.twig
+msgid "Other actions"
+msgstr "Autres actions"
+
+#: templates/profile/index.html.twig
+msgid "Preview or test another row"
+msgstr "Prévisualiser ou tester une autre ligne"
+
+#: templates/profile/index.html.twig templates/mapping/values.html.twig
+#: front/value.form.php:405
+msgid "Value correspondence"
+msgstr "Correspondance des valeurs"
+
+#: templates/profile/index.html.twig
+msgid "Execution history"
+msgstr "Historique des exécutions"
 
 #: templates/profile/index.html.twig
 msgid "No archived migration project."
@@ -279,11 +369,6 @@ msgstr "Cette ligne est enregistrée et sera ignorée lors de l’import final."
 msgid "Import this pilot row"
 msgstr "Importer cette ligne pilote"
 
-#: templates/plan/preview.html.twig templates/run/prepare.html.twig
-#: front/import.form.php:34
-msgid "Prepare final import"
-msgstr "Préparer l’import final"
-
 #: templates/plan/preview.html.twig
 msgid ""
 "Create one real GLPI ticket with notifications disabled and register this "
@@ -297,7 +382,7 @@ msgid "Pilot import in progress…"
 msgstr "Import pilote en cours…"
 
 #: templates/config/dashboard.html.twig src/ProfileRight.php:52
-#: src/ProfileRight.php:65 src/Menu.php:13 setup.php:34 front/profile.php:36
+#: src/ProfileRight.php:65 src/Menu.php:13 setup.php:34 front/profile.php:41
 msgid "Ticket Migration"
 msgstr "Migration de tickets"
 
@@ -315,11 +400,6 @@ msgstr "Sources CSV actives"
 #, php-format
 msgid "%s stored revisions"
 msgstr "%s révisions conservées"
-
-#: templates/config/dashboard.html.twig templates/run/index.html.twig
-#: src/Menu.php:40 front/run.php:17
-msgid "Migration runs"
-msgstr "Exécutions de migration"
 
 #: templates/config/dashboard.html.twig
 msgid "Backup required before any import"
@@ -345,8 +425,8 @@ msgstr ""
 "jointes peuvent être importés."
 
 #: templates/config/dashboard.html.twig
-msgid "Test the current workflow"
-msgstr "Tester le parcours actuel"
+msgid "Migration workflow"
+msgstr "Parcours de migration"
 
 #: templates/config/dashboard.html.twig
 msgid "Create a migration profile and save it."
@@ -368,6 +448,16 @@ msgstr ""
 "Associez les colonnes CSV positionnelles aux cibles fonctionnelles GLPI."
 
 #: templates/config/dashboard.html.twig
+msgid "Validate controlled values and inspect several immutable row plans."
+msgstr ""
+"Validez les valeurs contrôlées et examinez plusieurs plans de ligne "
+"immuables."
+
+#: templates/config/dashboard.html.twig
+msgid "Create a pilot ticket, then start the resumable final import."
+msgstr "Créez un ticket pilote, puis démarrez l’import final reprenable."
+
+#: templates/config/dashboard.html.twig
 msgid "Open profiles"
 msgstr "Ouvrir les profils"
 
@@ -375,13 +465,9 @@ msgstr "Ouvrir les profils"
 msgid "System status"
 msgstr "État du système"
 
-#: templates/config/dashboard.html.twig
+#: templates/config/dashboard.html.twig templates/config/diagnostic.html.twig
 msgid "Protected CSV storage"
 msgstr "Stockage CSV protégé"
-
-#: templates/config/dashboard.html.twig
-msgid "Ready"
-msgstr "Prêt"
 
 #: templates/config/dashboard.html.twig
 msgid "Unavailable"
@@ -413,9 +499,69 @@ msgstr ""
 "Les imports pilotes et finaux reprenables sont disponibles depuis les "
 "profils de migration validés."
 
-#: templates/mapping/values.html.twig front/value.form.php:405
-msgid "Value correspondence"
-msgstr "Correspondance des valeurs"
+#: templates/config/diagnostic.html.twig
+msgid "Read-only technical checks for the migration environment."
+msgstr "Contrôles techniques en lecture seule de l’environnement de migration."
+
+#: templates/config/diagnostic.html.twig
+msgid "No blocking consistency problem was detected."
+msgstr "Aucun problème de cohérence bloquant n’a été détecté."
+
+#: templates/config/diagnostic.html.twig
+msgid "One or more consistency checks require attention."
+msgstr "Un ou plusieurs contrôles de cohérence nécessitent votre attention."
+
+#: templates/config/diagnostic.html.twig
+msgid "GLPI version"
+msgstr "Version de GLPI"
+
+#: templates/config/diagnostic.html.twig
+msgid "PHP version"
+msgstr "Version de PHP"
+
+#: templates/config/diagnostic.html.twig
+msgid "Database schema"
+msgstr "Schéma de base de données"
+
+#: templates/config/diagnostic.html.twig
+msgid "Incomplete"
+msgstr "Incomplet"
+
+#: templates/config/diagnostic.html.twig
+msgid "Attention required"
+msgstr "Attention requise"
+
+#: templates/config/diagnostic.html.twig
+msgid "Consistency checks"
+msgstr "Contrôles de cohérence"
+
+#: templates/config/diagnostic.html.twig
+msgid "Missing plugin tables"
+msgstr "Tables du plugin manquantes"
+
+#: templates/config/diagnostic.html.twig
+msgid "Missing required columns"
+msgstr "Colonnes requises manquantes"
+
+#: templates/config/diagnostic.html.twig
+msgid "Missing stored CSV payloads"
+msgstr "Fichiers CSV stockés manquants"
+
+#: templates/config/diagnostic.html.twig
+msgid "Execution and PHP"
+msgstr "Exécution et PHP"
+
+#: templates/config/diagnostic.html.twig
+msgid "Running imports"
+msgstr "Imports en cours"
+
+#: templates/config/diagnostic.html.twig
+msgid "Paused imports"
+msgstr "Imports suspendus"
+
+#: templates/config/diagnostic.html.twig
+msgid "Runs completed with issues"
+msgstr "Exécutions terminées avec anomalies"
 
 #: templates/mapping/values.html.twig
 msgid ""
@@ -739,15 +885,15 @@ msgid "%1$s of %2$s rows processed"
 msgstr "%1$s lignes traitées sur %2$s"
 
 #: templates/run/progress.html.twig templates/run/index.html.twig
-#: front/run.form.php:52
+#: ajax/run.batch.php:38 front/run.form.php:52
 msgid "Imported"
 msgstr "Importées"
 
-#: templates/run/progress.html.twig front/run.form.php:52
+#: templates/run/progress.html.twig ajax/run.batch.php:38 front/run.form.php:52
 msgid "Already imported"
 msgstr "Déjà importées"
 
-#: templates/run/progress.html.twig front/run.form.php:53
+#: templates/run/progress.html.twig ajax/run.batch.php:38 front/run.form.php:53
 msgid "Changed"
 msgstr "Modifiées"
 
@@ -762,6 +908,14 @@ msgid ""
 msgstr ""
 "Les notifications individuelles des tickets sont désactivées. Cette page "
 "fournit le récapitulatif global unique de l’import."
+
+#: templates/run/progress.html.twig
+msgid ""
+"The final import is complete. The counters and row trace below contain the "
+"global result."
+msgstr ""
+"L’import final est terminé. Les compteurs et la trace par ligne ci-dessous "
+"présentent le résultat global."
 
 #: templates/run/progress.html.twig
 msgid "Latest processed rows"
@@ -812,12 +966,12 @@ msgid "Export row trace"
 msgstr "Exporter la trace des lignes"
 
 #: templates/run/progress.html.twig
-msgid "Resume import"
-msgstr "Reprendre l’import"
-
-#: templates/run/progress.html.twig
 msgid "Pause import"
 msgstr "Suspendre l’import"
+
+#: templates/run/progress.html.twig
+msgid "The batch request failed."
+msgstr "La requête de traitement du lot a échoué."
 
 #: templates/run/prepare.html.twig
 msgid "CSV data rows"
@@ -864,11 +1018,10 @@ msgstr ""
 
 #: templates/run/prepare.html.twig
 msgid ""
-"I confirm that backup preparation is my responsibility and that I am ready "
-"to start this import."
+"I confirm that a GLPI backup was completed before running the import task."
 msgstr ""
-"Je confirme que la préparation de la sauvegarde relève de ma responsabilité "
-"et que je suis prêt à démarrer cet import."
+"Je confirme qu’une sauvegarde de GLPI a bien été effectuée avant l’exécution "
+"de la tâche d’import."
 
 #: templates/run/prepare.html.twig
 msgid "Back to plan preview"
@@ -881,6 +1034,10 @@ msgstr "Démarrer l’import final"
 #: templates/run/prepare.html.twig
 msgid "Start the final ticket import now?"
 msgstr "Démarrer maintenant l’import final des tickets ?"
+
+#: templates/run/index.html.twig
+msgid "Clear profile filter"
+msgstr "Effacer le filtre du profil"
 
 #: templates/run/index.html.twig
 msgid "Source"
@@ -999,6 +1156,80 @@ msgstr "Utiliser cette source"
 #: templates/source/index.html.twig
 msgid "No CSV source uploaded yet."
 msgstr "Aucune source CSV téléversée pour le moment."
+
+#: ajax/run.batch.php:18 front/import.form.php:14 front/plan.preview.php:70
+msgid "You do not have permission to import tickets."
+msgstr "Vous n’avez pas l’autorisation d’importer des tickets."
+
+#: ajax/run.batch.php:20 front/run.form.php:18 front/run.export.php:11
+msgid "Migration run not found."
+msgstr "Exécution de migration introuvable."
+
+#: ajax/run.batch.php:22 front/run.form.php:20 front/profile.form.php:30
+#: front/mapping.form.php:23 front/value.form.php:29 front/import.form.php:17
+#: front/preview.php:44 front/source.php:20 front/plan.preview.php:29
+msgid "You do not have permission to view this migration profile."
+msgstr "Vous n’avez pas l’autorisation de voir ce profil de migration."
+
+#: ajax/run.batch.php:24 front/run.form.php:22
+msgid "The source snapshot for this run is unavailable."
+msgstr "L’instantané de la source de cette exécution est indisponible."
+
+#: ajax/run.batch.php:34 front/run.form.php:40
+msgid ""
+"The batch was paused after a technical error. No completed line will be "
+"repeated."
+msgstr ""
+"Le lot a été suspendu après une erreur technique. Aucune ligne terminée ne "
+"sera répétée."
+
+#: ajax/run.batch.php:37 front/run.form.php:49 front/run.php:15
+msgid "Queued"
+msgstr "En attente"
+
+#: ajax/run.batch.php:37 front/run.form.php:49 front/run.php:15
+msgid "Running"
+msgstr "En cours"
+
+#: ajax/run.batch.php:37 front/run.form.php:50 front/run.php:15
+msgid "Paused"
+msgstr "Suspendu"
+
+#: ajax/run.batch.php:37 front/run.form.php:50 front/run.php:15
+msgid "Completed"
+msgstr "Terminé"
+
+#: ajax/run.batch.php:37 front/run.form.php:51 front/run.php:15
+msgid "Completed with issues"
+msgstr "Terminé avec des anomalies"
+
+#: ajax/run.batch.php:38 front/run.form.php:51 front/run.php:15
+msgid "Failed"
+msgstr "Échec"
+
+#: ajax/run.batch.php:39 front/run.form.php:54
+msgid "Ticket imported"
+msgstr "Ticket importé"
+
+#: ajax/run.batch.php:39 front/run.form.php:54
+msgid "External identifier already imported"
+msgstr "Identifiant externe déjà importé"
+
+#: ajax/run.batch.php:39 front/run.form.php:55
+msgid "Source row changed after import"
+msgstr "Ligne source modifiée après l’import"
+
+#: ajax/run.batch.php:40 front/run.form.php:55
+msgid "Migration plan blocked"
+msgstr "Plan de migration bloqué"
+
+#: ajax/run.batch.php:40 front/run.form.php:56
+msgid "Target entity forbidden"
+msgstr "Entité cible interdite"
+
+#: ajax/run.batch.php:40 front/run.form.php:56
+msgid "Ticket creation failed"
+msgstr "Échec de la création du ticket"
 
 #: src/ProfileLifecycleManager.php:27
 #, php-format
@@ -1316,24 +1547,6 @@ msgstr "URL des documents"
 msgid "Documents"
 msgstr "Documents"
 
-#: src/Menu.php:45
-msgid "Configuration"
-msgstr "Configuration"
-
-#: front/run.form.php:18 front/run.export.php:11
-msgid "Migration run not found."
-msgstr "Exécution de migration introuvable."
-
-#: front/run.form.php:20 front/profile.form.php:30 front/mapping.form.php:23
-#: front/value.form.php:29 front/import.form.php:17 front/preview.php:44
-#: front/source.php:20 front/plan.preview.php:29
-msgid "You do not have permission to view this migration profile."
-msgstr "Vous n’avez pas l’autorisation de voir ce profil de migration."
-
-#: front/run.form.php:22
-msgid "The source snapshot for this run is unavailable."
-msgstr "L’instantané de la source de cette exécution est indisponible."
-
 #: front/run.form.php:35
 #, php-format
 msgid ""
@@ -1343,62 +1556,6 @@ msgstr ""
 "Import final terminé : %1$d importés, %2$d déjà importés, %3$d modifiés, "
 "%4$d en échec."
 
-#: front/run.form.php:40
-msgid ""
-"The batch was paused after a technical error. No completed line will be "
-"repeated."
-msgstr ""
-"Le lot a été suspendu après une erreur technique. Aucune ligne terminée ne "
-"sera répétée."
-
-#: front/run.form.php:49 front/run.php:14
-msgid "Queued"
-msgstr "En attente"
-
-#: front/run.form.php:49 front/run.php:14
-msgid "Running"
-msgstr "En cours"
-
-#: front/run.form.php:50 front/run.php:14
-msgid "Paused"
-msgstr "Suspendu"
-
-#: front/run.form.php:50 front/run.php:14
-msgid "Completed"
-msgstr "Terminé"
-
-#: front/run.form.php:51 front/run.php:14
-msgid "Completed with issues"
-msgstr "Terminé avec des anomalies"
-
-#: front/run.form.php:51 front/run.php:14
-msgid "Failed"
-msgstr "Échec"
-
-#: front/run.form.php:54
-msgid "Ticket imported"
-msgstr "Ticket importé"
-
-#: front/run.form.php:54
-msgid "External identifier already imported"
-msgstr "Identifiant externe déjà importé"
-
-#: front/run.form.php:55
-msgid "Source row changed after import"
-msgstr "Ligne source modifiée après l’import"
-
-#: front/run.form.php:55
-msgid "Migration plan blocked"
-msgstr "Plan de migration bloqué"
-
-#: front/run.form.php:56
-msgid "Target entity forbidden"
-msgstr "Entité cible interdite"
-
-#: front/run.form.php:56
-msgid "Ticket creation failed"
-msgstr "Échec de la création du ticket"
-
 #: front/run.form.php:62
 msgid "Migration run"
 msgstr "Exécution de migration"
@@ -1407,14 +1564,14 @@ msgstr "Exécution de migration"
 msgid "Migration profile details"
 msgstr "Détails du profil de migration"
 
-#: front/config.php:21
+#: front/config.php:24
 #, php-format
 msgid "%d expired CSV revision was cleaned."
 msgid_plural "%d expired CSV revisions were cleaned."
 msgstr[0] "%d révision CSV expirée a été nettoyée."
 msgstr[1] "%d révisions CSV expirées ont été nettoyées."
 
-#: front/config.php:33
+#: front/config.php:42
 msgid "Ticket Migration configuration"
 msgstr "Configuration de Migration de tickets"
 
@@ -1437,11 +1594,11 @@ msgid "Mapping saved, but required targets are still missing."
 msgstr ""
 "Mappage enregistré, mais des cibles obligatoires sont encore manquantes."
 
-#: front/run.php:14
+#: front/run.php:15
 msgid "Pilot"
 msgstr "Pilote"
 
-#: front/run.php:14
+#: front/run.php:15
 msgid "Final"
 msgstr "Final"
 
@@ -1532,10 +1689,6 @@ msgstr "Entité par défaut du projet : %s, ou choisir manuellement"
 #, php-format
 msgid "Search all GLPI %s"
 msgstr "Rechercher tous les éléments GLPI : %s"
-
-#: front/import.form.php:14 front/plan.preview.php:70
-msgid "You do not have permission to import tickets."
-msgstr "Vous n’avez pas l’autorisation d’importer des tickets."
 
 #: front/import.form.php:18
 msgid "Complete value correspondence before preparing the final import."
@@ -1653,6 +1806,34 @@ msgstr "Entité par défaut du profil de migration"
 #: front/plan.preview.php:155
 msgid "Requester entity or migration profile default"
 msgstr "Entité du demandeur ou entité par défaut du profil de migration"
+
+#~ msgid "Workflow status"
+#~ msgstr "État du parcours"
+
+#~ msgid "Next action"
+#~ msgstr "Action suivante"
+
+#~ msgid "Values configured"
+#~ msgstr "Valeurs configurées"
+
+#~ msgid "Mapping configured — values required"
+#~ msgstr "Mappage configuré — valeurs requises"
+
+#~ msgid "Source selected — mapping required"
+#~ msgstr "Source sélectionnée — mappage requis"
+
+#~ msgid "Profile created — source required"
+#~ msgstr "Profil créé — source requise"
+
+#~ msgid "Test the current workflow"
+#~ msgstr "Tester le parcours actuel"
+
+#~ msgid ""
+#~ "I confirm that backup preparation is my responsibility and that I am "
+#~ "ready to start this import."
+#~ msgstr ""
+#~ "Je confirme que la préparation de la sauvegarde relève de ma "
+#~ "responsabilité et que je suis prêt à démarrer cet import."
 
 #~ msgid "Migration run history is under development."
 #~ msgstr ""

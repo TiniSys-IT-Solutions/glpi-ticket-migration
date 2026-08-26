@@ -6,6 +6,10 @@ GLPI administrator profiles receive the Ticket Migration rights once when the pl
 
 The configuration shortcut opens the plugin dashboard. It provides direct access to profiles and migration history, summarizes profiles, active CSV sources and retained revisions, checks protected-storage availability, and describes the currently testable workflow.
 
+The plugin portal uses shared **Dashboard**, **Migration profiles**, **Migration runs**, and administrator-only **Diagnostic** tabs. The profile list separates configuration readiness from operational migration status. Pilot success, active final progress, suspension, completion, and anomalies are derived from persisted run history rather than being folded into the mapping workflow state. Its main button follows the most useful next step; the adjacent menu retains mapping, source, pilot, and history navigation.
+
+The read-only diagnostic checks the installed plugin tables and required columns, protected CSV payload presence, active or problematic runs, GLPI/PHP versions, and relevant PHP limits. It does not display ticket descriptions or secrets.
+
 To delegate access, open **Administration > Profiles**, select a central-interface profile, then use its **Ticket Migration** tab. The configuration page always performs an authorization check even though GLPI displays its shortcut.
 
 ## Create a profile

@@ -1,3 +1,4 @@
+{% include '@ticketmigration/layout/tabs.html.twig' %}
 <div class="card m-3" id="ticketmigration-profiles">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h2 class="card-title"><i class="ti ti-transfer me-2"></i>{{ __('Migration profiles', 'ticketmigration') }}</h2>
@@ -6,18 +7,41 @@
   {% if massive_actions %}<div class="card-body border-bottom py-2">{{ massive_actions|raw }}</div>{% endif %}
   <div class="table-responsive">
     <table class="table table-striped table-hover mb-0">
-      <thead><tr>{% if massive_actions %}<th class="w-1">{{ check_all|raw }}</th>{% endif %}<th>{{ __('Name') }}</th><th>{{ __('Active CSV source', 'ticketmigration') }}</th><th>{{ __('Visibility') }}</th><th>{{ __('Workflow status', 'ticketmigration') }}</th><th>{{ __('Next action', 'ticketmigration') }}</th></tr></thead>
+      <thead><tr>{% if massive_actions %}<th class="w-1">{{ check_all|raw }}</th>{% endif %}<th>{{ __('Name') }}</th><th>{{ __('Active CSV source', 'ticketmigration') }}</th><th>{{ __('Visibility') }}</th><th>{{ __('Configuration', 'ticketmigration') }}</th><th>{{ __('Migration status', 'ticketmigration') }}</th><th>{{ __('Actions') }}</th></tr></thead>
       <tbody>
       {% for profile in profiles %}
         <tr>{% if massive_actions %}<td>{{ profile.massive_checkbox|raw }}</td>{% endif %}
           <td><a href="{{ form_url }}?id={{ profile.id }}">{{ profile.name }}</a></td>
           <td>{% if profile.active_source %}{{ profile.active_source.source_filename }}{% else %}<span class="text-muted">{{ __('No source selected', 'ticketmigration') }}</span>{% endif %}</td>
           <td>{{ profile.is_private ? __('Private') : __('Public') }}</td>
-          <td>{% if show_archived %}<span class="badge bg-secondary">{{ __('Archived', 'ticketmigration') }}</span>{% elseif profile.workflow_step == 'values_configured' %}<span class="badge bg-green">{{ __('Values configured', 'ticketmigration') }}</span>{% elseif profile.workflow_step == 'mapping_configured' %}<span class="badge bg-blue">{{ __('Mapping configured — values required', 'ticketmigration') }}</span>{% elseif profile.workflow_step == 'source_selected' %}<span class="badge bg-orange">{{ __('Source selected — mapping required', 'ticketmigration') }}</span>{% else %}<span class="badge bg-secondary">{{ __('Profile created — source required', 'ticketmigration') }}</span>{% endif %}</td>
-          <td>{% if show_archived %}<span class="text-muted">{{ __('Use Actions to restore this project.', 'ticketmigration') }}</span>{% elseif profile.active_source %}<a class="btn btn-sm btn-primary" href="{{ profile.workflow_step == 'values_configured' ? values_url : mapping_url }}?profiles_id={{ profile.id }}">{{ profile.workflow_step == 'values_configured' ? __('Resume value correspondence', 'ticketmigration') : (profile.workflow_step == 'mapping_configured' ? __('Configure values', 'ticketmigration') : __('Configure mapping', 'ticketmigration')) }}</a>{% else %}<a class="btn btn-sm btn-primary" href="{{ upload_url }}?profiles_id={{ profile.id }}">{{ __('Upload CSV', 'ticketmigration') }}</a>{% endif %}</td>
+          <td>{% if show_archived %}<span class="badge bg-secondary">{{ __('Archived', 'ticketmigration') }}</span>{% elseif profile.workflow_step == 'values_configured' %}<span class="badge bg-success">{{ __('Ready', 'ticketmigration') }}</span>{% elseif profile.workflow_step == 'mapping_configured' %}<span class="badge bg-info">{{ __('Values required', 'ticketmigration') }}</span>{% elseif profile.workflow_step == 'source_selected' %}<span class="badge bg-warning text-dark">{{ __('Mapping required', 'ticketmigration') }}</span>{% else %}<span class="badge bg-secondary">{{ __('CSV source required', 'ticketmigration') }}</span>{% endif %}</td>
+          <td>
+            {% set state = profile.operational_state %}
+            {% if show_archived %}<span class="text-muted">—</span>
+            {% elseif state.key == 'ready_for_pilot' %}<span class="badge bg-info"><i class="ti ti-flask me-1"></i>{{ __('Ready for pilot validation', 'ticketmigration') }}</span>
+            {% elseif state.key == 'pilot_validated' %}<span class="badge bg-success"><i class="ti ti-circle-check me-1"></i>{{ _n('%d successful pilot', '%d successful pilots', state.pilot_count, 'ticketmigration')|format(state.pilot_count) }}</span>
+            {% elseif state.key == 'queued' %}<span class="badge bg-info">{{ __('Final import queued', 'ticketmigration') }}</span>
+            {% elseif state.key == 'running' %}<span class="badge bg-primary">{{ __('Final import in progress — %1$d/%2$d', 'ticketmigration')|format(state.processed, state.total) }}</span>
+            {% elseif state.key == 'paused' %}<span class="badge bg-secondary">{{ __('Final import paused — %1$d/%2$d', 'ticketmigration')|format(state.processed, state.total) }}</span>
+            {% elseif state.key == 'completed_with_issues' %}<span class="badge bg-warning text-dark">{{ __('Completed — %1$d errors, %2$d changed', 'ticketmigration')|format(state.failed, state.changed) }}</span>
+            {% elseif state.key == 'completed' %}<span class="badge bg-success">{{ __('Final import completed', 'ticketmigration') }}</span>
+            {% elseif state.key == 'failed' %}<span class="badge bg-danger">{{ __('Final import failed', 'ticketmigration') }}</span>
+            {% else %}<span class="text-muted">{{ __('Configuration incomplete', 'ticketmigration') }}</span>{% endif %}
+          </td>
+          <td>{% if show_archived %}<span class="text-muted">{{ __('Use Actions to restore this project.', 'ticketmigration') }}</span>{% else %}<div class="d-flex gap-1">
+            {% if not profile.active_source %}<a class="btn btn-sm btn-primary" href="{{ upload_url }}?profiles_id={{ profile.id }}">{{ __('Upload CSV', 'ticketmigration') }}</a>
+            {% elseif profile.workflow_step != 'values_configured' %}<a class="btn btn-sm btn-primary" href="{{ profile.workflow_step == 'mapping_configured' ? values_url : mapping_url }}?profiles_id={{ profile.id }}">{{ profile.workflow_step == 'mapping_configured' ? __('Configure values', 'ticketmigration') : __('Configure mapping', 'ticketmigration') }}</a>
+            {% elseif state.key in ['queued', 'running', 'paused', 'completed_with_issues', 'completed', 'failed'] %}<a class="btn btn-sm btn-primary" href="{{ run_url }}?id={{ state.run_id }}">{{ state.key in ['queued', 'running', 'paused'] ? __('Resume import', 'ticketmigration') : __('View import result', 'ticketmigration') }}</a>
+            {% elseif state.key == 'pilot_validated' %}<a class="btn btn-sm btn-success" href="{{ import_url }}?profiles_id={{ profile.id }}">{{ __('Prepare final import', 'ticketmigration') }}</a>
+            {% else %}<a class="btn btn-sm btn-primary" href="{{ preview_url }}?profiles_id={{ profile.id }}">{{ __('Test a pilot row', 'ticketmigration') }}</a>{% endif %}
+            {% if profile.active_source %}<div class="dropdown"><button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="visually-hidden">{{ __('Other actions', 'ticketmigration') }}</span></button><ul class="dropdown-menu dropdown-menu-end">
+              {% if profile.workflow_step == 'values_configured' %}<li><a class="dropdown-item" href="{{ preview_url }}?profiles_id={{ profile.id }}">{{ __('Preview or test another row', 'ticketmigration') }}</a></li><li><a class="dropdown-item" href="{{ import_url }}?profiles_id={{ profile.id }}">{{ __('Prepare final import', 'ticketmigration') }}</a></li>{% endif %}
+              <li><a class="dropdown-item" href="{{ mapping_url }}?profiles_id={{ profile.id }}">{{ __('Field mapping', 'ticketmigration') }}</a></li><li><a class="dropdown-item" href="{{ values_url }}?profiles_id={{ profile.id }}">{{ __('Value correspondence', 'ticketmigration') }}</a></li><li><a class="dropdown-item" href="{{ sources_url }}?profiles_id={{ profile.id }}">{{ __('Manage CSV sources', 'ticketmigration') }}</a></li><li><a class="dropdown-item" href="{{ runs_url }}?profiles_id={{ profile.id }}">{{ __('Execution history', 'ticketmigration') }}</a></li>
+            </ul></div>{% endif %}
+          </div>{% endif %}</td>
         </tr>
       {% else %}
-        <tr><td colspan="{{ massive_actions ? 6 : 5 }}" class="text-muted text-center">{{ show_archived ? __('No archived migration project.', 'ticketmigration') : __('No migration profile yet.', 'ticketmigration') }}</td></tr>
+        <tr><td colspan="{{ massive_actions ? 7 : 6 }}" class="text-muted text-center">{{ show_archived ? __('No archived migration project.', 'ticketmigration') : __('No migration profile yet.', 'ticketmigration') }}</td></tr>
       {% endfor %}
       </tbody>
     </table>

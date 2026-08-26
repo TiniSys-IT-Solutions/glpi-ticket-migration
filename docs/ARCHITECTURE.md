@@ -17,7 +17,7 @@ flowchart TD
   Repo --> DB[(Plugin tables)]
 ```
 
-The domain never depends on HTTP or session state. The same plan-building path feeds dry run and execution. Only the executor writes GLPI business objects.
+The domain never depends on HTTP or session state. The same plan-building path feeds dry run and execution. Only the executor writes GLPI business objects. Final execution follows the GLPI DataInjection convention of short AJAX batches and an in-page progress bar, while offsets, leases, counters and row outcomes remain durable database state rather than browser or PHP-session state.
 
 ## Components
 
@@ -34,6 +34,8 @@ CSV rows are never duplicated into SQL tables. Field mappings store one compact 
 
 Final runs snapshot field/value mappings, options, and the permission-checked entity-resolution context. A browser-driven worker handles bounded batches and commits a terminal state for each row. Recovering an interrupted run reuses that snapshot; applying corrected configuration creates a new run whose ledger classification skips earlier successes. This separates resumability from configuration changes and keeps each execution reproducible.
 
+The progress screen calls a dedicated JSON batch endpoint and updates only its counters and recent trace. A database-persisted batch token provides compare-and-set ownership and expires after an abandoned worker, avoiding connection-scoped advisory locks that can survive in persistent PHP database pools. Each request handles at most ten rows; the token is released in `finally`, while every completed row remains independently committed.
+
 Each uploaded source receives a schema fingerprint over CSV controls and ordered positional columns. This lets a profile reject structurally incompatible delta files without relying on unique header names.
 
 A profile explicitly references one active source revision through `sourcefiles_id`. Revisions remain auditable and selectable; choosing a structurally identical revision preserves positional mappings, while a different schema returns the workflow to mapping. Parsing controls are stored with each revision so preview and mapping always interpret that exact file consistently.
@@ -44,7 +46,9 @@ When a new revision becomes active, the previous revision receives a 30-day rete
 
 Frequently filtered fields are normal columns and indexed. Extensible mapping/options payloads use JSON. `profiles_id + external_id` is unique and is the technical idempotency key. The same value is also passed to GLPI 11's native `Ticket.externalid` field so it remains visible and searchable on the created ticket; plugin-scoped idempotency does not rely on that global core field. A successful pilot writes the same external-reference ledger used by final execution, so that row cannot create a second ticket later. Per-reference database advisory locking and an in-lock ledger recheck protect concurrent requests. No core table schema is changed. Uninstalling the plugin drops plugin data only; migrated tickets remain GLPI-owned.
 
-Workflow state is persisted on the profile (`profile_created`, `source_selected`, `mapping_configured`, `values_configured`, then later dry-run/import states). It drives navigation but never substitutes for validation: readiness remains derived from the required configuration and a successful dry run.
+Configuration workflow state is persisted on the profile (`profile_created`, `source_selected`, `mapping_configured`, `values_configured`). It drives setup navigation but never substitutes for validation; pilot and final execution state belongs to run history.
+
+Configuration workflow and execution lifecycle are deliberately separate. `ProfileOperationalState` derives the user-facing pilot/final status from immutable run records, while `workflow_step` continues to describe only source and mapping readiness. This avoids conflicting state updates when several pilots or retry runs exist.
 
 ## Dependency rule
 

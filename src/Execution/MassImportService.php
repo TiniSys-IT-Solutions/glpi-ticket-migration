@@ -41,12 +41,7 @@ final class MassImportService
                 (array) ($options['description_consolidation'] ?? []),
                 (array) ($options['actor_resolution'] ?? []),
                 (array) ($options['title_fallback'] ?? []), $context);
-            global $DB;
-            $externalId = trim((string) ($plan->externalReference['external_id'] ?? ''));
-            $rowLock = 'tm_row_' . substr(hash('sha256', $profileId . "\0" . $externalId), 0, 32);
-            if (!$DB->getLock($rowLock)) { break; }
-            try { $this->processRow($runId, $profileId, $row, $plan); }
-            finally { $DB->releaseLock($rowLock); }
+            $this->processRow($runId, $profileId, $row, $plan);
             $run = $repository->get($runId) ?? $run;
         }
         $run = $repository->get($runId) ?? $run;
