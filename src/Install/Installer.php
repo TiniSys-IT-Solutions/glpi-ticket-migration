@@ -27,6 +27,7 @@ final class Installer
         }
         $profilesTable = \GlpiPlugin\Ticketmigration\MigrationProfile::getTable();
         $sourcesTable = \GlpiPlugin\Ticketmigration\SourceFile::getTable();
+        $runItemsTable = 'glpi_plugin_ticketmigration_runitems';
         if (!$DB->fieldExists($sourcesTable, 'csv_config')) {
             $migration->addField($sourcesTable, 'csv_config', 'JSON DEFAULT NULL', ['after' => 'schema_fingerprint']);
         }
@@ -49,6 +50,12 @@ final class Installer
                 'string',
                 ['value' => 'profile_created', 'after' => 'sourcefiles_id'],
             );
+        }
+        if (!$DB->fieldExists($runItemsTable, 'information')) {
+            $migration->addField($runItemsTable, 'information', 'JSON DEFAULT NULL', ['after' => 'warnings']);
+        }
+        if (!$DB->fieldExists($runItemsTable, 'validations')) {
+            $migration->addField($runItemsTable, 'validations', 'JSON DEFAULT NULL', ['after' => 'information']);
         }
         if (!(new ProfileRightSynchronizer())->synchronize()) {
             return false;

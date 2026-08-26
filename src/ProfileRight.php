@@ -29,6 +29,11 @@ final class ProfileRight extends \Profile
         return Session::haveRight(self::RIGHT_HISTORY, READ) || self::isGlpiAdministrator();
     }
 
+    public static function canRunImports(): bool
+    {
+        return Session::haveRight(self::RIGHT_RUN, READ) || self::isGlpiAdministrator();
+    }
+
     public static function canConfigure(): bool
     {
         return Session::haveRight(self::RIGHT_CONFIG, READ) || self::isGlpiAdministrator();

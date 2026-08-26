@@ -103,10 +103,9 @@ final class EntityContextProvider
 
         $entityDescendants = getSonsOf('glpi_entities', $defaultEntityId);
         $entityIds = array_values(array_filter(array_unique(array_merge(
-            [$defaultEntityId],
             array_map('intval', array_keys($entityDescendants)),
             array_map('intval', array_values($entityDescendants)),
-        )), static fn (int $id): bool => $id > 0));
+        )), static fn (int $id): bool => $id > 0 && $id !== $defaultEntityId));
         $matches = [];
         foreach ($DB->request([
             'SELECT' => ['id', 'name'],

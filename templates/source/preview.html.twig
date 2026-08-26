@@ -26,10 +26,10 @@
     </div>
   </div>
   <div class="card-footer d-flex flex-wrap gap-2">
-    <a class="btn btn-primary" href="{{ profile_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Return to profile', 'ticketmigration') }}</a>
+    <a class="btn btn-outline-secondary" href="{{ profile_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Back to profile', 'ticketmigration') }}</a>
     {% if can_manage %}
       <a class="btn btn-outline-primary" href="{{ upload_url }}"><i class="ti ti-file-upload me-1"></i>{{ __('Replace or test another CSV', 'ticketmigration') }}</a>
     {% endif %}
-    {% if is_active %}<a class="btn btn-success" href="{{ mapping_url }}"><i class="ti ti-arrow-right me-1"></i>{{ __('Continue to mapping', 'ticketmigration') }}</a>{% else %}<a class="btn btn-outline-secondary" href="{{ sources_url }}">{{ __('Manage CSV sources', 'ticketmigration') }}</a>{% endif %}
+    {% if is_active %}<a class="btn btn-success ms-auto" href="{{ mapping_url }}">{{ __('Continue to mapping', 'ticketmigration') }}<i class="ti ti-arrow-right ms-1"></i></a>{% else %}<a class="btn btn-outline-secondary" href="{{ sources_url }}">{{ __('Manage CSV sources', 'ticketmigration') }}</a>{% endif %}
   </div>
 </div>

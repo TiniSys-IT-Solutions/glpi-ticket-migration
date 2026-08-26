@@ -57,6 +57,7 @@ final class MigrationPlanBuilderTest extends TestCase
             titleFallbackConfiguration: ['enabled' => true, 'word_count' => 4],
         );
         self::assertSame('Ticket — The printer no longer…', $fromDescription->ticket['name']);
+        self::assertStringContainsString('generated', implode(' ', $fromDescription->validations));
         self::assertTrue($fromDescription->isExecutable());
 
         $fromExternalId = (new MigrationPlanBuilder())->build(
@@ -117,7 +118,7 @@ final class MigrationPlanBuilderTest extends TestCase
         self::assertSame('2026-08-11 00:00:00', $plan->ticket['date']);
         self::assertSame('2026-08-11 11:53:00', $plan->ticket['closedate']);
         self::assertSame(['itemtype' => 'Entity', 'id' => 8], $plan->ticket['entity']);
-        self::assertStringContainsString('requester', implode(' ', $plan->warnings));
+        self::assertStringContainsString('requester', implode(' ', $plan->validations));
         self::assertTrue($plan->isExecutable());
     }
 
@@ -155,7 +156,8 @@ final class MigrationPlanBuilderTest extends TestCase
         );
 
         self::assertSame(['itemtype' => 'Entity', 'id' => 1], $plan->ticket['entity']);
-        self::assertStringNotContainsString('derived from the resolved location', implode(' ', $plan->warnings));
+        self::assertStringNotContainsString('derived from the resolved location', implode(' ', $plan->information));
+        self::assertStringContainsString('profile default', implode(' ', $plan->information));
     }
 
     public function testUsesExactLocationHierarchyEntityMatchWithExplicitWarning(): void
@@ -178,7 +180,7 @@ final class MigrationPlanBuilderTest extends TestCase
         );
 
         self::assertSame(['itemtype' => 'Entity', 'id' => 7], $plan->ticket['entity']);
-        self::assertStringContainsString('exact match', implode(' ', $plan->warnings));
+        self::assertStringContainsString('exact match', implode(' ', $plan->information));
     }
 
     public function testRequesterPreferredEntityWinsOverConflictingLocationInference(): void
@@ -207,7 +209,7 @@ final class MigrationPlanBuilderTest extends TestCase
         );
 
         self::assertSame(['itemtype' => 'Entity', 'id' => 18], $plan->ticket['entity']);
-        self::assertStringContainsString('requester preferred', implode(' ', $plan->warnings));
-        self::assertStringContainsString('location points to another entity', implode(' ', $plan->warnings));
+        self::assertStringContainsString('requester preferred', implode(' ', $plan->validations));
+        self::assertStringContainsString('location points to another entity', implode(' ', $plan->information));
     }
 }

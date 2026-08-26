@@ -13,6 +13,8 @@ final readonly class MigrationPlan
         public array $documents = [],
         public array $relationships = [],
         public array $externalReference = [],
+        public array $information = [],
+        public array $validations = [],
         public array $warnings = [],
         public array $errors = [],
     ) {}

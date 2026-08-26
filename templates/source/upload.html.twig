@@ -27,6 +27,6 @@
         <label class="form-check-label" for="has-header">{{ __('First row contains headers', 'ticketmigration') }}</label>
       </div>
     </div>
-    <div class="card-footer"><button class="btn btn-primary" type="submit" name="upload" value="1">{{ __('Upload and preview', 'ticketmigration') }}</button></div>
+    <div class="card-footer d-flex flex-wrap align-items-center gap-2"><a class="btn btn-outline-secondary" href="{{ profile_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Back to profile', 'ticketmigration') }}</a><button class="btn btn-primary ms-auto" type="submit" name="upload" value="1"><i class="ti ti-upload me-1"></i>{{ __('Upload and preview', 'ticketmigration') }}</button></div>
   </form>
 </div>

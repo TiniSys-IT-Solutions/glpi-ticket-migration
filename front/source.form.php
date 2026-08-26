@@ -127,6 +127,7 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display(
         'profile' => $profile->fields,
         'profile_id' => $profileId,
         'form_action' => WebUrl::front('source.form.php'),
+        'profile_url' => MigrationProfile::getFormURLWithID($profileId),
         'max_upload_bytes' => $phpUploadLimit > 0
             ? min($phpUploadLimit, SourceFileStorage::DEFAULT_MAX_BYTES)
             : SourceFileStorage::DEFAULT_MAX_BYTES,

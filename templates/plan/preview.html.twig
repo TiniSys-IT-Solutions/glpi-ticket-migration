@@ -11,9 +11,10 @@
     <div class="alert alert-info">{{ __('This is a read-only plan preview. No GLPI ticket or business object has been created.', 'ticketmigration') }}</div>
     {% if plan %}
       <div class="row g-3 mb-3">
-        <div class="col-md-4"><div class="card h-100"><div class="card-body"><div class="text-muted">{{ __('CSV source row', 'ticketmigration') }}</div><div class="h2 mb-0">{{ row.number }}</div></div></div></div>
-        <div class="col-md-4"><div class="card h-100 {{ plan.warnings|length ? 'border-warning' : 'border-success' }}"><div class="card-body"><div class="text-muted">{{ __('Warnings') }}</div><div class="h2 mb-0">{{ plan.warnings|length }}</div></div></div></div>
-        <div class="col-md-4"><div class="card h-100 {{ plan.errors|length ? 'border-danger' : 'border-success' }}"><div class="card-body"><div class="text-muted">{{ __('Errors') }}</div><div class="h2 mb-0">{{ plan.errors|length }}</div></div></div></div>
+        <div class="col-lg-3 col-md-6"><div class="card h-100"><div class="card-body"><div class="text-muted">{{ __('CSV source row', 'ticketmigration') }}</div><div class="h2 mb-0">{{ row.number }}</div></div></div></div>
+        <div class="col-lg-3 col-md-6"><div class="card h-100 {{ (plan.errors|length + plan.warnings|length) ? 'border-danger' : 'border-success' }}"><div class="card-body"><div class="text-danger"><i class="ti ti-alert-triangle me-1"></i>{{ __('Alerts', 'ticketmigration') }}</div><div class="h2 mb-0">{{ plan.errors|length + plan.warnings|length }}</div></div></div></div>
+        <div class="col-lg-3 col-md-6"><div class="card h-100 {{ plan.information|length ? 'border-info' : '' }}"><div class="card-body"><div class="text-info"><i class="ti ti-info-circle me-1"></i>{{ __('Information', 'ticketmigration') }}</div><div class="h2 mb-0">{{ plan.information|length }}</div></div></div></div>
+        <div class="col-lg-3 col-md-6"><div class="card h-100 {{ plan.validations|length ? 'border-success' : '' }}"><div class="card-body"><div class="text-success"><i class="ti ti-circle-check me-1"></i>{{ __('Validated', 'ticketmigration') }}</div><div class="h2 mb-0">{{ plan.validations|length }}</div></div></div></div>
       </div>
       <h3>{{ __('Essential resolved information', 'ticketmigration') }}</h3>
       <div class="row g-3 mb-4">
@@ -39,12 +40,26 @@
           {% if source_values['ticket.name']|default('') == '' %}<div class="small text-muted mt-2">{{ __('The CSV title is empty; the configured fallback rule generated this title.', 'ticketmigration') }}</div>{% endif %}
         </div>
       </div>
-      {% for error in plan.errors %}<div class="alert alert-danger"><i class="ti ti-alert-circle me-1"></i>{{ error }}</div>{% endfor %}
-      {% for warning in plan.warnings %}<div class="alert alert-warning"><i class="ti ti-alert-triangle me-1"></i>{{ warning }}</div>{% endfor %}
+      {% for error in plan.errors %}<div class="alert alert-danger"><div class="fw-semibold mb-1"><i class="ti ti-alert-circle me-1"></i>{{ __('Alert', 'ticketmigration') }}</div>{{ error }}</div>{% endfor %}
+      {% for warning in plan.warnings %}<div class="alert alert-warning"><div class="fw-semibold mb-1"><i class="ti ti-alert-triangle me-1"></i>{{ __('Alert', 'ticketmigration') }}</div>{{ warning }}</div>{% endfor %}
+      {% for message in plan.information %}<div class="alert alert-info"><div class="fw-semibold mb-1"><i class="ti ti-info-circle me-1"></i>{{ __('Information', 'ticketmigration') }}</div>{{ message }}</div>{% endfor %}
+      {% for message in plan.validations %}<div class="alert alert-success"><div class="fw-semibold mb-1"><i class="ti ti-circle-check me-1"></i>{{ __('Validated', 'ticketmigration') }}</div>{{ message }}</div>{% endfor %}
       <h3>{{ __('Complete immutable migration plan', 'ticketmigration') }}</h3>
       <div class="text-muted mb-2">{{ __('This technical representation remains the authoritative plan used by dry run and execution.', 'ticketmigration') }}</div>
       <pre class="bg-light p-3 border rounded text-wrap">{{ plan_json }}</pre>
     {% else %}<div class="alert alert-warning">{{ __('The CSV contains no data row.', 'ticketmigration') }}</div>{% endif %}
   </div>
-  <div class="card-footer d-flex flex-wrap gap-2"><a class="btn btn-outline-secondary" href="{{ values_url }}">{{ __('Return to value correspondence', 'ticketmigration') }}</a><button class="btn btn-outline-secondary" disabled>{{ __('Import this pilot row', 'ticketmigration') }}</button></div>
+  <div class="card-footer d-flex flex-wrap align-items-center gap-2">
+    <a class="btn btn-outline-secondary" href="{{ values_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Back to value correspondence', 'ticketmigration') }}</a>
+    {% if imported_ticket_id > 0 %}
+      {% if imported_ticket_url %}<a class="btn btn-success" href="{{ imported_ticket_url }}"><i class="ti ti-ticket me-1"></i>{{ __('Open imported pilot ticket #%s', 'ticketmigration')|format(imported_ticket_id) }}</a>{% else %}<span class="btn btn-outline-success disabled"><i class="ti ti-ticket me-1"></i>{{ __('Pilot ticket #%s imported', 'ticketmigration')|format(imported_ticket_id) }}</span>{% endif %}
+      <span class="text-success small"><i class="ti ti-circle-check me-1"></i>{{ __('This row is registered and will be skipped during the final import.', 'ticketmigration') }}</span>
+    {% else %}
+      <form method="post" action="{{ form_action }}" class="ms-auto" data-pilot-import-form>
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="profiles_id" value="{{ profile.id }}"><input type="hidden" name="row_offset" value="{{ row_position - 1 }}"><input type="hidden" name="import_pilot" value="1">
+        <button class="btn btn-success" data-pilot-import-button {% if not can_import_pilot %}disabled{% endif %}><i class="ti ti-ticket me-1"></i><span>{{ __('Import this pilot row', 'ticketmigration') }}</span></button>
+      </form>
+    {% endif %}
+  </div>
 </div>
+<script>document.querySelector('[data-pilot-import-form]')?.addEventListener('submit',event=>{if(!confirm('{{ __('Create one real GLPI ticket with notifications disabled and register this row as imported?', 'ticketmigration')|e('js') }}')){event.preventDefault();return;}const button=event.currentTarget.querySelector('[data-pilot-import-button]');button.disabled=true;button.querySelector('span').textContent='{{ __('Pilot import in progress…', 'ticketmigration')|e('js') }}';});</script>

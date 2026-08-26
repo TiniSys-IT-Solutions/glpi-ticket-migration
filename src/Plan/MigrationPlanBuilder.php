@@ -13,6 +13,8 @@ final class MigrationPlanBuilder
         $ticket = [];
         $actors = [];
         $external = [];
+        $information = [];
+        $validations = [];
         $warnings = [];
         $errors = [];
         foreach ($fieldMappings as $index => $mapping) {
@@ -42,7 +44,7 @@ final class MigrationPlanBuilder
                         continue;
                     }
                     if ($resolved['target_value'] === '__ignore__') {
-                        $warnings[] = sprintf(__('Value "%s" ignored for %s.', 'ticketmigration'), $sourceValue, $target);
+                        $information[] = sprintf(__('Value "%s" ignored for %s.', 'ticketmigration'), $sourceValue, $target);
                         continue;
                     }
                     $value = $resolved['target_itemtype']
@@ -69,7 +71,7 @@ final class MigrationPlanBuilder
         if (($external['external_id'] ?? '') === '') {
             $errors[] = __('External ticket identifier is empty.', 'ticketmigration');
         }
-        $this->resolveEntity($ticket, $actors, $entityContext, $warnings);
+        $this->resolveEntity($ticket, $actors, $entityContext, $warnings, $information, $validations);
         if (($ticket['name'] ?? '') === '') {
             if ((bool) ($titleFallbackConfiguration['enabled'] ?? true)) {
                 $ticket['name'] = $this->fallbackTitle(
@@ -77,7 +79,7 @@ final class MigrationPlanBuilder
                     (string) ($external['external_id'] ?? ''),
                     max(3, min(30, (int) ($titleFallbackConfiguration['word_count'] ?? 12))),
                 );
-                $warnings[] = __('The empty ticket title was generated from the description or external identifier.', 'ticketmigration');
+                $validations[] = __('The empty ticket title was generated from the description or external identifier.', 'ticketmigration');
             } else {
                 $errors[] = __('Ticket title is empty.', 'ticketmigration');
             }
@@ -91,7 +93,7 @@ final class MigrationPlanBuilder
                 $descriptionConfiguration,
             );
         }
-        return new MigrationPlan(ticket: $ticket, actors: $actors, externalReference: $external, warnings: $warnings, errors: $errors);
+        return new MigrationPlan(ticket: $ticket, actors: $actors, externalReference: $external, information: $information, validations: $validations, warnings: $warnings, errors: $errors);
     }
 
     private function fallbackTitle(string $description, string $externalId, int $wordCount): string
@@ -108,7 +110,7 @@ final class MigrationPlanBuilder
         return mb_strimwidth(__('Ticket', 'ticketmigration') . ($externalId !== '' ? ' ' . $externalId : ''), 0, 250, '…', 'UTF-8');
     }
 
-    private function resolveEntity(array &$ticket, array $actors, array $context, array &$warnings): void
+    private function resolveEntity(array &$ticket, array $actors, array $context, array &$warnings, array &$information, array &$validations): void
     {
         if (isset($ticket['entity']['id'])) {
             return;
@@ -135,11 +137,11 @@ final class MigrationPlanBuilder
             : null;
         if ($requesterEntityId !== null) {
             $ticket['entity'] = ['itemtype' => 'Entity', 'id' => $requesterEntityId];
-            $warnings[] = count($preferredRequesterEntities) === 1
+            $validations[] = count($preferredRequesterEntities) === 1
                 ? __('Ticket entity derived from the requester preferred GLPI entity.', 'ticketmigration')
                 : __('Ticket entity derived from the requester unique GLPI authorization.', 'ticketmigration');
             if ($locationEntityId !== null && $locationEntityId !== $requesterEntityId) {
-                $warnings[] = __('The resolved location points to another entity; the requester entity took precedence.', 'ticketmigration');
+                $information[] = __('The resolved location points to another entity; the requester entity took precedence.', 'ticketmigration');
             }
             return;
         }
@@ -149,13 +151,16 @@ final class MigrationPlanBuilder
         if ($locationEntityId !== null) {
             $ticket['entity'] = ['itemtype' => 'Entity', 'id' => $locationEntityId];
             $source = (string) (($context['location_entity_sources'] ?? [])[$locationId] ?? 'ownership');
-            $warnings[] = match ($source) {
-                'profile_mapping' => __('Ticket entity derived from the migration profile location/entity mapping.', 'ticketmigration'),
-                'hierarchy_name' => __('Ticket entity derived from an exact match with the resolved location hierarchy.', 'ticketmigration'),
-                default => __('Ticket entity derived from the resolved location.', 'ticketmigration'),
-            };
+            if ($source === 'profile_mapping') {
+                $validations[] = __('Ticket entity derived from the migration profile location/entity mapping.', 'ticketmigration');
+            } else {
+                $information[] = $source === 'hierarchy_name'
+                    ? __('Ticket entity derived from an exact match with the resolved location hierarchy.', 'ticketmigration')
+                    : __('Ticket entity derived from the resolved location.', 'ticketmigration');
+            }
             return;
         }
         $ticket['entity'] = ['itemtype' => 'Entity', 'id' => max(0, (int) ($context['default_entity_id'] ?? 0))];
+        $information[] = __('Ticket entity set to the migration profile default entity.', 'ticketmigration');
     }
 }

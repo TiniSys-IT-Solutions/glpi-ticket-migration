@@ -4,6 +4,45 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+## [0.0.39] - 2026-08-26
+
+### Fixed
+
+- Populate GLPI 11's native `glpi_tickets.externalid` field from the immutable plan external reference while retaining the plugin-scoped idempotency ledger.
+- Prevent concurrent pilot submissions with GLPI's database advisory-lock mechanism and a second ledger check inside the lock.
+- Disable the pilot button immediately after confirmation without dropping the submitted action parameter.
+- Report a concurrent pilot request as informational instead of displaying a false ticket-creation failure.
+
+## [0.0.38] - 2026-08-26
+
+### Added
+
+- Enable guarded creation of one real GLPI pilot ticket from the exact immutable plan currently being previewed.
+- Persist pilot runs, row diagnostics, canonical row hashes, created ticket IDs, and external references transactionally.
+- Reuse the external-reference ledger so an imported pilot row is idempotent and will be skipped by the final import.
+- Show the created pilot ticket directly in the plan preview and prevent repeat creation.
+
+### Changed
+
+- Normalize workflow footers to a consistent order and visual language: back and secondary navigation, save actions, then the green forward or execution action.
+- Execute pilot tickets through GLPI 11's internal `Ticket::add()` lifecycle with per-object notifications, business rules, and automatic assignment disabled for deterministic historical reconstruction.
+
+### Security
+
+- Require the dedicated import right, native GLPI ticket creation right, target-entity access, CSRF protection, and an executable error-free plan before pilot creation.
+
+## [0.0.37] - 2026-08-26
+
+### Fixed
+
+- Classify plan notices by severity instead of displaying successful resolutions as warnings.
+- Treat an exact location-name match with the project's default entity as the normal profile fallback rather than a child-entity inference.
+- Report the migration profile default entity explicitly when no requester or location association determines a child entity.
+
+### Changed
+
+- Present blocking errors and genuine warnings as alerts, deterministic decisions as information, and successful mapping or fallback rules as validations with distinct GLPI colors and icons.
+
 ## [0.0.36] - 2026-08-26
 
 ### Added

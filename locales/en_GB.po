@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ticket Migration 0.0.35\n"
+"Project-Id-Version: Ticket Migration 0.0.39\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 10:52+0530\n"
+"POT-Creation-Date: 2026-08-26 12:54+0530\n"
 "PO-Revision-Date: 2026-08-26 00:00+0000\n"
 "Last-Translator: TiniSys IT Solutions\n"
 "Language-Team: English (United Kingdom)\n"
@@ -45,17 +45,9 @@ msgstr ""
 msgid "Private profile"
 msgstr "Private profile"
 
-#: templates/profile/form.html.twig templates/profile/index.html.twig
-msgid "Resume value correspondence"
-msgstr "Resume value correspondence"
-
-#: templates/profile/form.html.twig templates/mapping/form.html.twig
-msgid "Continue to value correspondence"
-msgstr "Continue to value correspondence"
-
-#: templates/profile/form.html.twig templates/source/preview.html.twig
-msgid "Continue to mapping"
-msgstr "Continue to mapping"
+#: templates/profile/form.html.twig
+msgid "Back to projects"
+msgstr "Back to projects"
 
 #: templates/profile/form.html.twig
 msgid "Preview active CSV"
@@ -69,6 +61,18 @@ msgstr "Manage CSV sources"
 #: templates/profile/form.html.twig templates/profile/index.html.twig
 msgid "Upload CSV"
 msgstr "Upload CSV"
+
+#: templates/profile/form.html.twig templates/profile/index.html.twig
+msgid "Resume value correspondence"
+msgstr "Resume value correspondence"
+
+#: templates/profile/form.html.twig templates/mapping/form.html.twig
+msgid "Continue to value correspondence"
+msgstr "Continue to value correspondence"
+
+#: templates/profile/form.html.twig templates/source/preview.html.twig
+msgid "Continue to mapping"
+msgstr "Continue to mapping"
 
 #: templates/profile/index.html.twig templates/config/dashboard.html.twig
 #: src/Menu.php:34
@@ -143,7 +147,7 @@ msgstr "No archived migration project."
 msgid "No migration profile yet."
 msgstr "No migration profile yet."
 
-#: templates/plan/preview.html.twig front/plan.preview.php:114
+#: templates/plan/preview.html.twig front/plan.preview.php:165
 msgid "Migration plan preview"
 msgstr "Migration plan preview"
 
@@ -175,6 +179,18 @@ msgstr ""
 #: templates/plan/preview.html.twig
 msgid "CSV source row"
 msgstr "CSV source row"
+
+#: templates/plan/preview.html.twig
+msgid "Alerts"
+msgstr "Alerts"
+
+#: templates/plan/preview.html.twig
+msgid "Information"
+msgstr "Information"
+
+#: templates/plan/preview.html.twig
+msgid "Validated"
+msgstr "Validated"
 
 #: templates/plan/preview.html.twig
 msgid "Essential resolved information"
@@ -228,6 +244,10 @@ msgstr ""
 "The CSV title is empty; the configured fallback rule generated this title."
 
 #: templates/plan/preview.html.twig
+msgid "Alert"
+msgstr "Alert"
+
+#: templates/plan/preview.html.twig
 msgid "Complete immutable migration plan"
 msgstr "Complete immutable migration plan"
 
@@ -244,15 +264,41 @@ msgid "The CSV contains no data row."
 msgstr "The CSV contains no data row."
 
 #: templates/plan/preview.html.twig
-msgid "Return to value correspondence"
-msgstr "Return to value correspondence"
+msgid "Back to value correspondence"
+msgstr "Back to value correspondence"
+
+#: templates/plan/preview.html.twig
+#, php-format
+msgid "Open imported pilot ticket #%s"
+msgstr "Open imported pilot ticket #%s"
+
+#: templates/plan/preview.html.twig
+#, php-format
+msgid "Pilot ticket #%s imported"
+msgstr "Pilot ticket #%s imported"
+
+#: templates/plan/preview.html.twig
+msgid "This row is registered and will be skipped during the final import."
+msgstr "This row is registered and will be skipped during the final import."
 
 #: templates/plan/preview.html.twig
 msgid "Import this pilot row"
 msgstr "Import this pilot row"
 
-#: templates/config/dashboard.html.twig src/ProfileRight.php:47
-#: src/ProfileRight.php:60 src/Menu.php:13 setup.php:34 front/profile.php:36
+#: templates/plan/preview.html.twig
+msgid ""
+"Create one real GLPI ticket with notifications disabled and register this "
+"row as imported?"
+msgstr ""
+"Create one real GLPI ticket with notifications disabled and register this "
+"row as imported?"
+
+#: templates/plan/preview.html.twig
+msgid "Pilot import in progress…"
+msgstr "Pilot import in progress…"
+
+#: templates/config/dashboard.html.twig src/ProfileRight.php:52
+#: src/ProfileRight.php:65 src/Menu.php:13 setup.php:34 front/profile.php:36
 msgid "Ticket Migration"
 msgstr "Ticket Migration"
 
@@ -516,20 +562,20 @@ msgid "Migration profile association"
 msgstr "Migration profile association"
 
 #: templates/mapping/values.html.twig
+msgid "Back to field mapping"
+msgstr "Back to field mapping"
+
+#: templates/mapping/values.html.twig
 msgid "Save progress"
 msgstr "Save progress"
 
 #: templates/mapping/values.html.twig
-msgid "Validate and continue"
-msgstr "Validate and continue"
+msgid "Validate correspondences"
+msgstr "Validate correspondences"
 
 #: templates/mapping/values.html.twig
-msgid "Return to field mapping"
-msgstr "Return to field mapping"
-
-#: templates/mapping/values.html.twig
-msgid "Preview first migration plan"
-msgstr "Preview first migration plan"
+msgid "Preview migration plans"
+msgstr "Preview migration plans"
 
 #: templates/mapping/values.html.twig
 msgid "Association saved"
@@ -651,14 +697,14 @@ msgstr "Before the main description"
 msgid "After the main description"
 msgstr "After the main description"
 
+#: templates/mapping/form.html.twig templates/source/preview.html.twig
+#: templates/source/upload.html.twig templates/source/index.html.twig
+msgid "Back to profile"
+msgstr "Back to profile"
+
 #: templates/mapping/form.html.twig
 msgid "Save mapping"
 msgstr "Save mapping"
-
-#: templates/mapping/form.html.twig templates/source/preview.html.twig
-#: templates/source/index.html.twig
-msgid "Return to profile"
-msgstr "Return to profile"
 
 #: templates/mapping/form.html.twig
 msgid "Complete required mappings to continue"
@@ -857,31 +903,31 @@ msgstr "A migration profile name is required."
 msgid "You do not have permission to use the selected default entity."
 msgstr "You do not have permission to use the selected default entity."
 
-#: src/Plan/MigrationPlanBuilder.php:38
+#: src/Plan/MigrationPlanBuilder.php:40
 #, php-format
 msgid "Unresolved actor \"%s\" omitted for %s."
 msgstr "Unresolved actor \"%s\" omitted for %s."
 
-#: src/Plan/MigrationPlanBuilder.php:41
+#: src/Plan/MigrationPlanBuilder.php:43
 #, php-format
 msgid "Unresolved value \"%s\" for %s."
 msgstr "Unresolved value \"%s\" for %s."
 
-#: src/Plan/MigrationPlanBuilder.php:45
+#: src/Plan/MigrationPlanBuilder.php:47
 #, php-format
 msgid "Value \"%s\" ignored for %s."
 msgstr "Value \"%s\" ignored for %s."
 
-#: src/Plan/MigrationPlanBuilder.php:58
+#: src/Plan/MigrationPlanBuilder.php:60
 #, php-format
 msgid "Invalid date \"%s\" for %s."
 msgstr "Invalid date \"%s\" for %s."
 
-#: src/Plan/MigrationPlanBuilder.php:70
+#: src/Plan/MigrationPlanBuilder.php:72
 msgid "External ticket identifier is empty."
 msgstr "External ticket identifier is empty."
 
-#: src/Plan/MigrationPlanBuilder.php:80
+#: src/Plan/MigrationPlanBuilder.php:82
 msgid ""
 "The empty ticket title was generated from the description or external "
 "identifier."
@@ -889,11 +935,11 @@ msgstr ""
 "The empty ticket title was generated from the description or external "
 "identifier."
 
-#: src/Plan/MigrationPlanBuilder.php:82
+#: src/Plan/MigrationPlanBuilder.php:84
 msgid "Ticket title is empty."
 msgstr "Ticket title is empty."
 
-#: src/Plan/MigrationPlanBuilder.php:106 src/Plan/MigrationPlanBuilder.php:108
+#: src/Plan/MigrationPlanBuilder.php:108 src/Plan/MigrationPlanBuilder.php:110
 #: src/Mapping/TargetRegistry.php:11 src/Mapping/TargetRegistry.php:12
 #: src/Mapping/TargetRegistry.php:13 src/Mapping/TargetRegistry.php:14
 #: src/Mapping/TargetRegistry.php:15 src/Mapping/TargetRegistry.php:16
@@ -903,15 +949,15 @@ msgstr "Ticket title is empty."
 msgid "Ticket"
 msgstr "Ticket"
 
-#: src/Plan/MigrationPlanBuilder.php:139
+#: src/Plan/MigrationPlanBuilder.php:141
 msgid "Ticket entity derived from the requester preferred GLPI entity."
 msgstr "Ticket entity derived from the requester preferred GLPI entity."
 
-#: src/Plan/MigrationPlanBuilder.php:140
+#: src/Plan/MigrationPlanBuilder.php:142
 msgid "Ticket entity derived from the requester unique GLPI authorization."
 msgstr "Ticket entity derived from the requester unique GLPI authorization."
 
-#: src/Plan/MigrationPlanBuilder.php:142
+#: src/Plan/MigrationPlanBuilder.php:144
 msgid ""
 "The resolved location points to another entity; the requester entity took "
 "precedence."
@@ -919,31 +965,35 @@ msgstr ""
 "The resolved location points to another entity; the requester entity took "
 "precedence."
 
-#: src/Plan/MigrationPlanBuilder.php:147
+#: src/Plan/MigrationPlanBuilder.php:149
 msgid ""
 "Requester has several GLPI entity authorizations without one usable "
 "preference."
 msgstr ""
 "Requester has several GLPI entity authorizations without one usable "
 "preference."
-
-#: src/Plan/MigrationPlanBuilder.php:153
-msgid ""
-"Ticket entity derived from the migration profile location/entity mapping."
-msgstr ""
-"Ticket entity derived from the migration profile location/entity mapping."
-
-#: src/Plan/MigrationPlanBuilder.php:154
-msgid ""
-"Ticket entity derived from an exact match with the resolved location "
-"hierarchy."
-msgstr ""
-"Ticket entity derived from an exact match with the resolved location "
-"hierarchy."
 
 #: src/Plan/MigrationPlanBuilder.php:155
+msgid ""
+"Ticket entity derived from the migration profile location/entity mapping."
+msgstr ""
+"Ticket entity derived from the migration profile location/entity mapping."
+
+#: src/Plan/MigrationPlanBuilder.php:158
+msgid ""
+"Ticket entity derived from an exact match with the resolved location "
+"hierarchy."
+msgstr ""
+"Ticket entity derived from an exact match with the resolved location "
+"hierarchy."
+
+#: src/Plan/MigrationPlanBuilder.php:159
 msgid "Ticket entity derived from the resolved location."
 msgstr "Ticket entity derived from the resolved location."
+
+#: src/Plan/MigrationPlanBuilder.php:164
+msgid "Ticket entity set to the migration profile default entity."
+msgstr "Ticket entity set to the migration profile default entity."
 
 #: src/Plan/StructuredDescriptionBuilder.php:40
 msgid "Imported historical data"
@@ -953,27 +1003,27 @@ msgstr "Imported historical data"
 msgid "Original description"
 msgstr "Original description"
 
-#: src/ProfileRight.php:76
+#: src/ProfileRight.php:81
 msgid "View migration profiles"
 msgstr "View migration profiles"
 
-#: src/ProfileRight.php:77
+#: src/ProfileRight.php:82
 msgid "Manage migration profiles"
 msgstr "Manage migration profiles"
 
-#: src/ProfileRight.php:84
+#: src/ProfileRight.php:89
 msgid "Run dry runs"
 msgstr "Run dry runs"
 
-#: src/ProfileRight.php:85
+#: src/ProfileRight.php:90
 msgid "Run imports"
 msgstr "Run imports"
 
-#: src/ProfileRight.php:86
+#: src/ProfileRight.php:91
 msgid "View migration history"
 msgstr "View migration history"
 
-#: src/ProfileRight.php:87
+#: src/ProfileRight.php:92
 msgid "Manage plugin configuration"
 msgstr "Manage plugin configuration"
 
@@ -1073,7 +1123,7 @@ msgid "Configuration"
 msgstr "Configuration"
 
 #: front/profile.form.php:30 front/mapping.form.php:23 front/value.form.php:29
-#: front/preview.php:44 front/source.php:20 front/plan.preview.php:26
+#: front/preview.php:44 front/source.php:20 front/plan.preview.php:29
 msgid "You do not have permission to view this migration profile."
 msgstr "You do not have permission to view this migration profile."
 
@@ -1212,34 +1262,82 @@ msgstr "The active or previously used CSV source cannot be deleted."
 msgid "CSV source revisions"
 msgstr "CSV source revisions"
 
-#: front/plan.preview.php:29
+#: front/plan.preview.php:32
 msgid "Complete value correspondence before previewing a migration plan."
 msgstr "Complete value correspondence before previewing a migration plan."
 
-#: front/plan.preview.php:34
+#: front/plan.preview.php:37
 msgid "The active CSV source is unavailable."
 msgstr "The active CSV source is unavailable."
 
-#: front/plan.preview.php:94
+#: front/plan.preview.php:70
+msgid "You do not have permission to import tickets."
+msgstr "You do not have permission to import tickets."
+
+#: front/plan.preview.php:73
+msgid "This pilot row contains blocking errors and cannot be imported."
+msgstr "This pilot row contains blocking errors and cannot be imported."
+
+#: front/plan.preview.php:77
+msgid "You do not have access to the ticket target entity."
+msgstr "You do not have access to the ticket target entity."
+
+#: front/plan.preview.php:82
+msgid ""
+"This pilot row is already being imported. Refresh the page in a moment; no "
+"second ticket will be created."
+msgstr ""
+"This pilot row is already being imported. Refresh the page in a moment; no "
+"second ticket will be created."
+
+#: front/plan.preview.php:87
+#, php-format
+msgid ""
+"This source row was already imported as GLPI ticket #%d and will be skipped "
+"by the final import."
+msgstr ""
+"This source row was already imported as GLPI ticket #%d and will be skipped "
+"by the final import."
+
+#: front/plan.preview.php:88
+#, php-format
+msgid ""
+"Pilot ticket #%d was created. This source row is now registered and will be "
+"skipped by the final import."
+msgstr ""
+"Pilot ticket #%d was created. This source row is now registered and will be "
+"skipped by the final import."
+
+#: front/plan.preview.php:95
+msgid ""
+"GLPI refused the pilot ticket creation. No import reference was registered."
+msgstr ""
+"GLPI refused the pilot ticket creation. No import reference was registered."
+
+#: front/plan.preview.php:135
 msgid "Explicit CSV entity mapping"
 msgstr "Explicit CSV entity mapping"
 
-#: front/plan.preview.php:101
+#: front/plan.preview.php:142
 msgid "Requester GLPI authorization"
 msgstr "Requester GLPI authorization"
 
-#: front/plan.preview.php:104
+#: front/plan.preview.php:145
 msgid "Migration profile location/entity mapping"
 msgstr "Migration profile location/entity mapping"
 
-#: front/plan.preview.php:105
+#: front/plan.preview.php:146
 msgid "Exact location hierarchy match"
 msgstr "Exact location hierarchy match"
 
-#: front/plan.preview.php:106
+#: front/plan.preview.php:147
 msgid "Entity owning the resolved location"
 msgstr "Entity owning the resolved location"
 
-#: front/plan.preview.php:109
+#: front/plan.preview.php:151
+msgid "Migration profile default entity"
+msgstr "Migration profile default entity"
+
+#: front/plan.preview.php:152
 msgid "Requester entity or migration profile default"
 msgstr "Requester entity or migration profile default"

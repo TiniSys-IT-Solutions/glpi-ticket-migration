@@ -50,6 +50,7 @@ Glpi\Application\View\TemplateRenderer::getInstance()->display(
         'profile' => $profile->fields,
         'profile_id' => $id,
         'form_action' => MigrationProfile::getFormURL(),
+        'profiles_url' => MigrationProfile::getSearchURL(),
         'upload_url' => WebUrl::front('source.form.php'),
         'sources_url' => WebUrl::front('source.php'),
         'mapping_url' => WebUrl::front('mapping.form.php'),
