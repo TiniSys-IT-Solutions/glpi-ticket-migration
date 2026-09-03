@@ -75,6 +75,12 @@ final class Installer
         if (!$DB->fieldExists($runsTable, 'batch_started_at')) {
             $migration->addField($runsTable, 'batch_started_at', 'timestamp', ['after' => 'batch_token']);
         }
+        if (!$DB->fieldExists($runsTable, 'last_error_code')) {
+            $migration->addField($runsTable, 'last_error_code', 'VARCHAR(80) DEFAULT NULL', ['after' => 'batch_started_at']);
+        }
+        if (!$DB->fieldExists($runsTable, 'last_error_message')) {
+            $migration->addField($runsTable, 'last_error_message', 'text', ['after' => 'last_error_code', 'null' => true]);
+        }
         if (!(new ProfileRightSynchronizer())->synchronize()) {
             return false;
         }
@@ -99,7 +105,7 @@ final class Installer
                 'ORDER' => ['uploaded_at DESC', 'id DESC'],
                 'LIMIT' => 1,
             ])->current();
-            if ($source !== false) {
+            if (is_array($source)) {
                 $DB->update($profilesTable, [
                     'sourcefiles_id' => (int) $source['id'],
                     'workflow_step' => 'source_selected',

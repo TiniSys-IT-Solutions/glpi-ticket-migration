@@ -39,11 +39,11 @@ final class MassImportService
         $offsetBeforeBatch = (int) $run['current_offset'];
         $rows = $reader->batch($offsetBeforeBatch, $limit);
         if ($rows === [] && $offsetBeforeBatch < (int) $run['total_rows']) {
-            throw new \RuntimeException(sprintf(
-                'The CSV reader returned no row at offset %d while the run expects %d rows.',
+            throw new BatchProgressException(
+                'source_exhausted',
                 $offsetBeforeBatch,
                 (int) $run['total_rows'],
-            ));
+            );
         }
         foreach ($rows as $row) {
             $plan = $builder->build($row, $fieldMappings, $valueMappings, $reader->columns(),
@@ -55,7 +55,7 @@ final class MassImportService
         }
         $run = $repository->get($runId) ?? $run;
         if ($rows !== [] && (int) $run['current_offset'] <= $offsetBeforeBatch) {
-            throw new \RuntimeException(sprintf('The migration batch did not advance beyond offset %d.', $offsetBeforeBatch));
+            throw new BatchProgressException('offset_not_advanced', $offsetBeforeBatch, (int) $run['total_rows']);
         }
         if ((int) $run['current_offset'] >= (int) $run['total_rows']) {
             $repository->update($runId, [
@@ -74,7 +74,7 @@ final class MassImportService
         $hash = (new CanonicalRowHasher())->hash($row->values);
         $externalId = trim((string) ($plan->externalReference['external_id'] ?? ''));
         $existingItem = $DB->request(['FROM' => 'glpi_plugin_ticketmigration_runitems', 'WHERE' => ['runs_id' => $runId, 'row_number' => $row->number], 'LIMIT' => 1])->current();
-        if ($existingItem !== false) {
+        if (is_array($existingItem)) {
             $this->advance($run, []);
             return;
         }

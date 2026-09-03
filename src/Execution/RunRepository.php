@@ -43,7 +43,7 @@ final class RunRepository
     {
         global $DB;
         $row = $DB->request(['FROM' => self::TABLE, 'WHERE' => ['id' => $id], 'LIMIT' => 1])->current();
-        return $row === false ? null : $row;
+        return is_array($row) ? $row : null;
     }
 
     public function findActiveFinal(int $profileId): ?array
@@ -54,7 +54,7 @@ final class RunRepository
             'WHERE' => ['profiles_id' => $profileId, 'mode' => 'final', 'status' => ['queued', 'running', 'paused']],
             'ORDER' => ['id DESC'], 'LIMIT' => 1,
         ])->current();
-        return $row === false ? null : $row;
+        return is_array($row) ? $row : null;
     }
 
     public function update(int $id, array $values): void

@@ -51,4 +51,34 @@ final class CsvReaderTest extends TestCase
         self::assertSame([3], array_map(static fn ($row) => $row->number, $reader->batch(1, 25)));
         self::assertSame([], $reader->batch(2, 25));
     }
+
+    public function testReadsEveryRowOfALargeSourceThroughSuccessiveBatches(): void
+    {
+        $path = tempnam(sys_get_temp_dir(), 'ticketmigration_csv_');
+        self::assertNotFalse($path);
+        $handle = fopen($path, 'wb');
+        self::assertIsResource($handle);
+        fwrite($handle, "external_id;title\n");
+        for ($index = 1; $index <= 6120; $index++) {
+            fwrite($handle, sprintf("EXT-%d;Synthetic ticket %d\n", $index, $index));
+        }
+        fclose($handle);
+
+        try {
+            $reader = new CsvReader($path);
+            self::assertSame(6120, $reader->countRows());
+            $offset = 0;
+            $rowNumbers = [];
+            while (($batch = $reader->batch($offset, 10)) !== []) {
+                array_push($rowNumbers, ...array_map(static fn ($row) => $row->number, $batch));
+                $offset += count($batch);
+            }
+            self::assertCount(6120, $rowNumbers);
+            self::assertSame(2, $rowNumbers[0]);
+            self::assertSame(6121, $rowNumbers[6119]);
+            self::assertSame(6120, count(array_unique($rowNumbers)));
+        } finally {
+            unlink($path);
+        }
+    }
 }

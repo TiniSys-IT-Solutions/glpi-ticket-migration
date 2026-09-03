@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 16:42+0530\n"
+"POT-Creation-Date: 2026-08-27 12:32+0530\n"
 "Language: fr_FR\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -43,11 +43,11 @@ msgstr "Entité par défaut des tickets"
 
 #: templates/profile/form.html.twig
 msgid ""
-"Used when no explicit entity, resolved location entity, or unique requester "
-"entity is available."
+"Used when neither one unique requester entity nor an explicit migration "
+"profile location/entity association is available."
 msgstr ""
-"Utilisée lorsqu’aucune entité explicite, entité du lieu résolu ou entité "
-"unique du demandeur n’est disponible."
+"Utilisée lorsqu’aucune entité unique du demandeur ni aucune association "
+"explicite lieu/entité du profil de migration n’est disponible."
 
 #: templates/profile/form.html.twig
 msgid "Private profile"
@@ -235,7 +235,7 @@ msgstr "Aucun projet de migration archivé."
 msgid "No migration profile yet."
 msgstr "Aucun profil de migration pour le moment."
 
-#: templates/plan/preview.html.twig front/plan.preview.php:168
+#: templates/plan/preview.html.twig front/plan.preview.php:163
 msgid "Migration plan preview"
 msgstr "Aperçu du plan de migration"
 
@@ -889,15 +889,15 @@ msgid "%1$s of %2$s rows processed"
 msgstr "%1$s lignes traitées sur %2$s"
 
 #: templates/run/progress.html.twig templates/run/index.html.twig
-#: ajax/run.batch.php:38 front/run.form.php:52
+#: ajax/run.batch.php:47 front/run.form.php:52
 msgid "Imported"
 msgstr "Importées"
 
-#: templates/run/progress.html.twig ajax/run.batch.php:38 front/run.form.php:52
+#: templates/run/progress.html.twig ajax/run.batch.php:47 front/run.form.php:52
 msgid "Already imported"
 msgstr "Déjà importées"
 
-#: templates/run/progress.html.twig ajax/run.batch.php:38 front/run.form.php:53
+#: templates/run/progress.html.twig ajax/run.batch.php:47 front/run.form.php:53
 msgid "Changed"
 msgstr "Modifiées"
 
@@ -1161,25 +1161,44 @@ msgstr "Utiliser cette source"
 msgid "No CSV source uploaded yet."
 msgstr "Aucune source CSV téléversée pour le moment."
 
-#: ajax/run.batch.php:18 front/import.form.php:14 front/plan.preview.php:70
+#: ajax/run.batch.php:19 front/import.form.php:14 front/plan.preview.php:70
 msgid "You do not have permission to import tickets."
 msgstr "Vous n’avez pas l’autorisation d’importer des tickets."
 
-#: ajax/run.batch.php:20 front/run.form.php:18 front/run.export.php:11
+#: ajax/run.batch.php:21 front/run.form.php:18 front/run.export.php:11
 msgid "Migration run not found."
 msgstr "Exécution de migration introuvable."
 
-#: ajax/run.batch.php:22 front/run.form.php:20 front/profile.form.php:30
+#: ajax/run.batch.php:23 front/run.form.php:20 front/profile.form.php:30
 #: front/mapping.form.php:23 front/value.form.php:29 front/import.form.php:17
 #: front/preview.php:44 front/source.php:20 front/plan.preview.php:29
 msgid "You do not have permission to view this migration profile."
 msgstr "Vous n’avez pas l’autorisation de voir ce profil de migration."
 
-#: ajax/run.batch.php:24 front/run.form.php:22
+#: ajax/run.batch.php:25 front/run.form.php:22
 msgid "The source snapshot for this run is unavailable."
 msgstr "L’instantané de la source de cette exécution est indisponible."
 
-#: ajax/run.batch.php:34 front/run.form.php:40
+#: ajax/run.batch.php:37
+#, php-format
+msgid ""
+"No CSV row could be read at offset %1$d although this run expects %2$d rows. "
+"The import was paused without creating or skipping a ticket."
+msgstr ""
+"Aucune ligne CSV n’a pu être lue à la position %1$d alors que cette "
+"exécution attend %2$d lignes. L’import a été suspendu sans créer ni ignorer "
+"de ticket."
+
+#: ajax/run.batch.php:38
+#, php-format
+msgid ""
+"The migration batch could not advance beyond offset %1$d of %2$d. The import "
+"was paused without repeating a completed row."
+msgstr ""
+"Le lot de migration n’a pas pu progresser au-delà de la position %1$d sur "
+"%2$d. L’import a été suspendu sans répéter une ligne terminée."
+
+#: ajax/run.batch.php:42 front/run.form.php:40
 msgid ""
 "The batch was paused after a technical error. No completed line will be "
 "repeated."
@@ -1187,51 +1206,51 @@ msgstr ""
 "Le lot a été suspendu après une erreur technique. Aucune ligne terminée ne "
 "sera répétée."
 
-#: ajax/run.batch.php:37 front/run.form.php:49 front/run.php:15
+#: ajax/run.batch.php:46 front/run.form.php:49 front/run.php:15
 msgid "Queued"
 msgstr "En attente"
 
-#: ajax/run.batch.php:37 front/run.form.php:49 front/run.php:15
+#: ajax/run.batch.php:46 front/run.form.php:49 front/run.php:15
 msgid "Running"
 msgstr "En cours"
 
-#: ajax/run.batch.php:37 front/run.form.php:50 front/run.php:15
+#: ajax/run.batch.php:46 front/run.form.php:50 front/run.php:15
 msgid "Paused"
 msgstr "Suspendu"
 
-#: ajax/run.batch.php:37 front/run.form.php:50 front/run.php:15
+#: ajax/run.batch.php:46 front/run.form.php:50 front/run.php:15
 msgid "Completed"
 msgstr "Terminé"
 
-#: ajax/run.batch.php:37 front/run.form.php:51 front/run.php:15
+#: ajax/run.batch.php:46 front/run.form.php:51 front/run.php:15
 msgid "Completed with issues"
 msgstr "Terminé avec des anomalies"
 
-#: ajax/run.batch.php:38 front/run.form.php:51 front/run.php:15
+#: ajax/run.batch.php:47 front/run.form.php:51 front/run.php:15
 msgid "Failed"
 msgstr "Échec"
 
-#: ajax/run.batch.php:39 front/run.form.php:54
+#: ajax/run.batch.php:48 front/run.form.php:54
 msgid "Ticket imported"
 msgstr "Ticket importé"
 
-#: ajax/run.batch.php:39 front/run.form.php:54
+#: ajax/run.batch.php:48 front/run.form.php:54
 msgid "External identifier already imported"
 msgstr "Identifiant externe déjà importé"
 
-#: ajax/run.batch.php:39 front/run.form.php:55
+#: ajax/run.batch.php:48 front/run.form.php:55
 msgid "Source row changed after import"
 msgstr "Ligne source modifiée après l’import"
 
-#: ajax/run.batch.php:40 front/run.form.php:55
+#: ajax/run.batch.php:49 front/run.form.php:55
 msgid "Migration plan blocked"
 msgstr "Plan de migration bloqué"
 
-#: ajax/run.batch.php:40 front/run.form.php:56
+#: ajax/run.batch.php:49 front/run.form.php:56
 msgid "Target entity forbidden"
 msgstr "Entité cible interdite"
 
-#: ajax/run.batch.php:40 front/run.form.php:56
+#: ajax/run.batch.php:49 front/run.form.php:56
 msgid "Ticket creation failed"
 msgstr "Échec de la création du ticket"
 
@@ -1383,11 +1402,6 @@ msgstr "Le titre du ticket est vide."
 msgid "Ticket"
 msgstr "Ticket"
 
-#: src/Plan/MigrationPlanBuilder.php:141
-msgid "Ticket entity derived from the requester preferred GLPI entity."
-msgstr ""
-"L’entité du ticket a été déduite de l’entité GLPI préférée du demandeur."
-
 #: src/Plan/MigrationPlanBuilder.php:142
 msgid "Ticket entity derived from the requester unique GLPI authorization."
 msgstr ""
@@ -1409,26 +1423,14 @@ msgstr ""
 "Le demandeur possède plusieurs habilitations d’entité GLPI sans préférence "
 "exploitable."
 
-#: src/Plan/MigrationPlanBuilder.php:155
+#: src/Plan/MigrationPlanBuilder.php:153
 msgid ""
 "Ticket entity derived from the migration profile location/entity mapping."
 msgstr ""
 "L’entité du ticket a été déduite de l’association lieu/entité du profil de "
 "migration."
 
-#: src/Plan/MigrationPlanBuilder.php:158
-msgid ""
-"Ticket entity derived from an exact match with the resolved location "
-"hierarchy."
-msgstr ""
-"L’entité du ticket a été déduite d’une correspondance exacte avec la "
-"hiérarchie du lieu résolu."
-
-#: src/Plan/MigrationPlanBuilder.php:159
-msgid "Ticket entity derived from the resolved location."
-msgstr "L’entité du ticket a été déduite du lieu résolu."
-
-#: src/Plan/MigrationPlanBuilder.php:164
+#: src/Plan/MigrationPlanBuilder.php:157
 msgid "Ticket entity set to the migration profile default entity."
 msgstr "L’entité du ticket est l’entité par défaut du profil de migration."
 
@@ -1787,29 +1789,48 @@ msgstr ""
 msgid "Explicit CSV entity mapping"
 msgstr "Correspondance explicite de l’entité CSV"
 
-#: front/plan.preview.php:145
+#: front/plan.preview.php:144
 msgid "Requester GLPI authorization"
 msgstr "Habilitation GLPI du demandeur"
 
-#: front/plan.preview.php:148
+#: front/plan.preview.php:146
 msgid "Migration profile location/entity mapping"
 msgstr "Association lieu/entité du profil de migration"
 
 #: front/plan.preview.php:149
-msgid "Exact location hierarchy match"
-msgstr "Correspondance exacte avec la hiérarchie du lieu"
-
-#: front/plan.preview.php:150
-msgid "Entity owning the resolved location"
-msgstr "Entité propriétaire du lieu résolu"
-
-#: front/plan.preview.php:154
 msgid "Migration profile default entity"
 msgstr "Entité par défaut du profil de migration"
 
-#: front/plan.preview.php:155
+#: front/plan.preview.php:150
 msgid "Requester entity or migration profile default"
 msgstr "Entité du demandeur ou entité par défaut du profil de migration"
+
+#~ msgid ""
+#~ "Used when no explicit entity, resolved location entity, or unique "
+#~ "requester entity is available."
+#~ msgstr ""
+#~ "Utilisée lorsqu’aucune entité explicite, entité du lieu résolu ou entité "
+#~ "unique du demandeur n’est disponible."
+
+#~ msgid "Ticket entity derived from the requester preferred GLPI entity."
+#~ msgstr ""
+#~ "L’entité du ticket a été déduite de l’entité GLPI préférée du demandeur."
+
+#~ msgid ""
+#~ "Ticket entity derived from an exact match with the resolved location "
+#~ "hierarchy."
+#~ msgstr ""
+#~ "L’entité du ticket a été déduite d’une correspondance exacte avec la "
+#~ "hiérarchie du lieu résolu."
+
+#~ msgid "Ticket entity derived from the resolved location."
+#~ msgstr "L’entité du ticket a été déduite du lieu résolu."
+
+#~ msgid "Exact location hierarchy match"
+#~ msgstr "Correspondance exacte avec la hiérarchie du lieu"
+
+#~ msgid "Entity owning the resolved location"
+#~ msgstr "Entité propriétaire du lieu résolu"
 
 #~ msgid "Workflow status"
 #~ msgstr "État du parcours"

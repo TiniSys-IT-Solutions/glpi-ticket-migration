@@ -3,6 +3,7 @@
 if (!defined('GLPI_ROOT')) { require dirname(__DIR__, 3) . '/inc/includes.php'; }
 
 use Glpi\Error\ErrorHandler;
+use GlpiPlugin\Ticketmigration\Execution\BatchProgressException;
 use GlpiPlugin\Ticketmigration\Execution\MassImportService;
 use GlpiPlugin\Ticketmigration\Execution\RunRepository;
 use GlpiPlugin\Ticketmigration\MigrationProfile;
@@ -29,11 +30,19 @@ try {
     $config = json_decode((string) $source->fields['csv_config'], true) ?: [];
     $reader = new CsvReader($source->getProtectedPath(), new CsvConfiguration(delimiter: (string) ($config['delimiter'] ?? ';'), hasHeader: (bool) ($config['has_header'] ?? true), encoding: (string) ($config['encoding'] ?? 'UTF-8')));
     $run = (new MassImportService())->process($runId, $profile, $source, $reader, 10);
+    $repository->update($runId, ['last_error_code' => null, 'last_error_message' => null]);
+} catch (BatchProgressException $exception) {
+    ErrorHandler::logCaughtException($exception);
+    $batchError = $exception->reason === 'source_exhausted'
+        ? sprintf(__('No CSV row could be read at offset %1$d although this run expects %2$d rows. The import was paused without creating or skipping a ticket.', 'ticketmigration'), $exception->offset, $exception->totalRows)
+        : sprintf(__('The migration batch could not advance beyond offset %1$d of %2$d. The import was paused without repeating a completed row.', 'ticketmigration'), $exception->offset, $exception->totalRows);
+    $repository->update($runId, ['status' => 'paused', 'last_error_code' => $exception->reason, 'last_error_message' => $batchError]);
 } catch (Throwable $exception) {
-    ErrorHandler::logCaughtException($exception); $repository->update($runId, ['status' => 'paused']);
+    ErrorHandler::logCaughtException($exception);
     $batchError = __('The batch was paused after a technical error. No completed line will be repeated.', 'ticketmigration');
+    $repository->update($runId, ['status' => 'paused', 'last_error_code' => 'technical_failure', 'last_error_message' => $batchError]);
 } finally { $repository->releaseBatch($runId, $token); }
-if (isset($batchError)) { $respond(['error' => $batchError], 500); }
+if (isset($batchError)) { $respond(['status' => 'paused', 'error' => $batchError], 500); }
 $labels = ['queued' => __('Queued', 'ticketmigration'), 'running' => __('Running', 'ticketmigration'), 'paused' => __('Paused', 'ticketmigration'), 'completed' => __('Completed', 'ticketmigration'), 'completed_with_issues' => __('Completed with issues', 'ticketmigration'),
     'success' => __('Imported', 'ticketmigration'), 'skipped' => __('Already imported', 'ticketmigration'), 'changed' => __('Changed', 'ticketmigration'), 'failed' => __('Failed', 'ticketmigration'),
     'ticket_imported' => __('Ticket imported', 'ticketmigration'), 'already_imported' => __('External identifier already imported', 'ticketmigration'), 'source_changed_after_import' => __('Source row changed after import', 'ticketmigration'),

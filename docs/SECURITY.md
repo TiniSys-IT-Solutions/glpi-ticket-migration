@@ -2,7 +2,7 @@
 
 - Every front/AJAX action checks a dedicated GLPI right, entity visibility, and CSRF token before mutation.
 - Location-based entity inference is restricted to the migration profile's authorized entity subtree and accepts only one exact normalized hierarchy-name match; it never selects an ambiguous or out-of-scope entity.
-- Requester entity resolution delegates authorization ordering to GLPI's `Profile_User` data and accepts the user's preference only when it is covered by a direct or recursive Habilitation visible to the operator. Profile-level location/entity overrides validate both referenced GLPI objects and never supersede a usable requester entity.
+- Requester entity resolution accepts only one unique direct `Profile_User` entity inside the migration project scope. Ambiguous requesters fall through to an explicitly validated profile-level location/entity association, then to the project default; preferred-user and GLPI-root entities cannot escape that boundary.
 - Bulk profile actions re-check item visibility and the dedicated CREATE, UPDATE, or DELETE right for every selected project. Permanent project deletion is refused when any run or external reference exists.
 - Plugin rights are bootstrapped once for profiles that already hold GLPI configuration-update permission. Later profile-right changes are preserved. GLPI administrators retain a page-level recovery path through their native configuration-update permission; all other profiles require the dedicated plugin rights.
 - Uploaded files use a random internal name under a GLPI-approved plugin data directory; extension, MIME, size and upload provenance are validated, while source name, SHA-256, owner and retention metadata are persisted.

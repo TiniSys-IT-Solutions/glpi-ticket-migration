@@ -17,7 +17,7 @@ flowchart TD
   Repo --> DB[(Plugin tables)]
 ```
 
-The domain never depends on HTTP or session state. The same plan-building path feeds dry run and execution. Only the executor writes GLPI business objects. Final execution follows the GLPI DataInjection convention of short AJAX batches and an in-page progress bar, while offsets, leases, counters and row outcomes remain durable database state rather than browser or PHP-session state.
+The domain never depends on HTTP or session state. The same plan-building path feeds dry run and execution, and both pilot and mass execution call the same `GlpiTicketExecutor` backed by GLPI's internal `Ticket::add()` mechanism. Only the executor writes GLPI business objects. Final execution follows the GLPI DataInjection convention of short AJAX batches and an in-page progress bar, while offsets, leases, counters, row outcomes and the latest batch diagnostic remain durable database state rather than browser or PHP-session state.
 
 ## Components
 
@@ -25,7 +25,7 @@ The domain never depends on HTTP or session state. The same plan-building path f
 - **Mapping**: field, constant, value-map, resolver, template, transform, structured-description, and ignore strategies produce typed target values.
 - **Resolvers**: exact, normalized exact, then fuzzy suggestions. Suggestions are never automatically applied.
 - **Plan**: immutable ticket aggregate containing actors, timeline, documents, relations, external reference, warnings, and errors.
-- **Plan context**: permission-checked GLPI location and official `Profile_User` authorization metadata is collected outside the domain builder, which applies deterministic entity precedence without issuing database queries itself. Requester preference/unique authorization precedes location evidence. Profile-level location/entity bridges support legacy global locations; an exact unique hierarchy-name match remains only the last location fallback.
+- **Plan context**: permission-checked GLPI locations, explicit profile location/entity bridges and official `Profile_User` authorization metadata are collected outside the domain builder. The query-free domain applies one unique requester entity first, then an explicit location bridge, then the project default. Preferred-user entities, native location scope and hierarchy-name inference are deliberately excluded from automatic destination decisions.
 - **Execution**: converts the immutable plan into GLPI's official `Ticket::add()` input, creates GLPI objects in a controlled lifecycle with `_disablenotif`, `_skip_rules`, and `_skip_auto_assign`, and isolates a failed source row from subsequent rows. Pilot and final execution share this executor.
 - **Persistence**: profiles, mappings, runs, row states, and external references remain in plugin-prefixed tables.
 - **Source storage**: random internal names under `GLPI_PLUGIN_DOC_DIR/ticketmigration/sources`; metadata and retention state live in `sourcefiles`.

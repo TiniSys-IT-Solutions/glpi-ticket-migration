@@ -160,7 +160,7 @@ final class MigrationPlanBuilderTest extends TestCase
         self::assertStringContainsString('profile default', implode(' ', $plan->information));
     }
 
-    public function testUsesExactLocationHierarchyEntityMatchWithExplicitWarning(): void
+    public function testDoesNotInferEntityFromLocationHierarchyWithoutExplicitMapping(): void
     {
         $mappings = [
             0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct'],
@@ -174,13 +174,12 @@ final class MigrationPlanBuilderTest extends TestCase
             $values,
             entityContext: [
                 'default_entity_id' => 1,
-                'location_entities' => [30 => 7],
-                'location_entity_sources' => [30 => 'hierarchy_name'],
+                'location_entities' => [],
             ],
         );
 
-        self::assertSame(['itemtype' => 'Entity', 'id' => 7], $plan->ticket['entity']);
-        self::assertStringContainsString('exact match', implode(' ', $plan->information));
+        self::assertSame(['itemtype' => 'Entity', 'id' => 1], $plan->ticket['entity']);
+        self::assertStringContainsString('profile default', implode(' ', $plan->information));
     }
 
     public function testRequesterPreferredEntityWinsOverConflictingLocationInference(): void
@@ -204,12 +203,40 @@ final class MigrationPlanBuilderTest extends TestCase
                 'location_entities' => [19 => 1],
                 'location_entity_sources' => [19 => 'hierarchy_name'],
                 'user_entities' => [317 => [18]],
-                'user_preferred_entities' => [317 => 18],
             ],
         );
 
         self::assertSame(['itemtype' => 'Entity', 'id' => 18], $plan->ticket['entity']);
-        self::assertStringContainsString('requester preferred', implode(' ', $plan->validations));
+        self::assertStringContainsString('requester unique', implode(' ', $plan->validations));
         self::assertStringContainsString('location points to another entity', implode(' ', $plan->information));
+    }
+
+    public function testRequesterRootEntityCannotEscapeProjectScope(): void
+    {
+        $mappings = [
+            0 => ['target_key' => 'ticket.external_id', 'strategy' => 'direct'],
+            1 => ['target_key' => 'ticket.name', 'strategy' => 'direct'],
+            2 => ['target_key' => 'ticket.location', 'strategy' => 'direct'],
+            3 => ['target_key' => 'actor.requester', 'strategy' => 'direct'],
+        ];
+        $values = [
+            'ticket.location' => [hash('sha256', 'Mende') => ['target_itemtype' => 'Location', 'target_id' => 9, 'target_value' => null]],
+            'actor.requester' => [hash('sha256', 'requester@example.org') => ['target_itemtype' => 'User', 'target_id' => 31, 'target_value' => null]],
+        ];
+        $plan = (new MigrationPlanBuilder())->build(
+            new SourceRow(2, ['EXT-52', 'Ticket', 'Mende', 'requester@example.org']),
+            $mappings,
+            $values,
+            entityContext: [
+                'default_entity_id' => 1,
+                'allowed_entity_ids' => [1, 29],
+                'location_entities' => [9 => 29],
+                'user_entities' => [31 => [0]],
+                'location_entity_sources' => [9 => 'profile_mapping'],
+            ],
+        );
+
+        self::assertSame(['itemtype' => 'Entity', 'id' => 29], $plan->ticket['entity']);
+        self::assertStringContainsString('location/entity mapping', implode(' ', $plan->validations));
     }
 }

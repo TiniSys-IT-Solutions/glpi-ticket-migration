@@ -103,6 +103,10 @@ function startTicketMigrationRun(worker) {
                     return;
                 }
                 const response = xhr.responseJSON || {};
+                if (response.status === 'paused' && response.error) {
+                    window.location.reload();
+                    return;
+                }
                 showError(response.error || worker.dataset.errorLabel);
             },
         });

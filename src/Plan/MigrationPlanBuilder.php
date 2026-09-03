@@ -115,31 +115,31 @@ final class MigrationPlanBuilder
         if (isset($ticket['entity']['id'])) {
             return;
         }
+        $defaultEntityId = max(0, (int) ($context['default_entity_id'] ?? 0));
+        $allowedEntityIds = array_values(array_unique(array_map('intval', (array) ($context['allowed_entity_ids'] ?? []))));
+        $isInProjectScope = static fn (int $entityId): bool => $allowedEntityIds !== []
+            ? in_array($entityId, $allowedEntityIds, true)
+            : ($defaultEntityId === 0 || $entityId > 0);
         $requesterEntities = [];
-        $preferredRequesterEntities = [];
         foreach ((array) ($actors['requester'] ?? []) as $requester) {
             if (($requester['itemtype'] ?? '') === 'User') {
                 $requesterId = (int) $requester['id'];
-                $requesterEntities = array_merge($requesterEntities, (array) (($context['user_entities'] ?? [])[$requesterId] ?? []));
-                if (isset(($context['user_preferred_entities'] ?? [])[$requesterId])) {
-                    $preferredRequesterEntities[] = (int) $context['user_preferred_entities'][$requesterId];
-                }
+                $requesterEntities = array_merge($requesterEntities, array_filter(
+                    array_map('intval', (array) (($context['user_entities'] ?? [])[$requesterId] ?? [])),
+                    $isInProjectScope,
+                ));
             }
         }
         $requesterEntities = array_values(array_unique(array_map('intval', $requesterEntities)));
-        $preferredRequesterEntities = array_values(array_unique($preferredRequesterEntities));
-        $requesterEntityId = count($preferredRequesterEntities) === 1
-            ? $preferredRequesterEntities[0]
-            : (count($requesterEntities) === 1 ? $requesterEntities[0] : null);
+        $requesterEntityId = count($requesterEntities) === 1 ? $requesterEntities[0] : null;
         $locationId = (int) ($ticket['location']['id'] ?? 0);
         $locationEntityId = $locationId > 0 && array_key_exists($locationId, (array) ($context['location_entities'] ?? []))
-            ? (int) $context['location_entities'][$locationId]
-            : null;
+            && $isInProjectScope((int) $context['location_entities'][$locationId])
+                ? (int) $context['location_entities'][$locationId]
+                : null;
         if ($requesterEntityId !== null) {
             $ticket['entity'] = ['itemtype' => 'Entity', 'id' => $requesterEntityId];
-            $validations[] = count($preferredRequesterEntities) === 1
-                ? __('Ticket entity derived from the requester preferred GLPI entity.', 'ticketmigration')
-                : __('Ticket entity derived from the requester unique GLPI authorization.', 'ticketmigration');
+            $validations[] = __('Ticket entity derived from the requester unique GLPI authorization.', 'ticketmigration');
             if ($locationEntityId !== null && $locationEntityId !== $requesterEntityId) {
                 $information[] = __('The resolved location points to another entity; the requester entity took precedence.', 'ticketmigration');
             }
@@ -150,17 +150,10 @@ final class MigrationPlanBuilder
         }
         if ($locationEntityId !== null) {
             $ticket['entity'] = ['itemtype' => 'Entity', 'id' => $locationEntityId];
-            $source = (string) (($context['location_entity_sources'] ?? [])[$locationId] ?? 'ownership');
-            if ($source === 'profile_mapping') {
-                $validations[] = __('Ticket entity derived from the migration profile location/entity mapping.', 'ticketmigration');
-            } else {
-                $information[] = $source === 'hierarchy_name'
-                    ? __('Ticket entity derived from an exact match with the resolved location hierarchy.', 'ticketmigration')
-                    : __('Ticket entity derived from the resolved location.', 'ticketmigration');
-            }
+            $validations[] = __('Ticket entity derived from the migration profile location/entity mapping.', 'ticketmigration');
             return;
         }
-        $ticket['entity'] = ['itemtype' => 'Entity', 'id' => max(0, (int) ($context['default_entity_id'] ?? 0))];
+        $ticket['entity'] = ['itemtype' => 'Entity', 'id' => $defaultEntityId];
         $information[] = __('Ticket entity set to the migration profile default entity.', 'ticketmigration');
     }
 }

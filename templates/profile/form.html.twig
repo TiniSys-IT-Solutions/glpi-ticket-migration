@@ -17,7 +17,7 @@
       <div class="col-md-6">
         <label class="form-label">{{ __('Default ticket entity', 'ticketmigration') }}</label>
         {{ entity_dropdown|raw }}
-        <div class="form-hint">{{ __('Used when no explicit entity, resolved location entity, or unique requester entity is available.', 'ticketmigration') }}</div>
+        <div class="form-hint">{{ __('Used when neither one unique requester entity nor an explicit migration profile location/entity association is available.', 'ticketmigration') }}</div>
       </div>
       <div class="col-12">
         <label class="form-label" for="profile-comment">{{ __('Comment') }}</label>

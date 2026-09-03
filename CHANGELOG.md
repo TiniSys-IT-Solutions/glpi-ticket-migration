@@ -4,10 +4,46 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ### Changed
 
 - Align project licensing, ownership metadata, security guidance and
   contribution documentation with TiniSys IT Solutions standards.
+=======
+## [0.0.52] - 2026-08-27
+
+### Changed
+
+- Make entity precedence explicit: one unique requester authorization in project scope, then a manually confirmed profile location/entity association, then the migration project default.
+- Treat the requester's preferred entity, the location's native GLPI scope, and hierarchy-name similarities as non-authoritative information rather than automatic ticket destinations.
+
+## [0.0.51] - 2026-08-27
+
+### Fixed
+
+- Restrict requester, location, and explicit profile location/entity evidence to the migration project's default entity and its descendants.
+- Reject a requester's GLPI root entity `#0` when the migration project starts below the root, allowing a valid location association or the project default entity to take precedence instead.
+- Freeze the allowed project entity scope in every new final-run configuration snapshot.
+
+## [0.0.50] - 2026-08-26
+
+### Fixed
+
+- Respect GLPI 11's `DBmysqlIterator::current()` contract: an empty query returns `null`, not `false`.
+- Stop treating every source row as an already-persisted run item, which prevented the mass executor from ever reaching the shared GLPI ticket executor or advancing offset zero.
+- Normalize all nullable single-row repository lookups and the installer source lookup to explicit array checks.
+
+## [0.0.49] - 2026-08-26
+
+### Added
+
+- Persist the last batch failure on the migration run and display a precise, durable diagnostic after automatic pause.
+- Distinguish source exhaustion from an offset that failed to advance, including the exact persisted offset and expected row count.
+
+### Fixed
+
+- Reload the progress view after a batch failure so its status, Resume action, and diagnostic always reflect the persisted paused state.
+>>>>>>> 5826e3a (feat: fiabiliser le suivi des migrations par lots)
 
 ## [0.0.48] - 2026-08-26
 

@@ -22,7 +22,7 @@ $source = new SourceFile();
 if (!$source->getFromDB((int) $run['sourcefiles_id']) || !$source->canViewItem()) { Html::displayErrorAndDie(__('The source snapshot for this run is unavailable.', 'ticketmigration')); }
 $canControl = ProfileRight::canRunImports() && Ticket::canCreate();
 if (isset($_POST['pause']) && $canControl && $run['status'] === 'running') { $repository->update($runId, ['status' => 'paused']); Html::redirect(WebUrl::front('run.form.php') . '?id=' . $runId); }
-if (isset($_POST['resume']) && $canControl && $run['status'] === 'paused') { $repository->update($runId, ['status' => 'running']); Html::redirect(WebUrl::front('run.form.php') . '?id=' . $runId); }
+if (isset($_POST['resume']) && $canControl && $run['status'] === 'paused') { $repository->update($runId, ['status' => 'running', 'last_error_code' => null, 'last_error_message' => null]); Html::redirect(WebUrl::front('run.form.php') . '?id=' . $runId); }
 if (isset($_POST['process_batch']) && $canControl && in_array($run['status'], ['queued', 'running'], true)) {
     $token = bin2hex(random_bytes(32));
     if ($repository->claimBatch($runId, $token)) {

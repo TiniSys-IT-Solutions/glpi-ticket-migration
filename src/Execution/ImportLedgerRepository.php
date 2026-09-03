@@ -12,7 +12,7 @@ final class ImportLedgerRepository
             'WHERE' => ['profiles_id' => $profileId, 'external_id' => $externalId],
             'LIMIT' => 1,
         ])->current();
-        return $row === false ? null : $row;
+        return is_array($row) ? $row : null;
     }
 
     public function shouldSkip(int $profileId, string $externalId, string $sourceHash): bool
