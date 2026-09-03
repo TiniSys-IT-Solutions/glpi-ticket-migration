@@ -6,7 +6,9 @@ Unit tests cover pure readers, mappings, transformations, planning, hashing, and
 
 GLPI production mode disables Twig template auto-reload. The installer therefore clears GLPI caches after a successful install or upgrade so changed plugin templates and menu definitions are compiled again on the next request.
 
-Development releases increment `0.0.x`; the first stabilized pre-production release will be `0.1.0`. A release is valid only when tests, build, and archive verification succeed before the commit and annotated tag are created.
+Public pre-1.0 releases increment `0.1.x`. A release is valid only when tests,
+build and archive verification succeed before the commit and annotated tag are
+created. The first clean public baseline is `0.1.1`.
 
 After a successful archive verification, the local build keeps only the five newest semantic-version ZIP files in `dist`. Published GitHub releases and their attached artifacts are unaffected.
 
