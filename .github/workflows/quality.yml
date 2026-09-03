@@ -22,6 +22,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: fileinfo, iconv, mbstring
           coverage: none
+      - run: sudo apt-get update && sudo apt-get install --yes gettext
       - run: composer validate --strict --no-check-publish
       - run: composer install --no-interaction --prefer-dist
       - run: find . -path ./vendor -prune -o -path ./dist -prune -o -name '*.php' -print0 | xargs -0 -n1 php -l
