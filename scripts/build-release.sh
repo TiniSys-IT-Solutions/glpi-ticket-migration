@@ -24,7 +24,7 @@ done
 composer validate --strict --no-check-publish
 php vendor/bin/phpunit
 
-rm -rf "${BUILD_DIR}"
+rm -rf "${DIST_DIR}"
 vendor/bin/extract-locales
 msgattrib --clear-fuzzy --output-file=locales/en_GB.po locales/en_GB.po
 msgmerge --no-fuzzy-matching locales/fr_FR.po locales/ticketmigration.pot -o locales/fr_FR.po.new
@@ -83,17 +83,3 @@ with zipfile.ZipFile(archive) as package:
         raise SystemExit('Development files found in archive')
 print(f'Verified {archive}: {len(names)} entries')
 PY
-
-# Keep the current archive and the four previous semantic versions. Limit the
-# deletion scope to release ZIPs produced by this repository in its dist dir.
-mapfile -t RELEASE_ARCHIVES < <(
-  find "${DIST_DIR}" -maxdepth 1 -type f \
-    -name "${REPOSITORY_NAME}-[0-9]*.[0-9]*.[0-9]*.zip" \
-    -printf '%f\n' | sort -V
-)
-if ((${#RELEASE_ARCHIVES[@]} > 5)); then
-  for archive_name in "${RELEASE_ARCHIVES[@]:0:${#RELEASE_ARCHIVES[@]}-5}"; do
-    rm -f -- "${DIST_DIR}/${archive_name}"
-    echo "Removed old release archive: ${archive_name}"
-  done
-fi

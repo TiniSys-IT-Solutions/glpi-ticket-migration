@@ -9,6 +9,8 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 - Align project licensing, ownership metadata, security guidance and
   contribution documentation with TiniSys IT Solutions standards.
+- Align release packaging with the other TiniSys GLPI plugins: keep `dist/`
+  local and publish generated ZIP archives only as GitHub Release assets.
 =======
 ## [0.0.52] - 2026-08-27
 

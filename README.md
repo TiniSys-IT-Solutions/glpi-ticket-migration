@@ -78,6 +78,11 @@ production data in fixtures, issues or pull requests. See
 [CONTRIBUTING.md](CONTRIBUTING.md) for the expected checks and safety
 invariants.
 
+Installable ZIP archives are generated in the ignored local `dist/` directory
+by `scripts/build-release.sh`. Tagged releases publish the matching archive as
+a GitHub Release asset; generated packages are never committed to the source
+repository.
+
 ## Security
 
 Historical ticket data may contain personal, operational and confidential
