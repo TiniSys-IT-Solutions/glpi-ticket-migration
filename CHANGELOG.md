@@ -4,6 +4,11 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 
 ## [Unreleased]
 
+### Changed
+
+- Align project licensing, ownership metadata, security guidance and
+  contribution documentation with TiniSys IT Solutions standards.
+
 ## [0.0.48] - 2026-08-26
 
 ### Fixed

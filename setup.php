@@ -33,7 +33,7 @@ function plugin_version_ticketmigration(): array
     return [
         'name' => __('Ticket Migration', 'ticketmigration'),
         'version' => PLUGIN_TICKETMIGRATION_VERSION,
-        'author' => 'DooSys',
+        'author' => 'TiniSys IT Solutions',
         'license' => 'GPL-3.0-or-later',
         'homepage' => 'https://github.com/TiniSys-IT-Solutions/glpi-ticket-migration',
         'requirements' => [
