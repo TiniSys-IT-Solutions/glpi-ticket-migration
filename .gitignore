@@ -1,8 +1,5 @@
-/vendor/
-/.phpunit.result.cache
-/.phpunit.cache/
-/.idea/
-/.vscode/
-/.env
-*.log
-/dist/
+# Publish only the final packaged plugin.
+/*
+!/.gitignore
+!/dist/
+!/dist/**
