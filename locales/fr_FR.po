@@ -1,557 +1,571 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-27 12:32+0530\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
+"POT-Creation-Date: 2026-10-01 18:01+0530\n"
+"Language: fr_FR\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: templates/layout/tabs.html.twig
 msgid "Dashboard"
-msgstr ""
+msgstr "Tableau de bord"
 
 #: templates/layout/tabs.html.twig templates/profile/index.html.twig
 #: templates/config/dashboard.html.twig src/Menu.php:34
 msgid "Migration profiles"
-msgstr ""
+msgstr "Profils de migration"
 
 #: templates/layout/tabs.html.twig templates/config/dashboard.html.twig
 #: templates/run/index.html.twig src/Menu.php:40 front/run.php:21
 msgid "Migration runs"
-msgstr ""
+msgstr "Exécutions de migration"
 
 #: templates/layout/tabs.html.twig templates/config/diagnostic.html.twig
 msgid "Diagnostic"
-msgstr ""
+msgstr "Diagnostic"
 
 #: templates/profile/form.html.twig
 msgid "Edit migration profile"
-msgstr ""
+msgstr "Modifier le profil de migration"
 
 #: templates/profile/form.html.twig
 msgid "New migration profile"
-msgstr ""
+msgstr "Nouveau profil de migration"
 
 #: templates/profile/form.html.twig
 msgid "Logical source name"
-msgstr ""
+msgstr "Nom logique de la source"
 
 #: templates/profile/form.html.twig
 msgid "Default ticket entity"
-msgstr ""
+msgstr "Entité par défaut des tickets"
 
 #: templates/profile/form.html.twig
 msgid ""
 "Used when neither one unique requester entity nor an explicit migration "
 "profile location/entity association is available."
 msgstr ""
+"Utilisée lorsqu’aucune entité unique du demandeur ni aucune association "
+"explicite lieu/entité du profil de migration n’est disponible."
 
 #: templates/profile/form.html.twig
 msgid "Private profile"
-msgstr ""
+msgstr "Profil privé"
 
 #: templates/profile/form.html.twig
 msgid "Back to projects"
-msgstr ""
+msgstr "Retour aux projets"
 
 #: templates/profile/form.html.twig templates/profile/index.html.twig
 msgid "Field mapping"
-msgstr ""
+msgstr "Mappage des champs"
 
 #: templates/profile/form.html.twig
 msgid "Preview active CSV"
-msgstr ""
+msgstr "Prévisualiser le CSV actif"
 
 #: templates/profile/form.html.twig templates/profile/index.html.twig
 #: templates/mapping/form.html.twig templates/source/preview.html.twig
 msgid "Manage CSV sources"
-msgstr ""
+msgstr "Gérer les sources CSV"
 
 #: templates/profile/form.html.twig templates/profile/index.html.twig
 msgid "Upload CSV"
-msgstr ""
+msgstr "Téléverser un CSV"
 
 #: templates/profile/form.html.twig
 msgid "Resume value correspondence"
-msgstr ""
+msgstr "Reprendre la correspondance des valeurs"
 
 #: templates/profile/form.html.twig templates/mapping/form.html.twig
 msgid "Continue to value correspondence"
-msgstr ""
+msgstr "Continuer vers la correspondance des valeurs"
 
 #: templates/profile/form.html.twig templates/source/preview.html.twig
 msgid "Continue to mapping"
-msgstr ""
+msgstr "Continuer vers le mappage"
 
 #: templates/profile/index.html.twig templates/config/dashboard.html.twig
 msgid "New profile"
-msgstr ""
+msgstr "Nouveau profil"
 
 #: templates/profile/index.html.twig
 msgid "Active projects"
-msgstr ""
+msgstr "Projets actifs"
 
 #: templates/profile/index.html.twig
 msgid "Archived projects"
-msgstr ""
+msgstr "Projets archivés"
 
 #: templates/profile/index.html.twig
 msgid "Active CSV source"
-msgstr ""
+msgstr "Source CSV active"
 
 #: templates/profile/index.html.twig src/Menu.php:45
 msgid "Configuration"
-msgstr ""
+msgstr "Configuration"
 
 #: templates/profile/index.html.twig
 msgid "Migration status"
-msgstr ""
+msgstr "État de migration"
 
 #: templates/profile/index.html.twig
 msgid "No source selected"
-msgstr ""
+msgstr "Aucune source sélectionnée"
 
 #: templates/profile/index.html.twig
 msgid "Archived"
-msgstr ""
+msgstr "Archivé"
 
 #: templates/profile/index.html.twig templates/config/dashboard.html.twig
 #: templates/config/diagnostic.html.twig
 msgid "Ready"
-msgstr ""
+msgstr "Prêt"
 
 #: templates/profile/index.html.twig
 msgid "Values required"
-msgstr ""
+msgstr "Valeurs requises"
 
 #: templates/profile/index.html.twig
 msgid "Mapping required"
-msgstr ""
+msgstr "Mappage requis"
 
 #: templates/profile/index.html.twig
 msgid "CSV source required"
-msgstr ""
+msgstr "Source CSV requise"
 
 #: templates/profile/index.html.twig
 msgid "Ready for pilot validation"
-msgstr ""
+msgstr "Prêt pour la validation pilote"
 
 #: templates/profile/index.html.twig
 #, php-format
 msgid "%d successful pilot"
 msgid_plural "%d successful pilots"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d pilote réussi"
+msgstr[1] "%d pilotes réussis"
 
 #: templates/profile/index.html.twig
 msgid "Final import queued"
-msgstr ""
+msgstr "Import final en attente"
 
 #: templates/profile/index.html.twig
 #, php-format
 msgid "Final import in progress — %1$d/%2$d"
-msgstr ""
+msgstr "Import final en cours — %1$d/%2$d"
 
 #: templates/profile/index.html.twig
 #, php-format
 msgid "Final import paused — %1$d/%2$d"
-msgstr ""
+msgstr "Import final suspendu — %1$d/%2$d"
 
 #: templates/profile/index.html.twig
 #, php-format
 msgid "Completed — %1$d errors, %2$d changed"
-msgstr ""
+msgstr "Terminé — %1$d erreurs, %2$d modifiés"
 
 #: templates/profile/index.html.twig
 msgid "Final import completed"
-msgstr ""
+msgstr "Import final terminé"
 
 #: templates/profile/index.html.twig
 msgid "Final import failed"
-msgstr ""
+msgstr "Échec de l’import final"
 
 #: templates/profile/index.html.twig
 msgid "Configuration incomplete"
-msgstr ""
+msgstr "Configuration incomplète"
 
 #: templates/profile/index.html.twig
 msgid "Use Actions to restore this project."
-msgstr ""
+msgstr "Utilisez Actions pour restaurer ce projet."
 
 #: templates/profile/index.html.twig
 msgid "Configure values"
-msgstr ""
+msgstr "Configurer les valeurs"
 
 #: templates/profile/index.html.twig
 msgid "Configure mapping"
-msgstr ""
+msgstr "Configurer le mappage"
 
 #: templates/profile/index.html.twig
 msgid "View import progress"
-msgstr ""
+msgstr "Voir la progression de l’import"
 
 #: templates/profile/index.html.twig templates/run/progress.html.twig
 msgid "Resume import"
-msgstr ""
+msgstr "Reprendre l’import"
 
 #: templates/profile/index.html.twig
 msgid "View import result"
-msgstr ""
+msgstr "Voir le résultat de l’import"
 
 #: templates/profile/index.html.twig templates/plan/preview.html.twig
 #: templates/run/prepare.html.twig front/import.form.php:34
 msgid "Prepare final import"
-msgstr ""
+msgstr "Préparer l’import final"
 
 #: templates/profile/index.html.twig
 msgid "Test a pilot row"
-msgstr ""
+msgstr "Tester une ligne pilote"
 
 #: templates/profile/index.html.twig
 msgid "Other actions"
-msgstr ""
+msgstr "Autres actions"
 
 #: templates/profile/index.html.twig
 msgid "Preview or test another row"
-msgstr ""
+msgstr "Prévisualiser ou tester une autre ligne"
 
 #: templates/profile/index.html.twig templates/mapping/values.html.twig
 #: front/value.form.php:405
 msgid "Value correspondence"
-msgstr ""
+msgstr "Correspondance des valeurs"
 
 #: templates/profile/index.html.twig
 msgid "Execution history"
-msgstr ""
+msgstr "Historique des exécutions"
 
 #: templates/profile/index.html.twig
 msgid "No archived migration project."
-msgstr ""
+msgstr "Aucun projet de migration archivé."
 
 #: templates/profile/index.html.twig
 msgid "No migration profile yet."
-msgstr ""
+msgstr "Aucun profil de migration pour le moment."
 
 #: templates/plan/preview.html.twig front/plan.preview.php:163
 msgid "Migration plan preview"
-msgstr ""
+msgstr "Aperçu du plan de migration"
 
 #: templates/plan/preview.html.twig
 msgid "CSV row navigation"
-msgstr ""
+msgstr "Navigation entre les lignes CSV"
 
 #: templates/plan/preview.html.twig
 msgid "Previous row"
-msgstr ""
+msgstr "Ligne précédente"
 
 #: templates/plan/preview.html.twig
 #, php-format
 msgid "Data row %s"
-msgstr ""
+msgstr "Ligne de données %s"
 
 #: templates/plan/preview.html.twig
 msgid "Next row"
-msgstr ""
+msgstr "Ligne suivante"
 
 #: templates/plan/preview.html.twig
 msgid ""
 "This is a read-only plan preview. No GLPI ticket or business object has been "
 "created."
 msgstr ""
+"Ceci est un aperçu en lecture seule du plan. Aucun ticket ni objet métier "
+"GLPI n’a été créé."
 
 #: templates/plan/preview.html.twig
 msgid "CSV source row"
-msgstr ""
+msgstr "Ligne source CSV"
 
 #: templates/plan/preview.html.twig
 msgid "Alerts"
-msgstr ""
+msgstr "Alertes"
 
 #: templates/plan/preview.html.twig
 msgid "Information"
-msgstr ""
+msgstr "Information"
 
 #: templates/plan/preview.html.twig
 msgid "Validated"
-msgstr ""
+msgstr "Validé"
 
 #: templates/plan/preview.html.twig
 msgid "Essential resolved information"
-msgstr ""
+msgstr "Informations essentielles résolues"
 
 #: templates/plan/preview.html.twig src/Mapping/TargetRegistry.php:25
 msgid "Requester"
-msgstr ""
+msgstr "Demandeur"
 
 #: templates/plan/preview.html.twig src/Mapping/TargetRegistry.php:26
 msgid "Assigned technician"
-msgstr ""
+msgstr "Technicien attribué"
 
 #: templates/plan/preview.html.twig src/Mapping/TargetRegistry.php:23
 msgid "Location"
-msgstr ""
+msgstr "Lieu"
 
 #: templates/plan/preview.html.twig src/Mapping/TargetRegistry.php:24
 msgid "Entity"
-msgstr ""
+msgstr "Entité"
 
 #: templates/plan/preview.html.twig
 msgid "Resolved"
-msgstr ""
+msgstr "Résolu"
 
 #: templates/plan/preview.html.twig
 msgid "Not resolved"
-msgstr ""
+msgstr "Non résolu"
 
 #: templates/plan/preview.html.twig
 #, php-format
 msgid "CSV value: %s"
-msgstr ""
+msgstr "Valeur CSV : %s"
 
 #: templates/plan/preview.html.twig
 msgid "No GLPI association retained"
-msgstr ""
+msgstr "Aucune association GLPI retenue"
 
 #: templates/plan/preview.html.twig
 msgid "Resulting GLPI ticket title"
-msgstr ""
+msgstr "Titre résultant du ticket GLPI"
 
 #: templates/plan/preview.html.twig
 msgid "No title generated"
-msgstr ""
+msgstr "Aucun titre généré"
 
 #: templates/plan/preview.html.twig
 msgid ""
 "The CSV title is empty; the configured fallback rule generated this title."
 msgstr ""
+"Le titre CSV est vide ; la règle de repli configurée a généré ce titre."
 
 #: templates/plan/preview.html.twig
 msgid "Alert"
-msgstr ""
+msgstr "Alerte"
 
 #: templates/plan/preview.html.twig
 msgid "Complete immutable migration plan"
-msgstr ""
+msgstr "Plan de migration immuable complet"
 
 #: templates/plan/preview.html.twig
 msgid ""
 "This technical representation remains the authoritative plan used by dry run "
 "and execution."
 msgstr ""
+"Cette représentation technique reste le plan de référence utilisé par la "
+"simulation et l’exécution."
 
 #: templates/plan/preview.html.twig
 msgid "The CSV contains no data row."
-msgstr ""
+msgstr "Le CSV ne contient aucune ligne de données."
 
 #: templates/plan/preview.html.twig
 msgid "Back to value correspondence"
-msgstr ""
+msgstr "Retour aux correspondances de valeurs"
 
 #: templates/plan/preview.html.twig
 #, php-format
 msgid "Open imported pilot ticket #%s"
-msgstr ""
+msgstr "Ouvrir le ticket pilote importé #%s"
 
 #: templates/plan/preview.html.twig
 #, php-format
 msgid "Pilot ticket #%s imported"
-msgstr ""
+msgstr "Ticket pilote #%s importé"
 
 #: templates/plan/preview.html.twig
 msgid "This row is registered and will be skipped during the final import."
-msgstr ""
+msgstr "Cette ligne est enregistrée et sera ignorée lors de l’import final."
 
 #: templates/plan/preview.html.twig
 msgid "Import this pilot row"
-msgstr ""
+msgstr "Importer cette ligne pilote"
 
 #: templates/plan/preview.html.twig
 msgid ""
 "Create one real GLPI ticket with notifications disabled and register this "
 "row as imported?"
 msgstr ""
+"Créer un véritable ticket GLPI avec les notifications désactivées et "
+"enregistrer cette ligne comme importée ?"
 
 #: templates/plan/preview.html.twig
 msgid "Pilot import in progress…"
-msgstr ""
+msgstr "Import pilote en cours…"
 
 #: templates/config/dashboard.html.twig src/ProfileRight.php:52
 #: src/ProfileRight.php:65 src/Menu.php:13 setup.php:34 front/profile.php:41
 msgid "Ticket Migration"
-msgstr ""
+msgstr "Migration de tickets"
 
 #: templates/config/dashboard.html.twig
 msgid "Prepare and validate generic CSV ticket migrations."
 msgstr ""
+"Préparez et validez des migrations de tickets depuis des fichiers CSV "
+"génériques."
 
 #: templates/config/dashboard.html.twig
 msgid "Active CSV sources"
-msgstr ""
+msgstr "Sources CSV actives"
 
 #: templates/config/dashboard.html.twig
 #, php-format
 msgid "%s stored revisions"
-msgstr ""
+msgstr "%s révisions conservées"
 
 #: templates/config/dashboard.html.twig
 msgid "Backup required before any import"
-msgstr ""
+msgstr "Sauvegarde obligatoire avant tout import"
 
 #: templates/config/dashboard.html.twig
 msgid ""
 "Before running a pilot or final migration, create and verify a recent, "
 "restorable backup of the complete GLPI environment."
 msgstr ""
+"Avant de lancer une migration pilote ou définitive, créez et vérifiez une "
+"sauvegarde récente et restaurable de l’environnement GLPI complet."
 
 #: templates/config/dashboard.html.twig
 msgid "At minimum, back up the complete GLPI MySQL database."
 msgstr ""
+"Sauvegardez au minimum l’intégralité de la base de données MySQL de GLPI."
 
 #: templates/config/dashboard.html.twig
 msgid "Also back up GLPI files when documents or attachments may be imported."
 msgstr ""
+"Sauvegardez également les fichiers GLPI lorsque des documents ou pièces "
+"jointes peuvent être importés."
 
 #: templates/config/dashboard.html.twig
 msgid "Migration workflow"
-msgstr ""
+msgstr "Parcours de migration"
 
 #: templates/config/dashboard.html.twig
 msgid "Create a migration profile and save it."
-msgstr ""
+msgstr "Créez un profil de migration et enregistrez-le."
 
 #: templates/config/dashboard.html.twig
 msgid "Open the saved profile and select Upload CSV."
-msgstr ""
+msgstr "Ouvrez le profil enregistré et sélectionnez Téléverser un CSV."
 
 #: templates/config/dashboard.html.twig
 msgid "Choose the CSV format, upload the file, and verify its bounded preview."
 msgstr ""
+"Choisissez le format CSV, téléversez le fichier et vérifiez son aperçu "
+"limité."
 
 #: templates/config/dashboard.html.twig
 msgid "Map positional CSV columns to functional GLPI targets."
 msgstr ""
+"Associez les colonnes CSV positionnelles aux cibles fonctionnelles GLPI."
 
 #: templates/config/dashboard.html.twig
 msgid "Validate controlled values and inspect several immutable row plans."
 msgstr ""
+"Validez les valeurs contrôlées et examinez plusieurs plans de ligne "
+"immuables."
 
 #: templates/config/dashboard.html.twig
 msgid "Create a pilot ticket, then start the resumable final import."
-msgstr ""
+msgstr "Créez un ticket pilote, puis démarrez l’import final reprenable."
 
 #: templates/config/dashboard.html.twig
 msgid "Open profiles"
-msgstr ""
+msgstr "Ouvrir les profils"
 
 #: templates/config/dashboard.html.twig
 msgid "System status"
-msgstr ""
+msgstr "État du système"
 
 #: templates/config/dashboard.html.twig templates/config/diagnostic.html.twig
 msgid "Protected CSV storage"
-msgstr ""
+msgstr "Stockage CSV protégé"
 
 #: templates/config/dashboard.html.twig
 msgid "Unavailable"
-msgstr ""
+msgstr "Indisponible"
 
 #: templates/config/dashboard.html.twig
 msgid "Stored CSV payloads"
-msgstr ""
+msgstr "Fichiers CSV stockés"
 
 #: templates/config/dashboard.html.twig
 msgid "Expired unused revisions"
-msgstr ""
+msgstr "Révisions inutilisées expirées"
 
 #: templates/config/dashboard.html.twig
 msgid "Clean only expired, inactive and unreferenced CSV revisions?"
 msgstr ""
+"Nettoyer uniquement les révisions CSV expirées, inactives et non "
+"référencées ?"
 
 #: templates/config/dashboard.html.twig
 msgid "Clean expired revisions"
-msgstr ""
+msgstr "Nettoyer les révisions expirées"
 
 #: templates/config/dashboard.html.twig
 msgid ""
 "Pilot and resumable final ticket imports are enabled from validated "
 "migration profiles."
 msgstr ""
+"Les imports pilotes et finaux reprenables sont disponibles depuis les "
+"profils de migration validés."
 
 #: templates/config/diagnostic.html.twig
 msgid "Read-only technical checks for the migration environment."
-msgstr ""
+msgstr "Contrôles techniques en lecture seule de l’environnement de migration."
 
 #: templates/config/diagnostic.html.twig
 msgid "No blocking consistency problem was detected."
-msgstr ""
+msgstr "Aucun problème de cohérence bloquant n’a été détecté."
 
 #: templates/config/diagnostic.html.twig
 msgid "One or more consistency checks require attention."
-msgstr ""
+msgstr "Un ou plusieurs contrôles de cohérence nécessitent votre attention."
 
 #: templates/config/diagnostic.html.twig
 msgid "GLPI version"
-msgstr ""
+msgstr "Version de GLPI"
 
 #: templates/config/diagnostic.html.twig
 msgid "PHP version"
-msgstr ""
+msgstr "Version de PHP"
 
 #: templates/config/diagnostic.html.twig
 msgid "Database schema"
-msgstr ""
+msgstr "Schéma de base de données"
 
 #: templates/config/diagnostic.html.twig
 msgid "Incomplete"
-msgstr ""
+msgstr "Incomplet"
 
 #: templates/config/diagnostic.html.twig
 msgid "Attention required"
-msgstr ""
+msgstr "Attention requise"
 
 #: templates/config/diagnostic.html.twig
 msgid "Consistency checks"
-msgstr ""
+msgstr "Contrôles de cohérence"
 
 #: templates/config/diagnostic.html.twig
 msgid "Missing plugin tables"
-msgstr ""
+msgstr "Tables du plugin manquantes"
 
 #: templates/config/diagnostic.html.twig
 msgid "Missing required columns"
-msgstr ""
+msgstr "Colonnes requises manquantes"
 
 #: templates/config/diagnostic.html.twig
 msgid "Missing stored CSV payloads"
-msgstr ""
+msgstr "Fichiers CSV stockés manquants"
 
 #: templates/config/diagnostic.html.twig
 msgid "Execution and PHP"
-msgstr ""
+msgstr "Exécution et PHP"
 
 #: templates/config/diagnostic.html.twig
 msgid "Running imports"
-msgstr ""
+msgstr "Imports en cours"
 
 #: templates/config/diagnostic.html.twig
 msgid "Paused imports"
-msgstr ""
+msgstr "Imports suspendus"
 
 #: templates/config/diagnostic.html.twig
 msgid "Runs completed with issues"
-msgstr ""
+msgstr "Exécutions terminées avec anomalies"
 
 #: templates/mapping/values.html.twig
 msgid ""
@@ -559,55 +573,59 @@ msgid ""
 "a decision are listed below; saving the form validates all prepared and "
 "manual decisions."
 msgstr ""
+"Les correspondances GLPI exactes et uniques sont préparées automatiquement. "
+"Seules les valeurs nécessitant une décision sont affichées ci-dessous ; "
+"l’enregistrement du formulaire valide toutes les décisions préparées et "
+"manuelles."
 
 #: templates/mapping/values.html.twig
 msgid "Distinct values analyzed"
-msgstr ""
+msgstr "Valeurs distinctes analysées"
 
 #: templates/mapping/values.html.twig
 msgid "Perfect automatic matches"
-msgstr ""
+msgstr "Correspondances automatiques parfaites"
 
 #: templates/mapping/values.html.twig
 msgid "Saved manual associations"
-msgstr ""
+msgstr "Associations manuelles enregistrées"
 
 #: templates/mapping/values.html.twig
 msgid "Decisions remaining"
-msgstr ""
+msgstr "Décisions restantes"
 
 #: templates/mapping/values.html.twig
 msgid "Last saved analysis"
-msgstr ""
+msgstr "Dernière analyse enregistrée"
 
 #: templates/mapping/values.html.twig
 msgid "automatic"
-msgstr ""
+msgstr "automatiques"
 
 #: templates/mapping/values.html.twig
 msgid "manual"
-msgstr ""
+msgstr "manuelles"
 
 #: templates/mapping/values.html.twig
 msgid "remaining"
-msgstr ""
+msgstr "restantes"
 
 #: templates/mapping/values.html.twig
 msgid "processed"
-msgstr ""
+msgstr "traité"
 
 #: templates/mapping/values.html.twig
 #, php-format
 msgid "processed — %s remaining"
-msgstr ""
+msgstr "traités — %s restants"
 
 #: templates/mapping/values.html.twig
 msgid "omitted"
-msgstr ""
+msgstr "omis"
 
 #: templates/mapping/values.html.twig
 msgid "distinct actors detected after separation"
-msgstr ""
+msgstr "acteurs distincts détectés après séparation"
 
 #: templates/mapping/values.html.twig
 #, php-format
@@ -615,64 +633,75 @@ msgid ""
 "%s perfect matches were prepared automatically and will be validated when "
 "this form is saved."
 msgstr ""
+"%s correspondances parfaites ont été préparées automatiquement et seront "
+"validées lors de l’enregistrement de ce formulaire."
 
 #: templates/mapping/values.html.twig
 msgid ""
 "More than 200 distinct values were found. This field cannot be validated "
 "until its mapping strategy is refined."
 msgstr ""
+"Plus de 200 valeurs distinctes ont été trouvées. Ce champ ne peut pas être "
+"validé tant que sa stratégie de mappage n’est pas affinée."
 
 #: templates/mapping/values.html.twig
 msgid "Keep resolved associations and omit only unresolved actors"
 msgstr ""
+"Conserver les associations résolues et omettre uniquement les acteurs non "
+"résolus"
 
 #: templates/mapping/values.html.twig
 msgid "Automatic and manual associations remain applied to imported tickets."
 msgstr ""
+"Les associations automatiques et manuelles restent appliquées aux tickets "
+"importés."
 
 #: templates/mapping/values.html.twig
 msgid "Source value"
-msgstr ""
+msgstr "Valeur source"
 
 #: templates/mapping/values.html.twig
 msgid "GLPI correspondence"
-msgstr ""
+msgstr "Correspondance GLPI"
 
 #: templates/mapping/values.html.twig
 msgid "Select a correspondence"
-msgstr ""
+msgstr "Sélectionner une correspondance"
 
 #: templates/mapping/values.html.twig
 msgid "Ignore this source value"
-msgstr ""
+msgstr "Ignorer cette valeur source"
 
 #: templates/mapping/values.html.twig
 msgid "Use the manual GLPI selection below"
-msgstr ""
+msgstr "Utiliser la sélection GLPI manuelle ci-dessous"
 
 #: templates/mapping/values.html.twig
 msgid "No exact or normalized exact GLPI match was found."
 msgstr ""
+"Aucune correspondance GLPI exacte ou exacte normalisée n’a été trouvée."
 
 #: templates/mapping/values.html.twig
 msgid "Search the complete GLPI list"
-msgstr ""
+msgstr "Rechercher dans la liste GLPI complète"
 
 #: templates/mapping/values.html.twig
 msgid "No manual decision is required for this category."
-msgstr ""
+msgstr "Aucune décision manuelle n’est requise pour cette catégorie."
 
 #: templates/mapping/values.html.twig
 msgid "No value correspondence is required for the current field mapping."
 msgstr ""
+"Aucune correspondance de valeurs n’est nécessaire pour le mappage de champs "
+"actuel."
 
 #: templates/mapping/values.html.twig
 msgid "Location and entity associations"
-msgstr ""
+msgstr "Associations entre lieux et entités"
 
 #: templates/mapping/values.html.twig
 msgid "explicit associations"
-msgstr ""
+msgstr "associations explicites"
 
 #: templates/mapping/values.html.twig
 #, php-format
@@ -682,96 +711,103 @@ msgid ""
 "requester entity always takes precedence. Without an explicit association, "
 "the final fallback is the project default entity: %s."
 msgstr ""
+"Cette association est un garde-fou pour les tickets sans demandeur "
+"exploitable qui doivent être dirigés vers une entité enfant du projet de "
+"migration. L’entité d’un demandeur résolu reste toujours prioritaire. Sans "
+"association explicite, le dernier recours est l’entité par défaut du "
+"projet : %s."
 
 #: templates/mapping/values.html.twig
 msgid "Resolved GLPI location"
-msgstr ""
+msgstr "Lieu GLPI résolu"
 
 #: templates/mapping/values.html.twig
 msgid "Native GLPI entity scope"
-msgstr ""
+msgstr "Périmètre d’entité natif GLPI"
 
 #: templates/mapping/values.html.twig
 msgid "Migration profile association"
-msgstr ""
+msgstr "Association du profil de migration"
 
 #: templates/mapping/values.html.twig
 msgid "Association saved"
-msgstr ""
+msgstr "Association enregistrée"
 
 #: templates/mapping/values.html.twig
 msgid "Back to field mapping"
-msgstr ""
+msgstr "Retour au mappage des champs"
 
 #: templates/mapping/values.html.twig
 msgid "Save progress"
-msgstr ""
+msgstr "Enregistrer la progression"
 
 #: templates/mapping/values.html.twig
 msgid "Validate correspondences"
-msgstr ""
+msgstr "Valider les correspondances"
 
 #: templates/mapping/values.html.twig
 msgid "Preview migration plans"
-msgstr ""
+msgstr "Aperçu des plans de migration"
 
 #: templates/mapping/values.html.twig
 msgid "Ready to save"
-msgstr ""
+msgstr "Prête à enregistrer"
 
 #: templates/mapping/form.html.twig front/mapping.form.php:112
 msgid "CSV field mapping"
-msgstr ""
+msgstr "Mappage des champs CSV"
 
 #: templates/mapping/form.html.twig
 msgid ""
 "Map each positional CSV column to a functional GLPI target. Unselected "
 "columns are explicitly ignored."
 msgstr ""
+"Associez chaque colonne CSV positionnelle à une cible fonctionnelle GLPI. "
+"Les colonnes non sélectionnées sont explicitement ignorées."
 
 #: templates/mapping/form.html.twig
 msgid "CSV column"
-msgstr ""
+msgstr "Colonne CSV"
 
 #: templates/mapping/form.html.twig
 msgid "Sample value"
-msgstr ""
+msgstr "Valeur d’exemple"
 
 #: templates/mapping/form.html.twig
 msgid "Separator"
-msgstr ""
+msgstr "Séparateur"
 
 #: templates/mapping/form.html.twig
 msgid "GLPI target"
-msgstr ""
+msgstr "Cible GLPI"
 
 #: templates/mapping/form.html.twig
 msgid "Historical description"
-msgstr ""
+msgstr "Description historique"
 
 #: templates/mapping/form.html.twig
 msgid "Automatic"
-msgstr ""
+msgstr "Automatique"
 
 #: templates/mapping/form.html.twig
 msgid "Line break"
-msgstr ""
+msgstr "Saut de ligne"
 
 #: templates/mapping/form.html.twig
 msgid "Ignore this column"
-msgstr ""
+msgstr "Ignorer cette colonne"
 
 #: templates/mapping/form.html.twig
 msgid "Exclude this column"
-msgstr ""
+msgstr "Exclure cette colonne"
 
 #: templates/mapping/form.html.twig
 msgid "Required for dry run: external identifier and title."
-msgstr ""
+msgstr "Obligatoires pour la simulation : identifiant externe et titre."
 
 #: templates/mapping/form.html.twig
 msgid "Empty title fallback"
-msgstr ""
+msgstr "Titre de remplacement si vide"
 
 #: templates/mapping/form.html.twig
 msgid ""
@@ -779,18 +815,21 @@ msgid ""
 "words of the main description. If the description is also empty, use the "
 "external identifier."
 msgstr ""
+"Lorsqu’un titre mappé est vide, générer « Ticket — » suivi des premiers mots "
+"de la description principale. Si la description est également vide, utiliser "
+"l’identifiant externe."
 
 #: templates/mapping/form.html.twig
 msgid "Generate a title when the mapped value is empty"
-msgstr ""
+msgstr "Générer un titre lorsque la valeur mappée est vide"
 
 #: templates/mapping/form.html.twig
 msgid "Description words in generated title"
-msgstr ""
+msgstr "Nombre de mots de la description dans le titre généré"
 
 #: templates/mapping/form.html.twig
 msgid "Description consolidation"
-msgstr ""
+msgstr "Consolidation de la description"
 
 #: templates/mapping/form.html.twig
 msgid ""
@@ -798,111 +837,118 @@ msgid ""
 "description. The main description remains a separate, clearly identified "
 "section."
 msgstr ""
+"Les champs sources mappés et non mappés peuvent être consolidés dans la "
+"description du ticket GLPI. La description principale reste une section "
+"séparée et clairement identifiée."
 
 #: templates/mapping/form.html.twig
 msgid "Build a structured historical description"
-msgstr ""
+msgstr "Construire une description historique structurée"
 
 #: templates/mapping/form.html.twig
 msgid "Include mapped fields"
-msgstr ""
+msgstr "Inclure les champs mappés"
 
 #: templates/mapping/form.html.twig
 msgid "Include unmapped fields"
-msgstr ""
+msgstr "Inclure les champs non mappés"
 
 #: templates/mapping/form.html.twig
 msgid "Historical data position"
-msgstr ""
+msgstr "Position des données historiques"
 
 #: templates/mapping/form.html.twig
 msgid "Before the main description"
-msgstr ""
+msgstr "Avant la description principale"
 
 #: templates/mapping/form.html.twig
 msgid "After the main description"
-msgstr ""
+msgstr "Après la description principale"
 
 #: templates/mapping/form.html.twig templates/source/preview.html.twig
 #: templates/source/upload.html.twig templates/source/index.html.twig
 msgid "Back to profile"
-msgstr ""
+msgstr "Retour au profil"
 
 #: templates/mapping/form.html.twig
 msgid "Save mapping"
-msgstr ""
+msgstr "Enregistrer le mappage"
 
 #: templates/mapping/form.html.twig
 msgid "Complete required mappings to continue"
-msgstr ""
+msgstr "Compléter les mappages obligatoires pour continuer"
 
 #: templates/run/progress.html.twig
 #, php-format
 msgid "Final migration run #%s"
-msgstr ""
+msgstr "Exécution finale de migration nº %s"
 
 #: templates/run/progress.html.twig
 #, php-format
 msgid "%1$s of %2$s rows processed"
-msgstr ""
+msgstr "%1$s lignes traitées sur %2$s"
 
 #: templates/run/progress.html.twig templates/run/index.html.twig
 #: ajax/run.batch.php:47 front/run.form.php:52
 msgid "Imported"
-msgstr ""
+msgstr "Importées"
 
 #: templates/run/progress.html.twig ajax/run.batch.php:47 front/run.form.php:52
 msgid "Already imported"
-msgstr ""
+msgstr "Déjà importées"
 
 #: templates/run/progress.html.twig ajax/run.batch.php:47 front/run.form.php:53
 msgid "Changed"
-msgstr ""
+msgstr "Modifiées"
 
 #: templates/run/progress.html.twig templates/run/index.html.twig
 msgid "Errors"
-msgstr ""
+msgstr "Erreurs"
 
 #: templates/run/progress.html.twig
 msgid ""
 "Individual ticket notifications are disabled. This page provides the single "
 "global import summary."
 msgstr ""
+"Les notifications individuelles des tickets sont désactivées. Cette page "
+"fournit le récapitulatif global unique de l’import."
 
 #: templates/run/progress.html.twig
 msgid ""
 "The final import is complete. The counters and row trace below contain the "
 "global result."
 msgstr ""
+"L’import final est terminé. Les compteurs et la trace par ligne ci-dessous "
+"présentent le résultat global."
 
 #: templates/run/progress.html.twig
 msgid "Latest processed rows"
-msgstr ""
+msgstr "Dernières lignes traitées"
 
 #: templates/run/progress.html.twig
 msgid "Row"
-msgstr ""
+msgstr "Ligne"
 
 #: templates/run/progress.html.twig
 msgid "External ID"
-msgstr ""
+msgstr "Identifiant externe"
 
 #: templates/run/progress.html.twig templates/run/index.html.twig
 #: src/Mapping/TargetRegistry.php:17
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 #: templates/run/progress.html.twig
 msgid "GLPI ticket"
-msgstr ""
+msgstr "Ticket GLPI"
 
 #: templates/run/progress.html.twig
 msgid "Trace"
-msgstr ""
+msgstr "Trace"
 
 #: templates/run/progress.html.twig
 msgid "No row processed yet."
-msgstr ""
+msgstr "Aucune ligne traitée pour le moment."
 
 #: templates/run/progress.html.twig
 msgid ""
@@ -910,52 +956,59 @@ msgid ""
 "or source, then start a new final run: registered successes will be skipped "
 "and unresolved rows will be attempted again."
 msgstr ""
+"L’exécution s’est terminée sans s’arrêter sur les erreurs individuelles. "
+"Corrigez le profil ou la source, puis démarrez une nouvelle exécution "
+"finale : les succès enregistrés seront ignorés et les lignes non résolues "
+"seront retentées."
 
 #: templates/run/progress.html.twig
 msgid "Back to run history"
-msgstr ""
+msgstr "Retour à l’historique des exécutions"
 
 #: templates/run/progress.html.twig
 msgid "Export row trace"
-msgstr ""
+msgstr "Exporter la trace des lignes"
 
 #: templates/run/progress.html.twig
 msgid "Pause import"
-msgstr ""
+msgstr "Suspendre l’import"
 
 #: templates/run/progress.html.twig
 msgid "The batch request failed."
-msgstr ""
+msgstr "La requête de traitement du lot a échoué."
 
 #: templates/run/prepare.html.twig
 msgid "CSV data rows"
-msgstr ""
+msgstr "Lignes de données CSV"
 
 #: templates/run/prepare.html.twig
 msgid "Notifications"
-msgstr ""
+msgstr "Notifications"
 
 #: templates/run/prepare.html.twig
 msgid "Disabled per imported ticket"
-msgstr ""
+msgstr "Désactivées pour chaque ticket importé"
 
 #: templates/run/prepare.html.twig
 msgid "Recovery"
-msgstr ""
+msgstr "Reprise"
 
 #: templates/run/prepare.html.twig
 msgid "Resumable and idempotent"
-msgstr ""
+msgstr "Reprenable et idempotent"
 
 #: templates/run/prepare.html.twig
 msgid ""
 "Rows already registered by a pilot or an earlier run are never recreated. "
 "Changed rows and failures are collected for review."
 msgstr ""
+"Les lignes déjà enregistrées par un pilote ou une exécution précédente ne "
+"sont jamais recréées. Les lignes modifiées et les échecs sont regroupés pour "
+"vérification."
 
 #: templates/run/prepare.html.twig
 msgid "Backup responsibility"
-msgstr ""
+msgstr "Responsabilité de la sauvegarde"
 
 #: templates/run/prepare.html.twig
 msgid ""
@@ -963,56 +1016,61 @@ msgid ""
 "confirm that you have taken the backup measures appropriate to your GLPI "
 "environment."
 msgstr ""
+"Le plugin ne crée ni ne vérifie les sauvegardes. En cochant la case ci-"
+"dessous, vous confirmez avoir pris les mesures de sauvegarde adaptées à "
+"votre environnement GLPI."
 
 #: templates/run/prepare.html.twig
 msgid ""
 "I confirm that a GLPI backup was completed before running the import task."
 msgstr ""
+"Je confirme qu’une sauvegarde de GLPI a bien été effectuée avant l’exécution "
+"de la tâche d’import."
 
 #: templates/run/prepare.html.twig
 msgid "Back to plan preview"
-msgstr ""
+msgstr "Retour à l’aperçu du plan"
 
 #: templates/run/prepare.html.twig
 msgid "Start final import"
-msgstr ""
+msgstr "Démarrer l’import final"
 
 #: templates/run/prepare.html.twig
 msgid "Start the final ticket import now?"
-msgstr ""
+msgstr "Démarrer maintenant l’import final des tickets ?"
 
 #: templates/run/index.html.twig
 msgid "Clear profile filter"
-msgstr ""
+msgstr "Effacer le filtre du profil"
 
 #: templates/run/index.html.twig
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #: templates/run/index.html.twig
 msgid "Mode"
-msgstr ""
+msgstr "Mode"
 
 #: templates/run/index.html.twig
 msgid "Progress"
-msgstr ""
+msgstr "Progression"
 
 #: templates/run/index.html.twig
 msgid "Open"
-msgstr ""
+msgstr "Ouvrir"
 
 #: templates/run/index.html.twig
 msgid "Legacy trace"
-msgstr ""
+msgstr "Trace historique"
 
 #: templates/run/index.html.twig
 msgid "No migration run yet."
-msgstr ""
+msgstr "Aucune exécution de migration pour le moment."
 
 #: templates/source/preview.html.twig
 #, php-format
 msgid "CSV preview: %s"
-msgstr ""
+msgstr "Aperçu du CSV : %s"
 
 #: templates/source/preview.html.twig
 #, php-format
@@ -1020,104 +1078,106 @@ msgid ""
 "This preview intentionally shows only the first %s data rows. The complete "
 "stored CSV has not been truncated."
 msgstr ""
+"Cet aperçu affiche volontairement uniquement les %s premières lignes de "
+"données. Le fichier CSV complet stocké n’a pas été tronqué."
 
 #: templates/source/preview.html.twig
 #, php-format
 msgid "The complete CSV contains no more than %s data rows."
-msgstr ""
+msgstr "Le fichier CSV complet contient au maximum %s lignes de données."
 
 #: templates/source/preview.html.twig
 msgid "Schema fingerprint"
-msgstr ""
+msgstr "Empreinte du schéma"
 
 #: templates/source/preview.html.twig
 msgid "No data row found."
-msgstr ""
+msgstr "Aucune ligne de données trouvée."
 
 #: templates/source/preview.html.twig
 msgid "Replace or test another CSV"
-msgstr ""
+msgstr "Remplacer ou tester un autre CSV"
 
 #: templates/source/upload.html.twig
 #, php-format
 msgid "CSV source for %s"
-msgstr ""
+msgstr "Source CSV pour %s"
 
 #: templates/source/upload.html.twig
 msgid "CSV file"
-msgstr ""
+msgstr "Fichier CSV"
 
 #: templates/source/upload.html.twig
 #, php-format
 msgid "Maximum size accepted by PHP and the plugin: %s"
-msgstr ""
+msgstr "Taille maximale acceptée par PHP et le plugin : %s"
 
 #: templates/source/upload.html.twig
 msgid "Delimiter"
-msgstr ""
+msgstr "Délimiteur"
 
 #: templates/source/upload.html.twig
 msgid "Tab"
-msgstr ""
+msgstr "Tabulation"
 
 #: templates/source/upload.html.twig
 msgid "Encoding"
-msgstr ""
+msgstr "Encodage"
 
 #: templates/source/upload.html.twig
 msgid "First row contains headers"
-msgstr ""
+msgstr "La première ligne contient les en-têtes"
 
 #: templates/source/upload.html.twig
 msgid "Upload and preview"
-msgstr ""
+msgstr "Téléverser et prévisualiser"
 
 #: templates/source/index.html.twig
 #, php-format
 msgid "CSV source revisions for %s"
-msgstr ""
+msgstr "Révisions de la source CSV pour %s"
 
 #: templates/source/index.html.twig
 msgid "Upload a new revision"
-msgstr ""
+msgstr "Téléverser une nouvelle révision"
 
 #: templates/source/index.html.twig
 msgid "Uploaded at"
-msgstr ""
+msgstr "Téléversé le"
 
 #: templates/source/index.html.twig
 msgid "Active source"
-msgstr ""
+msgstr "Source active"
 
 #: templates/source/index.html.twig
 msgid "Previous revision"
-msgstr ""
+msgstr "Révision précédente"
 
 #: templates/source/index.html.twig
 msgid "Use this source"
-msgstr ""
+msgstr "Utiliser cette source"
 
 #: templates/source/index.html.twig
 msgid "No CSV source uploaded yet."
-msgstr ""
+msgstr "Aucune source CSV téléversée pour le moment."
 
 #: ajax/run.batch.php:19 front/import.form.php:14 front/plan.preview.php:70
 msgid "You do not have permission to import tickets."
-msgstr ""
+msgstr "Vous n’avez pas l’autorisation d’importer des tickets."
 
 #: ajax/run.batch.php:21 front/run.form.php:18 front/run.export.php:11
 msgid "Migration run not found."
-msgstr ""
+msgstr "Exécution de migration introuvable."
 
 #: ajax/run.batch.php:23 front/run.form.php:20 front/profile.form.php:30
 #: front/mapping.form.php:23 front/value.form.php:29 front/import.form.php:17
 #: front/preview.php:44 front/source.php:20 front/plan.preview.php:29
 msgid "You do not have permission to view this migration profile."
-msgstr ""
+msgstr "Vous n’avez pas l’autorisation de voir ce profil de migration."
 
 #: ajax/run.batch.php:25 front/run.form.php:22
 msgid "The source snapshot for this run is unavailable."
-msgstr ""
+msgstr "L’instantané de la source de cette exécution est indisponible."
 
 #: ajax/run.batch.php:37
 #, php-format
@@ -1125,6 +1185,9 @@ msgid ""
 "No CSV row could be read at offset %1$d although this run expects %2$d rows. "
 "The import was paused without creating or skipping a ticket."
 msgstr ""
+"Aucune ligne CSV n’a pu être lue à la position %1$d alors que cette "
+"exécution attend %2$d lignes. L’import a été suspendu sans créer ni ignorer "
+"de ticket."
 
 #: ajax/run.batch.php:38
 #, php-format
@@ -1132,188 +1195,202 @@ msgid ""
 "The migration batch could not advance beyond offset %1$d of %2$d. The import "
 "was paused without repeating a completed row."
 msgstr ""
+"Le lot de migration n’a pas pu progresser au-delà de la position %1$d sur "
+"%2$d. L’import a été suspendu sans répéter une ligne terminée."
 
 #: ajax/run.batch.php:42 front/run.form.php:40
 msgid ""
 "The batch was paused after a technical error. No completed line will be "
 "repeated."
 msgstr ""
+"Le lot a été suspendu après une erreur technique. Aucune ligne terminée ne "
+"sera répétée."
 
 #: ajax/run.batch.php:46 front/run.form.php:49 front/run.php:15
 msgid "Queued"
-msgstr ""
+msgstr "En attente"
 
 #: ajax/run.batch.php:46 front/run.form.php:49 front/run.php:15
 msgid "Running"
-msgstr ""
+msgstr "En cours"
 
 #: ajax/run.batch.php:46 front/run.form.php:50 front/run.php:15
 msgid "Paused"
-msgstr ""
+msgstr "Suspendu"
 
 #: ajax/run.batch.php:46 front/run.form.php:50 front/run.php:15
 msgid "Completed"
-msgstr ""
+msgstr "Terminé"
 
 #: ajax/run.batch.php:46 front/run.form.php:51 front/run.php:15
 msgid "Completed with issues"
-msgstr ""
+msgstr "Terminé avec des anomalies"
 
 #: ajax/run.batch.php:47 front/run.form.php:51 front/run.php:15
 msgid "Failed"
-msgstr ""
+msgstr "Échec"
 
 #: ajax/run.batch.php:48 front/run.form.php:54
 msgid "Ticket imported"
-msgstr ""
+msgstr "Ticket importé"
 
 #: ajax/run.batch.php:48 front/run.form.php:54
 msgid "External identifier already imported"
-msgstr ""
+msgstr "Identifiant externe déjà importé"
 
 #: ajax/run.batch.php:48 front/run.form.php:55
 msgid "Source row changed after import"
-msgstr ""
+msgstr "Ligne source modifiée après l’import"
 
 #: ajax/run.batch.php:49 front/run.form.php:55
 msgid "Migration plan blocked"
-msgstr ""
+msgstr "Plan de migration bloqué"
 
 #: ajax/run.batch.php:49 front/run.form.php:56
 msgid "Target entity forbidden"
-msgstr ""
+msgstr "Entité cible interdite"
 
 #: ajax/run.batch.php:49 front/run.form.php:56
 msgid "Ticket creation failed"
-msgstr ""
+msgstr "Échec de la création du ticket"
 
 #: src/ProfileLifecycleManager.php:27
 #, php-format
 msgid "Copy of %s"
-msgstr ""
+msgstr "Copie de %s"
 
 #: src/SourceFile.php:18
 msgid "Migration source file"
 msgid_plural "Migration source files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Fichier source de migration"
+msgstr[1] "Fichiers sources de migration"
 
 #: src/Source/UploadError.php:10
 msgid "The file exceeds the PHP upload_max_filesize limit."
-msgstr ""
+msgstr "Le fichier dépasse la limite PHP upload_max_filesize."
 
 #: src/Source/UploadError.php:11
 msgid "The file exceeds the maximum size accepted by this form."
-msgstr ""
+msgstr "Le fichier dépasse la taille maximale acceptée par ce formulaire."
 
 #: src/Source/UploadError.php:12
 msgid "The file was only partially uploaded."
-msgstr ""
+msgstr "Le fichier n’a été que partiellement téléversé."
 
 #: src/Source/UploadError.php:13
 msgid "No file was uploaded."
-msgstr ""
+msgstr "Aucun fichier n’a été téléversé."
 
 #: src/Source/UploadError.php:14
 msgid "The PHP upload temporary directory is missing."
-msgstr ""
+msgstr "Le répertoire temporaire de téléversement PHP est manquant."
 
 #: src/Source/UploadError.php:15
 msgid "PHP could not write the uploaded file to disk."
-msgstr ""
+msgstr "PHP n’a pas pu écrire le fichier téléversé sur le disque."
 
 #: src/Source/UploadError.php:16
 msgid "A PHP extension stopped the upload."
-msgstr ""
+msgstr "Une extension PHP a interrompu le téléversement."
 
 #: src/Source/UploadError.php:18
 msgid "The CSV upload failed with an unknown error."
-msgstr ""
+msgstr "Le téléversement du CSV a échoué avec une erreur inconnue."
 
 #: src/MigrationProfile.php:25
 msgid "Migration profile"
 msgid_plural "Migration profiles"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Profil de migration"
+msgstr[1] "Profils de migration"
 
 #: src/MigrationProfile.php:65
 msgid "Archive"
-msgstr ""
+msgstr "Archiver"
 
 #: src/MigrationProfile.php:69
 msgid "Clone configuration"
-msgstr ""
+msgstr "Cloner la configuration"
 
 #: src/MigrationProfile.php:72
 msgid "Delete project without execution history"
-msgstr ""
+msgstr "Supprimer le projet sans historique d’exécution"
 
 #: src/MigrationProfile.php:80
 msgid "Archived projects remain fully traceable and can be restored."
 msgstr ""
+"Les projets archivés restent entièrement traçables et peuvent être restaurés."
 
 #: src/MigrationProfile.php:81
 msgid "Restore the selected projects to the active list?"
-msgstr ""
+msgstr "Restaurer les projets sélectionnés dans la liste active ?"
 
 #: src/MigrationProfile.php:82
 msgid ""
 "Configuration and mappings are copied without duplicating the CSV payload."
 msgstr ""
+"La configuration et les correspondances sont copiées sans dupliquer le "
+"fichier CSV."
 
 #: src/MigrationProfile.php:83
 msgid ""
 "Deletion is permanent and is refused when an execution run or external "
 "reference exists."
 msgstr ""
+"La suppression est définitive et refusée lorsqu’un run d’exécution ou une "
+"référence externe existe."
 
 #: src/MigrationProfile.php:111
 msgid ""
 "A selected project was retained because execution history exists or "
 "permissions are insufficient."
 msgstr ""
+"Un projet sélectionné a été conservé, car un historique d’exécution existe "
+"ou les droits sont insuffisants."
 
 #: src/MigrationProfile.php:136
 msgid "A migration profile name is required."
-msgstr ""
+msgstr "Le nom du profil de migration est obligatoire."
 
 #: src/MigrationProfile.php:141
 msgid "You do not have permission to use the selected default entity."
 msgstr ""
+"Vous n’avez pas l’autorisation d’utiliser l’entité par défaut sélectionnée."
 
 #: src/Plan/MigrationPlanBuilder.php:40
 #, php-format
 msgid "Unresolved actor \"%s\" omitted for %s."
-msgstr ""
+msgstr "L'acteur non résolu « %s » a été omis pour %s."
 
 #: src/Plan/MigrationPlanBuilder.php:43
 #, php-format
 msgid "Unresolved value \"%s\" for %s."
-msgstr ""
+msgstr "Valeur « %s » non résolue pour %s."
 
 #: src/Plan/MigrationPlanBuilder.php:47
 #, php-format
 msgid "Value \"%s\" ignored for %s."
-msgstr ""
+msgstr "Valeur « %s » ignorée pour %s."
 
 #: src/Plan/MigrationPlanBuilder.php:60
 #, php-format
 msgid "Invalid date \"%s\" for %s."
-msgstr ""
+msgstr "La date « %s » est invalide pour %s."
 
 #: src/Plan/MigrationPlanBuilder.php:72
 msgid "External ticket identifier is empty."
-msgstr ""
+msgstr "L’identifiant externe du ticket est vide."
 
 #: src/Plan/MigrationPlanBuilder.php:82
 msgid ""
 "The empty ticket title was generated from the description or external "
 "identifier."
 msgstr ""
+"Le titre vide du ticket a été généré à partir de la description ou de "
+"l’identifiant externe."
 
 #: src/Plan/MigrationPlanBuilder.php:84
 msgid "Ticket title is empty."
-msgstr ""
+msgstr "Le titre du ticket est vide."
 
 #: src/Plan/MigrationPlanBuilder.php:108 src/Plan/MigrationPlanBuilder.php:110
 #: src/Mapping/TargetRegistry.php:11 src/Mapping/TargetRegistry.php:12
@@ -1323,151 +1400,158 @@ msgstr ""
 #: src/Mapping/TargetRegistry.php:19 src/Mapping/TargetRegistry.php:20
 #: src/Mapping/TargetRegistry.php:21
 msgid "Ticket"
-msgstr ""
+msgstr "Ticket"
 
 #: src/Plan/MigrationPlanBuilder.php:142
 msgid "Ticket entity derived from the requester unique GLPI authorization."
 msgstr ""
+"L’entité du ticket a été déduite de l’habilitation GLPI unique du demandeur."
 
 #: src/Plan/MigrationPlanBuilder.php:144
 msgid ""
 "The resolved location points to another entity; the requester entity took "
 "precedence."
 msgstr ""
+"Le lieu résolu pointe vers une autre entité ; l’entité du demandeur a été "
+"prioritaire."
 
 #: src/Plan/MigrationPlanBuilder.php:149
 msgid ""
 "Requester has several GLPI entity authorizations without one usable "
 "preference."
 msgstr ""
+"Le demandeur possède plusieurs habilitations d’entité GLPI sans préférence "
+"exploitable."
 
 #: src/Plan/MigrationPlanBuilder.php:153
 msgid ""
 "Ticket entity derived from the migration profile location/entity mapping."
 msgstr ""
+"L’entité du ticket a été déduite de l’association lieu/entité du profil de "
+"migration."
 
 #: src/Plan/MigrationPlanBuilder.php:157
 msgid "Ticket entity set to the migration profile default entity."
-msgstr ""
+msgstr "L’entité du ticket est l’entité par défaut du profil de migration."
 
 #: src/Plan/StructuredDescriptionBuilder.php:40
 msgid "Imported historical data"
-msgstr ""
+msgstr "Données historiques importées"
 
 #: src/Plan/StructuredDescriptionBuilder.php:43
 msgid "Original description"
-msgstr ""
+msgstr "Description originale"
 
 #: src/ProfileRight.php:81
 msgid "View migration profiles"
-msgstr ""
+msgstr "Voir les profils de migration"
 
 #: src/ProfileRight.php:82
 msgid "Manage migration profiles"
-msgstr ""
+msgstr "Gérer les profils de migration"
 
 #: src/ProfileRight.php:89
 msgid "Run dry runs"
-msgstr ""
+msgstr "Exécuter des simulations"
 
 #: src/ProfileRight.php:90
 msgid "Run imports"
-msgstr ""
+msgstr "Exécuter des imports"
 
 #: src/ProfileRight.php:91
 msgid "View migration history"
-msgstr ""
+msgstr "Voir l’historique des migrations"
 
 #: src/ProfileRight.php:92
 msgid "Manage plugin configuration"
-msgstr ""
+msgstr "Gérer la configuration du plugin"
 
 #: src/Mapping/TargetRegistry.php:11
 msgid "External ticket identifier"
-msgstr ""
+msgstr "Identifiant externe du ticket"
 
 #: src/Mapping/TargetRegistry.php:12
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: src/Mapping/TargetRegistry.php:13
 msgid "Main description"
-msgstr ""
+msgstr "Description principale"
 
 #: src/Mapping/TargetRegistry.php:14
 msgid "Opening date"
-msgstr ""
+msgstr "Date d’ouverture"
 
 #: src/Mapping/TargetRegistry.php:15
 msgid "Closing date"
-msgstr ""
+msgstr "Date de clôture"
 
 #: src/Mapping/TargetRegistry.php:16
 msgid "Resolution date"
-msgstr ""
+msgstr "Date de résolution"
 
 #: src/Mapping/TargetRegistry.php:18
 msgid "Priority"
-msgstr ""
+msgstr "Priorité"
 
 #: src/Mapping/TargetRegistry.php:19
 msgid "Urgency"
-msgstr ""
+msgstr "Urgence"
 
 #: src/Mapping/TargetRegistry.php:20
 msgid "Impact"
-msgstr ""
+msgstr "Impact"
 
 #: src/Mapping/TargetRegistry.php:21
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: src/Mapping/TargetRegistry.php:22
 msgid "Category"
-msgstr ""
+msgstr "Catégorie"
 
 #: src/Mapping/TargetRegistry.php:22 src/Mapping/TargetRegistry.php:23
 #: src/Mapping/TargetRegistry.php:24
 msgid "Classification"
-msgstr ""
+msgstr "Classification"
 
 #: src/Mapping/TargetRegistry.php:25 src/Mapping/TargetRegistry.php:26
 #: src/Mapping/TargetRegistry.php:27 src/Mapping/TargetRegistry.php:28
 msgid "Actors"
-msgstr ""
+msgstr "Acteurs"
 
 #: src/Mapping/TargetRegistry.php:27
 msgid "Requester group"
-msgstr ""
+msgstr "Groupe demandeur"
 
 #: src/Mapping/TargetRegistry.php:28
 msgid "Assigned group"
-msgstr ""
+msgstr "Groupe attribué"
 
 #: src/Mapping/TargetRegistry.php:29
 msgid "Followups"
-msgstr ""
+msgstr "Suivis"
 
 #: src/Mapping/TargetRegistry.php:29 src/Mapping/TargetRegistry.php:30
 #: src/Mapping/TargetRegistry.php:31
 msgid "Timeline"
-msgstr ""
+msgstr "Chronologie"
 
 #: src/Mapping/TargetRegistry.php:30
 msgid "Tasks"
-msgstr ""
+msgstr "Tâches"
 
 #: src/Mapping/TargetRegistry.php:31
 msgid "Solution"
-msgstr ""
+msgstr "Solution"
 
 #: src/Mapping/TargetRegistry.php:32
 msgid "Document URLs"
-msgstr ""
+msgstr "URL des documents"
 
 #: src/Mapping/TargetRegistry.php:32
 msgid "Documents"
-msgstr ""
+msgstr "Documents"
 
 #: front/run.form.php:35
 #, php-format
@@ -1475,189 +1559,213 @@ msgid ""
 "Final import completed: %1$d imported, %2$d already imported, %3$d changed, "
 "%4$d failed."
 msgstr ""
+"Import final terminé : %1$d importés, %2$d déjà importés, %3$d modifiés, "
+"%4$d en échec."
 
 #: front/run.form.php:62
 msgid "Migration run"
-msgstr ""
+msgstr "Exécution de migration"
 
 #: front/profile.form.php:46
 msgid "Migration profile details"
-msgstr ""
+msgstr "Détails du profil de migration"
 
 #: front/config.php:24
 #, php-format
 msgid "%d expired CSV revision was cleaned."
 msgid_plural "%d expired CSV revisions were cleaned."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d révision CSV expirée a été nettoyée."
+msgstr[1] "%d révisions CSV expirées ont été nettoyées."
 
 #: front/config.php:42
 msgid "Ticket Migration configuration"
-msgstr ""
+msgstr "Configuration de Migration de tickets"
 
 #: front/mapping.form.php:27
 msgid "Select a CSV source before configuring mappings."
-msgstr ""
+msgstr "Sélectionnez une source CSV avant de configurer les mappages."
 
 #: front/mapping.form.php:80
 msgid "Unable to save description consolidation settings."
 msgstr ""
+"Impossible d’enregistrer les paramètres de consolidation de la description."
 
 #: front/mapping.form.php:92
 msgid "Mapping saved. The profile is ready for the future dry-run step."
 msgstr ""
+"Mappage enregistré. Le profil est prêt pour la future étape de simulation."
 
 #: front/mapping.form.php:93
 msgid "Mapping saved, but required targets are still missing."
 msgstr ""
+"Mappage enregistré, mais des cibles obligatoires sont encore manquantes."
 
 #: front/run.php:15
 msgid "Pilot"
-msgstr ""
+msgstr "Pilote"
 
 #: front/run.php:15
 msgid "Final"
-msgstr ""
+msgstr "Final"
 
 #: front/source.form.php:29
 #, php-format
 msgid "The request exceeds the PHP upload limit of %s."
-msgstr ""
+msgstr "La requête dépasse la limite de téléversement PHP de %s."
 
 #: front/source.form.php:41
 msgid "You do not have permission to update this migration profile."
-msgstr ""
+msgstr "Vous n’avez pas l’autorisation de modifier ce profil de migration."
 
 #: front/source.form.php:108
 #, php-format
 msgid "Unable to prepare CSV preview: %s"
-msgstr ""
+msgstr "Impossible de préparer l’aperçu du CSV : %s"
 
 #: front/source.form.php:123
 msgid "Upload CSV source"
-msgstr ""
+msgstr "Téléverser une source CSV"
 
 #: front/value.form.php:33
 msgid "Select a CSV source before configuring value mappings."
 msgstr ""
+"Sélectionnez une source CSV avant de configurer les correspondances de "
+"valeurs."
 
 #: front/value.form.php:37
 msgid "Complete the required field mappings first."
-msgstr ""
+msgstr "Complétez d’abord les mappages de champs obligatoires."
 
 #: front/value.form.php:130
 msgid "Invalid value mapping submission key."
-msgstr ""
+msgstr "Clé d’envoi de correspondance de valeur invalide."
 
 #: front/value.form.php:136 front/value.form.php:210
 msgid "Every discovered source value must be explicitly resolved or ignored."
 msgstr ""
+"Chaque valeur source découverte doit être explicitement résolue ou ignorée."
 
 #: front/value.form.php:144
 msgid "Duplicate value mapping submission."
-msgstr ""
+msgstr "Soumission en double d’une correspondance de valeur."
 
 #: front/value.form.php:162
 msgid "Select a valid GLPI reference from the full list."
-msgstr ""
+msgstr "Sélectionnez une référence GLPI valide dans la liste complète."
 
 #: front/value.form.php:169 front/value.form.php:173
 msgid "Invalid GLPI reference selection."
-msgstr ""
+msgstr "Sélection de référence GLPI invalide."
 
 #: front/value.form.php:178
 msgid "Invalid value mapping selection."
-msgstr ""
+msgstr "Sélection de correspondance de valeur invalide."
 
 #: front/value.form.php:196
 msgid "Select a valid entity for each submitted location association."
 msgstr ""
+"Sélectionnez une entité valide pour chaque association de lieu transmise."
 
 #: front/value.form.php:245
 msgid "Value correspondence progress saved. You can resume this work later."
 msgstr ""
+"La progression des correspondances de valeurs a été enregistrée. Vous "
+"pourrez reprendre ce travail plus tard."
 
 #: front/value.form.php:248
 msgid "Value mappings saved."
-msgstr ""
+msgstr "Correspondances de valeurs enregistrées."
 
 #: front/value.form.php:248
 msgid "Value mappings saved, but the distinct-value limit was reached."
 msgstr ""
+"Correspondances de valeurs enregistrées, mais la limite de valeurs "
+"distinctes a été atteinte."
 
 #: front/value.form.php:272
 msgid "Global location without a specific GLPI entity"
-msgstr ""
+msgstr "Lieu global sans entité GLPI spécifique"
 
 #: front/value.form.php:294
 #, php-format
 msgid "Project default entity: %s, or choose manually"
-msgstr ""
+msgstr "Entité par défaut du projet : %s, ou choisir manuellement"
 
 #: front/value.form.php:348
 #, php-format
 msgid "Search all GLPI %s"
-msgstr ""
+msgstr "Rechercher tous les éléments GLPI : %s"
 
 #: front/import.form.php:18
 msgid "Complete value correspondence before preparing the final import."
 msgstr ""
+"Terminez la correspondance des valeurs avant de préparer l’import final."
 
 #: front/import.form.php:20 front/plan.preview.php:37
 msgid "The active CSV source is unavailable."
-msgstr ""
+msgstr "La source CSV active est indisponible."
 
 #: front/import.form.php:25
 msgid ""
 "You must confirm your backup responsibility before starting the final import."
 msgstr ""
+"Vous devez confirmer votre responsabilité concernant la sauvegarde avant de "
+"démarrer l’import final."
 
 #: front/import.form.php:27
 msgid "Another final import is being prepared for this profile."
-msgstr ""
+msgstr "Un autre import final est en cours de préparation pour ce profil."
 
 #: front/preview.php:22
 msgid "You do not have permission to view this CSV source."
-msgstr ""
+msgstr "Vous n’avez pas l’autorisation de voir cette source CSV."
 
 #: front/preview.php:47
 msgid "CSV preview"
-msgstr ""
+msgstr "Aperçu du CSV"
 
 #: front/source.php:25
 msgid "Unable to select this CSV source."
-msgstr ""
+msgstr "Impossible de sélectionner cette source CSV."
 
 #: front/source.php:31
 msgid "The active or previously used CSV source cannot be deleted."
-msgstr ""
+msgstr "La source CSV active ou déjà utilisée ne peut pas être supprimée."
 
 #: front/source.php:36
 msgid "CSV source revisions"
-msgstr ""
+msgstr "Révisions des sources CSV"
 
 #: front/plan.preview.php:32
 msgid "Complete value correspondence before previewing a migration plan."
 msgstr ""
+"Terminez la correspondance des valeurs avant de prévisualiser un plan de "
+"migration."
 
 #: front/plan.preview.php:73
 msgid "This pilot row contains blocking errors and cannot be imported."
 msgstr ""
+"Cette ligne pilote contient des erreurs bloquantes et ne peut pas être "
+"importée."
 
 #: front/plan.preview.php:77
 msgid "You do not have access to the ticket target entity."
-msgstr ""
+msgstr "Vous n’avez pas accès à l’entité cible du ticket."
 
 #: front/plan.preview.php:83
 msgid ""
 "GLPI refused the pilot ticket creation. No import reference was registered."
 msgstr ""
+"GLPI a refusé la création du ticket pilote. Aucune référence d’import n’a "
+"été enregistrée."
 
 #: front/plan.preview.php:87
 msgid ""
 "This pilot row is already being imported. Refresh the page in a moment; no "
 "second ticket will be created."
 msgstr ""
+"Cette ligne pilote est déjà en cours d’import. Actualisez la page dans un "
+"instant ; aucun second ticket ne sera créé."
 
 #: front/plan.preview.php:91
 #, php-format
@@ -1665,6 +1773,8 @@ msgid ""
 "This source row was already imported as GLPI ticket #%d and will be skipped "
 "by the final import."
 msgstr ""
+"Cette ligne source a déjà été importée dans le ticket GLPI #%d et sera "
+"ignorée lors de l’import final."
 
 #: front/plan.preview.php:92
 #, php-format
@@ -1672,23 +1782,212 @@ msgid ""
 "Pilot ticket #%d was created. This source row is now registered and will be "
 "skipped by the final import."
 msgstr ""
+"Le ticket pilote #%d a été créé. Cette ligne source est maintenant "
+"enregistrée et sera ignorée lors de l’import final."
 
 #: front/plan.preview.php:138
 msgid "Explicit CSV entity mapping"
-msgstr ""
+msgstr "Correspondance explicite de l’entité CSV"
 
 #: front/plan.preview.php:144
 msgid "Requester GLPI authorization"
-msgstr ""
+msgstr "Habilitation GLPI du demandeur"
 
 #: front/plan.preview.php:146
 msgid "Migration profile location/entity mapping"
-msgstr ""
+msgstr "Association lieu/entité du profil de migration"
 
 #: front/plan.preview.php:149
 msgid "Migration profile default entity"
-msgstr ""
+msgstr "Entité par défaut du profil de migration"
 
 #: front/plan.preview.php:150
 msgid "Requester entity or migration profile default"
-msgstr ""
+msgstr "Entité du demandeur ou entité par défaut du profil de migration"
+
+#~ msgid ""
+#~ "Used when no explicit entity, resolved location entity, or unique "
+#~ "requester entity is available."
+#~ msgstr ""
+#~ "Utilisée lorsqu’aucune entité explicite, entité du lieu résolu ou entité "
+#~ "unique du demandeur n’est disponible."
+
+#~ msgid "Ticket entity derived from the requester preferred GLPI entity."
+#~ msgstr ""
+#~ "L’entité du ticket a été déduite de l’entité GLPI préférée du demandeur."
+
+#~ msgid ""
+#~ "Ticket entity derived from an exact match with the resolved location "
+#~ "hierarchy."
+#~ msgstr ""
+#~ "L’entité du ticket a été déduite d’une correspondance exacte avec la "
+#~ "hiérarchie du lieu résolu."
+
+#~ msgid "Ticket entity derived from the resolved location."
+#~ msgstr "L’entité du ticket a été déduite du lieu résolu."
+
+#~ msgid "Exact location hierarchy match"
+#~ msgstr "Correspondance exacte avec la hiérarchie du lieu"
+
+#~ msgid "Entity owning the resolved location"
+#~ msgstr "Entité propriétaire du lieu résolu"
+
+#~ msgid "Workflow status"
+#~ msgstr "État du parcours"
+
+#~ msgid "Next action"
+#~ msgstr "Action suivante"
+
+#~ msgid "Values configured"
+#~ msgstr "Valeurs configurées"
+
+#~ msgid "Mapping configured — values required"
+#~ msgstr "Mappage configuré — valeurs requises"
+
+#~ msgid "Source selected — mapping required"
+#~ msgstr "Source sélectionnée — mappage requis"
+
+#~ msgid "Profile created — source required"
+#~ msgstr "Profil créé — source requise"
+
+#~ msgid "Test the current workflow"
+#~ msgstr "Tester le parcours actuel"
+
+#~ msgid ""
+#~ "I confirm that backup preparation is my responsibility and that I am "
+#~ "ready to start this import."
+#~ msgstr ""
+#~ "Je confirme que la préparation de la sauvegarde relève de ma "
+#~ "responsabilité et que je suis prêt à démarrer cet import."
+
+#~ msgid "Migration run history is under development."
+#~ msgstr ""
+#~ "L’historique des exécutions de migration est en cours de développement."
+
+#~ msgid ""
+#~ "Resolver validation, dry run, and ticket creation are not enabled yet. No "
+#~ "ticket can be created from this screen."
+#~ msgstr ""
+#~ "La validation des résolveurs, la simulation et la création de tickets ne "
+#~ "sont pas encore activées. Aucun ticket ne peut être créé depuis cet écran."
+
+#~ msgid "resolved locations"
+#~ msgstr "lieux résolus"
+
+#~ msgid "Return to value correspondence"
+#~ msgstr "Revenir à la correspondance des valeurs"
+
+#~ msgid "Validate and continue"
+#~ msgstr "Valider et continuer"
+
+#~ msgid "Return to field mapping"
+#~ msgstr "Revenir au mappage des champs"
+
+#~ msgid "Preview first migration plan"
+#~ msgstr "Prévisualiser le premier plan de migration"
+
+#~ msgid "Return to profile"
+#~ msgstr "Revenir au profil"
+
+#~ msgid "Use requester, GLPI location entity, then automatic fallback"
+#~ msgstr ""
+#~ "Utiliser le demandeur, l’entité du lieu GLPI, puis le repli automatique"
+
+#~ msgid ""
+#~ "GLPI stores an entity scope on each location, usually inherited from the "
+#~ "active entity when the location is created. GLPI 11 does not expose it as "
+#~ "a standard editable field on the location form. Use a migration-profile "
+#~ "association for legacy or global locations; a resolved requester entity "
+#~ "still takes precedence."
+#~ msgstr ""
+#~ "GLPI enregistre un périmètre d’entité sur chaque lieu, généralement "
+#~ "hérité de l’entité active lors de la création du lieu. GLPI 11 ne "
+#~ "l’affiche pas comme un champ modifiable standard sur la fiche du lieu. "
+#~ "Utilisez une association du profil de migration pour les lieux "
+#~ "historiques ou globaux ; l’entité d’un demandeur résolu reste prioritaire."
+
+#~ msgid "Ticket entity derived from the requester unique entity."
+#~ msgstr "L’entité du ticket a été déduite de l’entité unique du demandeur."
+
+#~ msgid ""
+#~ "Requester belongs to multiple entities; the migration profile default "
+#~ "entity was used."
+#~ msgstr ""
+#~ "Le demandeur appartient à plusieurs entités ; l’entité par défaut du "
+#~ "profil de migration a été utilisée."
+
+#~ msgid "First-row migration plan"
+#~ msgstr "Plan de migration de la première ligne"
+
+#~ msgid "Source row"
+#~ msgstr "Ligne source"
+
+#~ msgid "Immutable migration plan"
+#~ msgstr "Plan de migration immuable"
+
+#~ msgid "Import tickets without actors from this source field"
+#~ msgstr "Importer les tickets sans les acteurs provenant de ce champ source"
+
+#~ msgid "Value correspondence draft saved. You can resume this work later."
+#~ msgstr ""
+#~ "Le brouillon des correspondances de valeurs a été enregistré. Vous "
+#~ "pourrez reprendre ce travail plus tard."
+
+#~ msgid "Save draft"
+#~ msgstr "Enregistrer le brouillon"
+
+#~ msgid "Save value correspondences"
+#~ msgstr "Enregistrer les correspondances de valeurs"
+
+#~ msgid ""
+#~ "Confirm how every distinct source value corresponds to an existing GLPI "
+#~ "value. Normalized exact matches are suggestions only until saved."
+#~ msgstr ""
+#~ "Confirmez comment chaque valeur source distincte correspond à une valeur "
+#~ "GLPI existante. Les correspondances exactes normalisées restent de "
+#~ "simples suggestions jusqu’à leur enregistrement."
+
+#~ msgid "Multiple actor separator"
+#~ msgstr "Séparateur de plusieurs acteurs"
+
+#~ msgid "Automatic (semicolon, pipe, or line break)"
+#~ msgstr "Automatique (point-virgule, barre verticale ou saut de ligne)"
+
+#~ msgid "Used only for requester, technician, and actor-group targets."
+#~ msgstr ""
+#~ "Utilisé uniquement pour les cibles demandeur, technicien et groupe "
+#~ "d'acteurs."
+
+#~ msgid "Description"
+#~ msgstr "Description"
+
+#~ msgid "Resume mapping"
+#~ msgstr "Reprendre le mappage"
+
+#~ msgid "Mapping configured"
+#~ msgstr "Mappage configuré"
+
+#~ msgid "Dry run is the next development step."
+#~ msgstr "La simulation est la prochaine étape de développement."
+
+#~ msgid "Continue to dry run"
+#~ msgstr "Continuer vers la simulation"
+
+#~ msgid "Configuration status"
+#~ msgstr "État de la configuration"
+
+#~ msgid "Draft"
+#~ msgstr "Brouillon"
+
+#~ msgid "CSV sources"
+#~ msgstr "Sources CSV"
+
+#~ msgid ""
+#~ "Mapping, dry run, and ticket creation are not enabled yet. No ticket can "
+#~ "be created from this screen."
+#~ msgstr ""
+#~ "Le mappage, la simulation et la création de tickets ne sont pas encore "
+#~ "activés. Aucun ticket ne peut être créé depuis cet écran."
+
+#~ msgid "Mapping is the next development step."
+#~ msgstr "Le mappage est la prochaine étape de développement."

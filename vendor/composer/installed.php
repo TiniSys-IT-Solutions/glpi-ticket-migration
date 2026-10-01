@@ -3,7 +3,7 @@
         'name' => 'tinisys-it-solutions/glpi-ticket-migration',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '843955f78495d1ea590228817364c26bfabc4579',
+        'reference' => '060b8e70cdcdafca3bb46e8297c8538083598657',
         'type' => 'glpi-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'tinisys-it-solutions/glpi-ticket-migration' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '843955f78495d1ea590228817364c26bfabc4579',
+            'reference' => '060b8e70cdcdafca3bb46e8297c8538083598657',
             'type' => 'glpi-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

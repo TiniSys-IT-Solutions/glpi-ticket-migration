@@ -6,7 +6,7 @@ use GlpiPlugin\Ticketmigration\MigrationProfile;
 use GlpiPlugin\Ticketmigration\ProfileRight;
 use GlpiPlugin\Ticketmigration\SourceFile;
 
-define('PLUGIN_TICKETMIGRATION_VERSION', '0.0.52');
+define('PLUGIN_TICKETMIGRATION_VERSION', '0.1.1');
 define('PLUGIN_TICKETMIGRATION_MIN_GLPI', '11.0.0');
 define('PLUGIN_TICKETMIGRATION_MAX_GLPI', '11.1.0');
 
@@ -33,7 +33,7 @@ function plugin_version_ticketmigration(): array
     return [
         'name' => __('Ticket Migration', 'ticketmigration'),
         'version' => PLUGIN_TICKETMIGRATION_VERSION,
-        'author' => 'DooSys',
+        'author' => 'TiniSys IT Solutions',
         'license' => 'GPL-3.0-or-later',
         'homepage' => 'https://github.com/TiniSys-IT-Solutions/glpi-ticket-migration',
         'requirements' => [

@@ -1,9 +1,23 @@
+# Development history
+
+This document preserves the detailed pre-public development history. These
+entries describe internal iterations and do not represent the current public
+release sequence.
+
 # Changelog
 
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 
 ## [Unreleased]
 
+<<<<<<< HEAD
+### Changed
+
+- Align project licensing, ownership metadata, security guidance and
+  contribution documentation with TiniSys IT Solutions standards.
+- Align release packaging with the other TiniSys GLPI plugins: keep `dist/`
+  local and publish generated ZIP archives only as GitHub Release assets.
+=======
 ## [0.0.52] - 2026-08-27
 
 ### Changed
@@ -37,6 +51,7 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 ### Fixed
 
 - Reload the progress view after a batch failure so its status, Resume action, and diagnostic always reflect the persisted paused state.
+>>>>>>> 5826e3a (feat: fiabiliser le suivi des migrations par lots)
 
 ## [0.0.48] - 2026-08-26
 
