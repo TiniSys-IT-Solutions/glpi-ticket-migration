@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-07 00:00+0000\n"
+"POT-Creation-Date: 2026-11-04 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -388,7 +388,7 @@ msgid "Pilot import in progress…"
 msgstr ""
 
 #: templates/config/dashboard.html.twig src/ProfileRight.php:52
-#: src/ProfileRight.php:65 src/Menu.php:13 setup.php:34 front/profile.php:41
+#: src/ProfileRight.php:65 src/Menu.php:13 setup.php:33 front/profile.php:41
 msgid "Ticket Migration"
 msgstr ""
 

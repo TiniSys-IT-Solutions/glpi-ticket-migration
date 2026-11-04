@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ticket Migration 0.1.2\n"
+"Project-Id-Version: Ticket Migration 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-07 00:00+0000\n"
-"PO-Revision-Date: 2026-11-04 14:24+0530\n"
+"POT-Creation-Date: 2026-11-04 00:00+0000\n"
+"PO-Revision-Date: 2026-11-04 14:50+0530\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -396,7 +396,7 @@ msgid "Pilot import in progress…"
 msgstr "Pilot import in progress…"
 
 #: templates/config/dashboard.html.twig src/ProfileRight.php:52
-#: src/ProfileRight.php:65 src/Menu.php:13 setup.php:34 front/profile.php:41
+#: src/ProfileRight.php:65 src/Menu.php:13 setup.php:33 front/profile.php:41
 msgid "Ticket Migration"
 msgstr "Ticket Migration"
 

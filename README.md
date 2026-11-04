@@ -1,17 +1,22 @@
 # GLPI Ticket Migration
 
-![GLPI 11](https://img.shields.io/badge/GLPI-11.x-blue)
-![PHP 8.2+](https://img.shields.io/badge/PHP-8.2%2B-777bb4)
+> Branche `glpi-v12` : version 0.2.0 pour GLPI 12.0.x et PHP 8.3+.
+> Les versions GLPI 11 restent disponibles sur `main` et dans les tags précédents.
+> Migration en cours de revue ; voir `docs/GLPI12_MIGRATION.md` pour les contrôles et limites.
+
+
+![GLPI 12](https://img.shields.io/badge/GLPI-12.x-blue)
+![PHP 8.3+](https://img.shields.io/badge/PHP-8.3%2B-777bb4)
 ![License GPL-3.0](https://img.shields.io/badge/license-GPL--3.0--or--later-green)
 ![Status](https://img.shields.io/badge/status-early%20development-orange)
 
-Ticket Migration is a GLPI 11 plugin for reconstructing historical tickets
+Ticket Migration is a GLPI 12 plugin for reconstructing historical tickets
 from reusable, administrator-configured CSV mappings. A source row becomes an
 immutable `MigrationPlan`; the current executor creates the ticket and its
 actors and records the external reference. Timeline entries, documents and
 relations are reserved for future versions.
 
-> Status: early development (`0.1.2`). Validate every workflow in a disposable
+> Status: early development (`0.2.0`). Validate every workflow in a disposable
 > environment before considering a production migration.
 
 ## Features
@@ -26,9 +31,9 @@ relations are reserved for future versions.
 
 ## Compatibility
 
-- GLPI `>= 11.0.0` and `< 11.1.0`
-- Primary validation target: GLPI `11.0.8`
-- PHP `>= 8.2`
+- GLPI `>= 12.0.0` and `< 12.1.0`
+- Primary validation target: GLPI `12.0.1`
+- PHP `>= 8.3`
 
 CSV is the only V1 source. The project contains no vendor-specific connector.
 
