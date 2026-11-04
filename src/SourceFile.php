@@ -6,7 +6,7 @@ use CommonDBTM;
 
 final class SourceFile extends CommonDBTM
 {
-    public static $rightname = ProfileRight::RIGHT_MANAGE_PROFILES;
+    public static string $rightname = ProfileRight::RIGHT_MANAGE_PROFILES;
 
     public static function getTable($classname = null): string
     {
