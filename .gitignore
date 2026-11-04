@@ -1,21 +1,17 @@
 # Local development and release artifacts.
-/.github/
 /.phpunit.result.cache
 /.phpunit.cache/
 /.idea/
 /.vscode/
 /.env
+/.env.*
+/.local/
+/.agents/
+/.codex/
+/.aws/
 *.log
 /AGENTS.md
-/composer.lock
 /dist/
-/phpunit.xml
-/scripts/
-/tests/
 
-# The release build contains its minimal runtime autoloader. Keep other local
-# Composer development dependencies out of Git.
-/vendor/*
-!/vendor/autoload.php
-!/vendor/composer/
-/vendor/composer/autoload_files.php
+# Composer dependencies are generated locally and during release packaging.
+/vendor/

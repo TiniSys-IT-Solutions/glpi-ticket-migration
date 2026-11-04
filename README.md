@@ -7,10 +7,11 @@
 
 Ticket Migration is a GLPI 11 plugin for reconstructing historical tickets
 from reusable, administrator-configured CSV mappings. A source row becomes an
-immutable `MigrationPlan` that may contain a ticket, actors, timeline entries,
-documents, relations and an external reference.
+immutable `MigrationPlan`; the current executor creates the ticket and its
+actors and records the external reference. Timeline entries, documents and
+relations are reserved for future versions.
 
-> Status: early development (`0.0.x`). Validate every workflow in a disposable
+> Status: early development (`0.1.2`). Validate every workflow in a disposable
 > environment before considering a production migration.
 
 ## Features
@@ -23,26 +24,13 @@ documents, relations and an external reference.
 - Persistent run history, idempotency ledger and CSV trace export.
 - Permission checks, audit metadata and mandatory backup acknowledgement.
 
-## Screenshots
-
-Official screenshots of the migration dashboard, mapping workflow, plan preview
-and execution progress will be added to this section.
-
-```text
-Image to add: migration dashboard
-Image to add: field and value mapping
-Image to add: immutable plan preview
-Image to add: final import progress
-```
-
 ## Compatibility
 
 - GLPI `>= 11.0.0` and `< 11.1.0`
 - Primary validation target: GLPI `11.0.8`
 - PHP `>= 8.2`
 
-CSV is the only V1 source. The project contains no TimeTonic, Jira or other
-vendor-specific connector.
+CSV is the only V1 source. The project contains no vendor-specific connector.
 
 ## Installation and usage
 
@@ -97,5 +85,7 @@ GLPI is a trademark of its respective owners. This project is an independent
 integration and is not an official GLPI product.
 
 ## Licence
+
+Copyright (C) 2026 TiniSys IT Solutions.
 
 GPL-3.0-or-later. See [LICENSE](LICENSE).

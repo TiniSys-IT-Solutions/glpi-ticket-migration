@@ -80,7 +80,9 @@ if (isset($_POST['import_pilot'])) {
         $result = (new PilotImportService())->execute($profile, $source, $row, $plan);
     } catch (\Throwable $exception) {
         ErrorHandler::logCaughtException($exception);
-        Session::addMessageAfterRedirect(__('GLPI refused the pilot ticket creation. No import reference was registered.', 'ticketmigration'), false, ERROR);
+        Session::addMessageAfterRedirect($existingImport !== null
+            ? __('Previously imported ticket is missing, deleted or inaccessible; no replacement was created.', 'ticketmigration')
+            : __('GLPI refused the pilot ticket creation. No import reference was registered.', 'ticketmigration'), false, ERROR);
         Html::redirect(WebUrl::front('plan.preview.php') . '?profiles_id=' . $profileId . '&row_offset=' . $requestedOffset);
     }
     if ($result->inProgress) {

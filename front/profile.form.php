@@ -10,24 +10,38 @@ use GlpiPlugin\Ticketmigration\ProfileRight;
 use GlpiPlugin\Ticketmigration\WebUrl;
 use GlpiPlugin\Ticketmigration\SourceFile;
 
-if (!ProfileRight::canManageProfiles(UPDATE)) {
-    Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
-}
+Session::checkCentralAccess();
 
 $profile = new MigrationProfile();
 if (isset($_POST['add'])) {
+    if (!ProfileRight::canManageProfiles(CREATE)) {
+        Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
+    }
+    $profile->input = $_POST;
+    if (!$profile->canCreateItem()) {
+        Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
+    }
     $id = $profile->add($_POST);
     if ($id) {
         Html::redirect($profile::getFormURLWithID($id));
     }
 } elseif (isset($_POST['update'])) {
+    if (!$profile->getFromDB((int) ($_POST['id'] ?? 0)) || !$profile->canUpdateItem()) {
+        Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
+    }
     $profile->update($_POST);
     Html::back();
 }
 
 $id = (int) ($_GET['id'] ?? 0);
+if (!ProfileRight::canManageProfiles($id > 0 ? UPDATE : CREATE)) {
+    Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
+}
 if ($id > 0 && (!$profile->getFromDB($id) || !$profile->canViewItem())) {
     Html::displayErrorAndDie(__('You do not have permission to view this migration profile.', 'ticketmigration'));
+}
+if ($id > 0 && !$profile->canUpdateItem()) {
+    Html::displayErrorAndDie(__('You do not have permission to perform this action.'));
 }
 $activeSource = null;
 if ($id > 0 && (int) ($profile->fields['sourcefiles_id'] ?? 0) > 0) {

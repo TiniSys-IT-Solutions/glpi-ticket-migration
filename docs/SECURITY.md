@@ -8,14 +8,14 @@
 - Uploaded files use a random internal name under a GLPI-approved plugin data directory; extension, MIME, size and upload provenance are validated, while source name, SHA-256, owner and retention metadata are persisted.
 - HTTP uploads are validated with `is_uploaded_file()`, transferred with `move_uploaded_file()`, and removed from `$_FILES` immediately after consumption so GLPI/Symfony cannot reuse a stale temporary path during request shutdown.
 - CSV is streamed. Full files and large row collections never enter `$_SESSION`.
-- Remote attachments accept HTTP(S) only, resolve and reject loopback/link-local/private destinations by default, revalidate redirects, enforce allowlists, timeouts, byte limits, MIME checks, and sanitized names.
+- Remote attachment ingestion is not implemented in the current executor. URLs in source data remain escaped text; the plugin does not fetch them.
 - Source text is escaped/sanitized for GLPI-compatible HTML. Structured descriptions escape every source label and value before adding plugin-owned headings, line breaks, and separators; profiles can exclude sensitive columns. Error CSV exports neutralize spreadsheet-formula prefixes.
 - Manual reference mapping uses GLPI's native AJAX dropdowns and validates the selected object again with `canViewItem()` before persistence. User records are never created during resolution.
 - Value-form decisions use server-recomputed SHA-256 form keys bound to the target and source value. The server rejects unknown keys and reconstructs trusted mapping context instead of accepting client-submitted target metadata.
 - Submitted reference tokens are parsed as exactly three components, restricted to a valid itemtype name and positive integer ID, matched against the target registry, then loaded and permission-checked before persistence.
 - The plugin user-search endpoint delegates filtering and IDOR validation to `Dropdown::getDropdownUsers()`, requires plugin profile access, enriches only authorized result labels, and rechecks selected objects during persistence.
 - Imports pass `_disablenotif` to every GLPI object creation/update that supports it. Pilot ticket input also uses GLPI's supported `_skip_rules` and `_skip_auto_assign` controls so historical plans are not altered by current business rules or entity auto-assignment. The plugin never disables GLPI notifications or rules globally.
-- Pilot execution requires the dedicated plugin import right, GLPI's native ticket CREATE right, visibility of the migration profile, access to the resolved target entity, a valid CSRF token, and an error-free immutable plan. Ticket creation and the plugin run/external-reference ledger are committed together; failure registers no idempotency reference. GLPI's scoped database advisory lock serializes concurrent attempts for the same profile/external-reference pair and is always released in a `finally` block.
+- Pilot execution requires the dedicated plugin import right, GLPI's native ticket CREATE right, visibility of the migration profile, access to the resolved target entity, a valid CSRF token, and an error-free immutable plan. Ticket creation and the plugin run/external-reference ledger are committed together; failure registers no idempotency reference. GLPI's scoped database advisory lock, shared with final imports, serializes workers for the same migration profile and is always released in a `finally` block.
 - Logs identify run, row, external ID, created IDs, and diagnostic codes without dumping ticket bodies, secrets, or remote credentials.
 
 Historical metadata restoration is disabled until a version/schema-guarded implementation is integration-tested. Any future direct core-data correction must be centralized, transactional, limited to objects created by the current run, auditable, and optional.
@@ -29,3 +29,28 @@ The final import UI and server-side execution service reject execution until the
 Final runs freeze mappings, options, entity context, source identifier, and source SHA-256 at creation. Short batches and per-row records make browser interruption recoverable. A persisted expiring lease serializes batch workers without relying on a PHP connection-scoped database lock. A retry is a new frozen run: the permanent ledger skips successes and prevents corrected work from duplicating them.
 
 CSV retention cleanup never targets the active revision or a hash referenced by a run. It removes only an expired inactive payload from protected storage and keeps soft-deleted metadata. Project cloning copies configuration and mapping decisions but deliberately does not duplicate the potentially large or sensitive CSV payload.
+
+## Import replay and transaction boundary (0.1.2)
+
+The final executor starts its database transaction before `Ticket::add()`. Ticket
+creation, checked reference/trace writes and checked counter advancement commit
+as one unit. GLPI lifecycle exceptions roll back partial creation before a separate
+failure trace is written. Persistence or commit exceptions roll back the row and
+pause the worker without advancing its offset. This relies on GLPI's transactional
+InnoDB tables and native database transaction API; external side effects introduced
+by other installed plugins are outside the database rollback boundary.
+
+Both services recheck native ticket CREATE and plugin import permissions, profile
+visibility and archive status, source ownership and target-entity access. Final
+execution also binds the requested run to its stored profile and source IDs.
+Profile updates load the posted ID and check `canUpdateItem()` before mutation;
+CREATE and UPDATE permissions are evaluated independently.
+
+Existing references are permanent safeguards even if a source row changes or its
+GLPI ticket is missing, deleted or inaccessible. Such tickets are never recreated
+or updated automatically. The key remains profile-scoped; a different profile or
+an uninstalled ledger cannot provide the same replay protection.
+
+The release build copies only an explicit runtime allowlist. Local workspaces,
+credentials directories, environment files, tests and development dependencies
+are excluded; archive root, version and forbidden entries are checked.

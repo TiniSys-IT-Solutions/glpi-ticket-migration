@@ -60,20 +60,26 @@ final class RunRepository
     public function update(int $id, array $values): void
     {
         global $DB;
-        $DB->update(self::TABLE, $values, ['id' => $id]);
+        if (!$DB->update(self::TABLE, $values, ['id' => $id])) {
+            throw new \RuntimeException('Unable to persist migration run progress.');
+        }
     }
 
     public function claimBatch(int $id, string $token, int $leaseSeconds = 120): bool
     {
         global $DB;
         $run = $this->get($id);
-        if ($run === null) { return false; }
+        if ($run === null) {
+            return false;
+        }
         $existingToken = (string) ($run['batch_token'] ?? '');
         if ($existingToken !== '') {
             $started = strtotime((string) ($run['batch_started_at'] ?? '')) ?: 0;
             if ($started === 0 || $started <= time() - $leaseSeconds) {
                 $DB->update(self::TABLE, ['batch_token' => null, 'batch_started_at' => null], ['id' => $id, 'batch_token' => $existingToken]);
-            } else { return false; }
+            } else {
+                return false;
+            }
         }
         $DB->update(self::TABLE, ['batch_token' => $token, 'batch_started_at' => $_SESSION['glpi_currenttime'] ?? date('Y-m-d H:i:s')], ['id' => $id, 'batch_token' => null]);
         $claimed = $this->get($id);
@@ -99,8 +105,12 @@ final class RunRepository
     {
         global $DB;
         $query = ['FROM' => self::TABLE, 'ORDER' => ['id DESC']];
-        if ($limit !== null) { $query['LIMIT'] = max(1, $limit); }
-        if ($profileId !== null && $profileId > 0) { $query['WHERE'] = ['profiles_id' => $profileId]; }
+        if ($limit !== null) {
+            $query['LIMIT'] = max(1, $limit);
+        }
+        if ($profileId !== null && $profileId > 0) {
+            $query['WHERE'] = ['profiles_id' => $profileId];
+        }
         return iterator_to_array($DB->request($query));
     }
 }

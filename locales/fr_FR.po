@@ -1,8 +1,13 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: Ticket Migration 0.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-01 18:01+0530\n"
+"POT-Creation-Date: 2026-10-07 00:00+0000\n"
+"PO-Revision-Date: 2026-10-07 00:00+0530\n"
+"Last-Translator: TiniSys IT Solutions\n"
+"Language-Team: French\n"
 "Language: fr_FR\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -235,7 +240,7 @@ msgstr "Aucun projet de migration archivé."
 msgid "No migration profile yet."
 msgstr "Aucun profil de migration pour le moment."
 
-#: templates/plan/preview.html.twig front/plan.preview.php:163
+#: templates/plan/preview.html.twig front/plan.preview.php:165
 msgid "Migration plan preview"
 msgstr "Aperçu du plan de migration"
 
@@ -1169,7 +1174,7 @@ msgstr "Vous n’avez pas l’autorisation d’importer des tickets."
 msgid "Migration run not found."
 msgstr "Exécution de migration introuvable."
 
-#: ajax/run.batch.php:23 front/run.form.php:20 front/profile.form.php:30
+#: ajax/run.batch.php:23 front/run.form.php:20 front/profile.form.php:41
 #: front/mapping.form.php:23 front/value.form.php:29 front/import.form.php:17
 #: front/preview.php:44 front/source.php:20 front/plan.preview.php:29
 msgid "You do not have permission to view this migration profile."
@@ -1250,7 +1255,15 @@ msgstr "Plan de migration bloqué"
 msgid "Target entity forbidden"
 msgstr "Entité cible interdite"
 
-#: ajax/run.batch.php:49 front/run.form.php:56
+#: ajax/run.batch.php:49 front/run.form.php:56 front/plan.preview.php:84
+msgid ""
+"Previously imported ticket is missing, deleted or inaccessible; no "
+"replacement was created."
+msgstr ""
+"Le ticket déjà importé est absent, supprimé ou inaccessible ; aucun "
+"remplacement n’a été créé."
+
+#: ajax/run.batch.php:50 front/run.form.php:57
 msgid "Ticket creation failed"
 msgstr "Échec de la création du ticket"
 
@@ -1380,7 +1393,11 @@ msgstr "La date « %s » est invalide pour %s."
 msgid "External ticket identifier is empty."
 msgstr "L’identifiant externe du ticket est vide."
 
-#: src/Plan/MigrationPlanBuilder.php:82
+#: src/Plan/MigrationPlanBuilder.php:75
+msgid "External ticket identifier exceeds 255 characters."
+msgstr "L’identifiant externe du ticket dépasse 255 caractères."
+
+#: src/Plan/MigrationPlanBuilder.php:85
 msgid ""
 "The empty ticket title was generated from the description or external "
 "identifier."
@@ -1388,11 +1405,11 @@ msgstr ""
 "Le titre vide du ticket a été généré à partir de la description ou de "
 "l’identifiant externe."
 
-#: src/Plan/MigrationPlanBuilder.php:84
+#: src/Plan/MigrationPlanBuilder.php:87
 msgid "Ticket title is empty."
 msgstr "Le titre du ticket est vide."
 
-#: src/Plan/MigrationPlanBuilder.php:108 src/Plan/MigrationPlanBuilder.php:110
+#: src/Plan/MigrationPlanBuilder.php:111 src/Plan/MigrationPlanBuilder.php:113
 #: src/Mapping/TargetRegistry.php:11 src/Mapping/TargetRegistry.php:12
 #: src/Mapping/TargetRegistry.php:13 src/Mapping/TargetRegistry.php:14
 #: src/Mapping/TargetRegistry.php:15 src/Mapping/TargetRegistry.php:16
@@ -1402,12 +1419,12 @@ msgstr "Le titre du ticket est vide."
 msgid "Ticket"
 msgstr "Ticket"
 
-#: src/Plan/MigrationPlanBuilder.php:142
+#: src/Plan/MigrationPlanBuilder.php:145
 msgid "Ticket entity derived from the requester unique GLPI authorization."
 msgstr ""
 "L’entité du ticket a été déduite de l’habilitation GLPI unique du demandeur."
 
-#: src/Plan/MigrationPlanBuilder.php:144
+#: src/Plan/MigrationPlanBuilder.php:147
 msgid ""
 "The resolved location points to another entity; the requester entity took "
 "precedence."
@@ -1415,7 +1432,7 @@ msgstr ""
 "Le lieu résolu pointe vers une autre entité ; l’entité du demandeur a été "
 "prioritaire."
 
-#: src/Plan/MigrationPlanBuilder.php:149
+#: src/Plan/MigrationPlanBuilder.php:152
 msgid ""
 "Requester has several GLPI entity authorizations without one usable "
 "preference."
@@ -1423,14 +1440,14 @@ msgstr ""
 "Le demandeur possède plusieurs habilitations d’entité GLPI sans préférence "
 "exploitable."
 
-#: src/Plan/MigrationPlanBuilder.php:153
+#: src/Plan/MigrationPlanBuilder.php:156
 msgid ""
 "Ticket entity derived from the migration profile location/entity mapping."
 msgstr ""
 "L’entité du ticket a été déduite de l’association lieu/entité du profil de "
 "migration."
 
-#: src/Plan/MigrationPlanBuilder.php:157
+#: src/Plan/MigrationPlanBuilder.php:160
 msgid "Ticket entity set to the migration profile default entity."
 msgstr "L’entité du ticket est l’entité par défaut du profil de migration."
 
@@ -1562,11 +1579,11 @@ msgstr ""
 "Import final terminé : %1$d importés, %2$d déjà importés, %3$d modifiés, "
 "%4$d en échec."
 
-#: front/run.form.php:62
+#: front/run.form.php:63
 msgid "Migration run"
 msgstr "Exécution de migration"
 
-#: front/profile.form.php:46
+#: front/profile.form.php:60
 msgid "Migration profile details"
 msgstr "Détails du profil de migration"
 
@@ -1752,14 +1769,14 @@ msgstr ""
 msgid "You do not have access to the ticket target entity."
 msgstr "Vous n’avez pas accès à l’entité cible du ticket."
 
-#: front/plan.preview.php:83
+#: front/plan.preview.php:85
 msgid ""
 "GLPI refused the pilot ticket creation. No import reference was registered."
 msgstr ""
 "GLPI a refusé la création du ticket pilote. Aucune référence d’import n’a "
 "été enregistrée."
 
-#: front/plan.preview.php:87
+#: front/plan.preview.php:89
 msgid ""
 "This pilot row is already being imported. Refresh the page in a moment; no "
 "second ticket will be created."
@@ -1767,7 +1784,7 @@ msgstr ""
 "Cette ligne pilote est déjà en cours d’import. Actualisez la page dans un "
 "instant ; aucun second ticket ne sera créé."
 
-#: front/plan.preview.php:91
+#: front/plan.preview.php:93
 #, php-format
 msgid ""
 "This source row was already imported as GLPI ticket #%d and will be skipped "
@@ -1776,7 +1793,7 @@ msgstr ""
 "Cette ligne source a déjà été importée dans le ticket GLPI #%d et sera "
 "ignorée lors de l’import final."
 
-#: front/plan.preview.php:92
+#: front/plan.preview.php:94
 #, php-format
 msgid ""
 "Pilot ticket #%d was created. This source row is now registered and will be "
@@ -1785,23 +1802,23 @@ msgstr ""
 "Le ticket pilote #%d a été créé. Cette ligne source est maintenant "
 "enregistrée et sera ignorée lors de l’import final."
 
-#: front/plan.preview.php:138
+#: front/plan.preview.php:140
 msgid "Explicit CSV entity mapping"
 msgstr "Correspondance explicite de l’entité CSV"
 
-#: front/plan.preview.php:144
+#: front/plan.preview.php:146
 msgid "Requester GLPI authorization"
 msgstr "Habilitation GLPI du demandeur"
 
-#: front/plan.preview.php:146
+#: front/plan.preview.php:148
 msgid "Migration profile location/entity mapping"
 msgstr "Association lieu/entité du profil de migration"
 
-#: front/plan.preview.php:149
+#: front/plan.preview.php:151
 msgid "Migration profile default entity"
 msgstr "Entité par défaut du profil de migration"
 
-#: front/plan.preview.php:150
+#: front/plan.preview.php:152
 msgid "Requester entity or migration profile default"
 msgstr "Entité du demandeur ou entité par défaut du profil de migration"
 

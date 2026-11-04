@@ -71,6 +71,9 @@ final class MigrationPlanBuilder
         if (($external['external_id'] ?? '') === '') {
             $errors[] = __('External ticket identifier is empty.', 'ticketmigration');
         }
+        if (mb_strlen((string) ($external['external_id'] ?? ''), 'UTF-8') > 255) {
+            $errors[] = __('External ticket identifier exceeds 255 characters.', 'ticketmigration');
+        }
         $this->resolveEntity($ticket, $actors, $entityContext, $warnings, $information, $validations);
         if (($ticket['name'] ?? '') === '') {
             if ((bool) ($titleFallbackConfiguration['enabled'] ?? true)) {

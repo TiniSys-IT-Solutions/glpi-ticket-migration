@@ -46,7 +46,8 @@ if (isset($batchError)) { $respond(['status' => 'paused', 'error' => $batchError
 $labels = ['queued' => __('Queued', 'ticketmigration'), 'running' => __('Running', 'ticketmigration'), 'paused' => __('Paused', 'ticketmigration'), 'completed' => __('Completed', 'ticketmigration'), 'completed_with_issues' => __('Completed with issues', 'ticketmigration'),
     'success' => __('Imported', 'ticketmigration'), 'skipped' => __('Already imported', 'ticketmigration'), 'changed' => __('Changed', 'ticketmigration'), 'failed' => __('Failed', 'ticketmigration'),
     'ticket_imported' => __('Ticket imported', 'ticketmigration'), 'already_imported' => __('External identifier already imported', 'ticketmigration'), 'source_changed_after_import' => __('Source row changed after import', 'ticketmigration'),
-    'plan_blocked' => __('Migration plan blocked', 'ticketmigration'), 'target_entity_forbidden' => __('Target entity forbidden', 'ticketmigration'), 'ticket_creation_failed' => __('Ticket creation failed', 'ticketmigration')];
+    'plan_blocked' => __('Migration plan blocked', 'ticketmigration'), 'target_entity_forbidden' => __('Target entity forbidden', 'ticketmigration'), 'imported_ticket_unavailable' => __('Previously imported ticket is missing, deleted or inaccessible; no replacement was created.', 'ticketmigration'),
+    'ticket_creation_failed' => __('Ticket creation failed', 'ticketmigration')];
 $items = [];
 foreach ($repository->recentItems($runId, 20) as $item) { $items[] = ['row_number' => (int) $item['row_number'], 'external_id' => (string) ($item['external_id'] ?? ''), 'status' => (string) $item['status'],
     'status_label' => $labels[$item['status']] ?? $item['status'], 'tickets_id' => (int) ($item['tickets_id'] ?? 0), 'ticket_url' => !empty($item['tickets_id']) ? Ticket::getFormURLWithID((int) $item['tickets_id']) : null,

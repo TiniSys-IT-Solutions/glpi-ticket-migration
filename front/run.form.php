@@ -53,7 +53,8 @@ $labels = [
     'changed' => __('Changed', 'ticketmigration'),
     'ticket_imported' => __('Ticket imported', 'ticketmigration'), 'already_imported' => __('External identifier already imported', 'ticketmigration'),
     'source_changed_after_import' => __('Source row changed after import', 'ticketmigration'), 'plan_blocked' => __('Migration plan blocked', 'ticketmigration'),
-    'target_entity_forbidden' => __('Target entity forbidden', 'ticketmigration'), 'ticket_creation_failed' => __('Ticket creation failed', 'ticketmigration'),
+    'target_entity_forbidden' => __('Target entity forbidden', 'ticketmigration'), 'imported_ticket_unavailable' => __('Previously imported ticket is missing, deleted or inaccessible; no replacement was created.', 'ticketmigration'),
+    'ticket_creation_failed' => __('Ticket creation failed', 'ticketmigration'),
 ];
 $run['status_label'] = $labels[$run['status']] ?? $run['status'];
 foreach ($items as &$item) { $item['status_label'] = $labels[$item['status']] ?? $item['status']; $item['message_label'] = $labels[$item['message']] ?? $item['message']; }

@@ -3,12 +3,28 @@
   "description": "Generic CSV-driven historical ticket migration plugin for GLPI 11",
   "type": "glpi-plugin",
   "license": "GPL-3.0-or-later",
-  "require": {"php": ">=8.2"},
+  "require": {
+    "php": ">=8.2"
+  },
   "require-dev": {
     "glpi-project/tools": "^0.8",
     "phpunit/phpunit": "^11.0"
   },
-  "autoload": {"psr-4": {"GlpiPlugin\\Ticketmigration\\": "src/"}},
-  "autoload-dev": {"psr-4": {"GlpiPlugin\\Ticketmigration\\Tests\\": "tests/"}},
-  "config": {"optimize-autoloader": true, "sort-packages": true}
+  "autoload": {
+    "psr-4": {
+      "GlpiPlugin\\Ticketmigration\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GlpiPlugin\\Ticketmigration\\Tests\\": "tests/"
+    },
+    "exclude-from-classmap": [
+      "tests/Support/ExecutionEnvironment.php"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
 }

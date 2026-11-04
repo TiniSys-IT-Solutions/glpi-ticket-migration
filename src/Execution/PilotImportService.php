@@ -4,6 +4,7 @@ namespace GlpiPlugin\Ticketmigration\Execution;
 
 use GlpiPlugin\Ticketmigration\Idempotency\CanonicalRowHasher;
 use GlpiPlugin\Ticketmigration\MigrationProfile;
+use GlpiPlugin\Ticketmigration\ProfileRight;
 use GlpiPlugin\Ticketmigration\Plan\MigrationPlan;
 use GlpiPlugin\Ticketmigration\Source\SourceRow;
 use GlpiPlugin\Ticketmigration\SourceFile;
@@ -13,6 +14,12 @@ final class PilotImportService
     public function execute(MigrationProfile $profile, SourceFile $source, SourceRow $row, MigrationPlan $plan): PilotImportResult
     {
         global $DB;
+        if (!ProfileRight::canRunImports() || !\Ticket::canCreate() || !$profile->canViewItem()
+            || !$source->canViewItem() || !empty($profile->fields['is_archived'])
+            || (int) $source->fields['profiles_id'] !== (int) $profile->getID()
+            || !\Session::haveAccessToEntity((int) ($plan->ticket['entity']['id'] ?? -1))) {
+            throw new \RuntimeException('Import access denied.');
+        }
         $profileId = (int) $profile->getID();
         $externalId = trim((string) ($plan->externalReference['external_id'] ?? ''));
         if ($externalId === '' || !$plan->isExecutable()) {
@@ -20,14 +27,12 @@ final class PilotImportService
         }
         $ledger = new ImportLedgerRepository();
         if (($existing = $ledger->find($profileId, $externalId)) !== null) {
-            return new PilotImportResult((int) $existing['tickets_id'], (int) $existing['runs_id'], true);
+            return $this->existingResult($ledger, $existing);
         }
-        // Keep the advisory-lock name well below MySQL's historical 64-byte
-        // limit after GLPI prefixes it with the database name.
-        $lockName = 'tm_pilot_' . substr(hash('sha256', $profileId . "\0" . $externalId), 0, 32);
+        $lockName = ImportLedgerRepository::lockName($profileId);
         if (!$DB->getLock($lockName)) {
             if (($existing = $ledger->find($profileId, $externalId)) !== null) {
-                return new PilotImportResult((int) $existing['tickets_id'], (int) $existing['runs_id'], true);
+                return $this->existingResult($ledger, $existing);
             }
             return new PilotImportResult(0, 0, false, true);
         }
@@ -38,17 +43,25 @@ final class PilotImportService
         }
     }
 
+    private function existingResult(ImportLedgerRepository $ledger, array $existing): PilotImportResult
+    {
+        if (!$ledger->ticketAvailable($existing)) {
+            throw new \RuntimeException('The imported ticket is unavailable; its reference is retained.');
+        }
+        return new PilotImportResult((int) $existing['tickets_id'], (int) $existing['runs_id'], true);
+    }
+
     private function executeWithLock(MigrationProfile $profile, SourceFile $source, SourceRow $row, MigrationPlan $plan, string $externalId): PilotImportResult
     {
         global $DB;
         $profileId = (int) $profile->getID();
         $ledger = new ImportLedgerRepository();
         if (($existing = $ledger->find($profileId, $externalId)) !== null) {
-            return new PilotImportResult((int) $existing['tickets_id'], (int) $existing['runs_id'], true);
+            return $this->existingResult($ledger, $existing);
         }
         $rowHash = (new CanonicalRowHasher())->hash($row->values);
         $now = $_SESSION['glpi_currenttime'] ?? date('Y-m-d H:i:s');
-        $DB->insert('glpi_plugin_ticketmigration_runs', [
+        if (!$DB->insert('glpi_plugin_ticketmigration_runs', [
             'profiles_id' => $profileId,
             'sourcefiles_id' => (int) $source->getID(),
             'users_id' => (int) \Session::getLoginUserID(),
@@ -61,12 +74,14 @@ final class PilotImportService
             'started_at' => $now,
             'total_rows' => 1,
             'current_offset' => max(0, $row->number - 2),
-        ]);
+        ])) {
+            throw new \RuntimeException('Unable to persist pilot import history.');
+        }
         $runId = (int) $DB->insertId();
         $DB->beginTransaction();
         try {
             $ticketId = (new GlpiTicketExecutor())->execute($plan);
-            $DB->insert('glpi_plugin_ticketmigration_runitems', [
+            if (!$DB->insert('glpi_plugin_ticketmigration_runitems', [
                 'runs_id' => $runId,
                 'row_number' => $row->number,
                 'external_id' => $externalId,
@@ -80,8 +95,10 @@ final class PilotImportService
                 'errors' => json_encode([], JSON_THROW_ON_ERROR),
                 'started_at' => $now,
                 'finished_at' => $now,
-            ]);
-            $DB->insert('glpi_plugin_ticketmigration_externalrefs', [
+            ])) {
+                throw new \RuntimeException('Unable to persist pilot import history.');
+            }
+            if (!$DB->insert('glpi_plugin_ticketmigration_externalrefs', [
                 'profiles_id' => $profileId,
                 'external_id' => $externalId,
                 'tickets_id' => $ticketId,
@@ -89,20 +106,24 @@ final class PilotImportService
                 'source_updated_at' => null,
                 'imported_at' => $now,
                 'runs_id' => $runId,
-            ]);
-            $DB->update('glpi_plugin_ticketmigration_runs', [
+            ])) {
+                throw new \RuntimeException('Unable to persist pilot import history.');
+            }
+            if (!$DB->update('glpi_plugin_ticketmigration_runs', [
                 'status' => 'completed',
                 'finished_at' => $now,
                 'processed_rows' => 1,
                 'success_count' => 1,
                 'warning_count' => count($plan->warnings),
                 'current_offset' => max(0, $row->number - 1),
-            ], ['id' => $runId]);
+            ], ['id' => $runId])) {
+                throw new \RuntimeException('Unable to persist pilot import history.');
+            }
             $DB->commit();
             return new PilotImportResult($ticketId, $runId);
         } catch (\Throwable $exception) {
             $DB->rollBack();
-            $DB->insert('glpi_plugin_ticketmigration_runitems', [
+            if (!$DB->insert('glpi_plugin_ticketmigration_runitems', [
                 'runs_id' => $runId,
                 'row_number' => $row->number,
                 'external_id' => $externalId,
@@ -116,13 +137,17 @@ final class PilotImportService
                 'errors' => json_encode(['pilot_creation_failed'], JSON_THROW_ON_ERROR),
                 'started_at' => $now,
                 'finished_at' => $now,
-            ]);
-            $DB->update('glpi_plugin_ticketmigration_runs', [
+            ])) {
+                throw new \RuntimeException('Unable to persist pilot import history.');
+            }
+            if (!$DB->update('glpi_plugin_ticketmigration_runs', [
                 'status' => 'failed',
                 'finished_at' => $now,
                 'processed_rows' => 1,
                 'failed_count' => 1,
-            ], ['id' => $runId]);
+            ], ['id' => $runId])) {
+                throw new \RuntimeException('Unable to persist pilot import history.');
+            }
             throw $exception;
         }
     }

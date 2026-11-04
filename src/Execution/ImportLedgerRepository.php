@@ -4,6 +4,20 @@ namespace GlpiPlugin\Ticketmigration\Execution;
 
 final class ImportLedgerRepository
 {
+    public static function lockName(int $profileId): string
+    {
+        // Pilot and final imports must share a lock, including different runs.
+        return 'tm_import_' . substr(hash('sha256', (string) $profileId), 0, 32);
+    }
+
+    public function ticketAvailable(array $reference): bool
+    {
+        $ticket = new \Ticket();
+        return $ticket->getFromDB((int) $reference['tickets_id'])
+            && empty($ticket->fields['is_deleted'])
+            && $ticket->can((int) $reference['tickets_id'], READ);
+    }
+
     public function find(int $profileId, string $externalId): ?array
     {
         global $DB;

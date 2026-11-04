@@ -89,3 +89,34 @@ The progress page starts a queued run automatically and processes 10 rows per sh
 Every source row receives an auditable state: imported, already imported, changed, or failed. Individual failures do not stop later rows. Notifications are disabled on every created ticket; the progress page is the single overall result notification. **Export row trace** downloads all status and diagnostic codes without copying ticket descriptions.
 
 If a failure requires a source or mapping correction, allow the run to collect the other errors, correct the profile, and start a new final run. Previously registered external identifiers with the same row hash are skipped, while failed rows are attempted again. A known identifier with changed source content is deliberately reported for manual review and is never updated automatically.
+
+## Second pass: create only missing source identifiers
+
+Keep the original migration profile. Upload and activate the new CSV revision,
+map the same stable external-ID column, revalidate value correspondence and
+preview several plans before starting a new final run. Keep identifiers as text
+so values such as `00042` remain unchanged. Identifiers must be nonempty, unique
+within the source and at most 255 characters; use the same spelling on every pass.
+
+The key is the migration profile plus the source ID, independently of CSV filename,
+row order, content hash or GLPI's generated ticket number. An unchanged registered
+row is skipped; a changed registered row is reported without modifying or recreating
+the GLPI ticket. New valid identifiers create tickets. Registered rows are classified
+before new-row mapping errors, so a mapping issue cannot turn an old ID into a new ticket.
+
+If a referenced ticket is missing, in the trash or inaccessible to the operator,
+the row is reported as failed and the reference is retained. Review it manually;
+the plugin does not recreate deleted tickets automatically. Do not clone the profile
+or uninstall/reinstall the plugin to perform a second pass: clones have a separate
+ledger and uninstall deletes the ledger while leaving the migrated tickets in GLPI.
+Tickets created outside this profile's ledger are not automatically reconciled.
+
+Pilot and final workers share a profile lock. A busy pilot asks you to retry;
+a competing final batch pauses and can be resumed after the other worker ends.
+Technical ledger or progress errors pause execution after rolling back that row.
+The ticket, reference, trace and progress are committed together for final imports.
+
+Upgrade by replacing the plugin files and using GLPI's plugin update operation.
+Version 0.1.2 preserves existing profiles, mappings, run history and references;
+it introduces no schema migration. Keep a backup and validate the upgrade and a
+second pass on a disposable copy of your installation before the client run.
