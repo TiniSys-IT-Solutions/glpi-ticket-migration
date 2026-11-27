@@ -38,10 +38,12 @@ for filename in ('ticketmigration.pot', 'en_GB.po'):
     path = pathlib.Path('locales') / filename
     contents = path.read_text()
     contents = re.sub(r'POT-Creation-Date: [^"\n]*', lambda match: 'POT-Creation-Date: ' + timestamp + r'\n', contents)
+    if filename == 'en_GB.po':
+        contents = re.sub(r'Project-Id-Version: [^"\\]*', 'Project-Id-Version: Ticket Migration ' + os.environ['VERSION'], contents)
+        contents = re.sub(r'PO-Revision-Date: [^"\\]*', 'PO-Revision-Date: ' + timestamp, contents)
     path.write_text(contents)
 
 CATALOG
-sed -i "s/Project-Id-Version: PACKAGE VERSION/Project-Id-Version: Ticket Migration ${VERSION}/" locales/en_GB.po
 msgattrib --clear-fuzzy --output-file=locales/en_GB.po locales/en_GB.po
 msgmerge --no-fuzzy-matching locales/fr_FR.po locales/ticketmigration.pot -o locales/fr_FR.po.new
 mv locales/fr_FR.po.new locales/fr_FR.po

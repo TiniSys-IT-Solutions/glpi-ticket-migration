@@ -1,6 +1,6 @@
 # GLPI Ticket Migration
 
-> Branche `glpi-v12` : version 0.2.0 pour GLPI 12.0.x et PHP 8.3+.
+> Branche `glpi-v12` : version 0.2.0-glpi12-beta.1 pour GLPI 12.0.x et PHP 8.3+.
 > Les versions GLPI 11 restent disponibles sur `main` et dans les tags précédents.
 > Migration en cours de revue ; voir `docs/GLPI12_MIGRATION.md` pour les contrôles et limites.
 
@@ -16,7 +16,7 @@ immutable `MigrationPlan`; the current executor creates the ticket and its
 actors and records the external reference. Timeline entries, documents and
 relations are reserved for future versions.
 
-> Status: early development (`0.2.0`). Validate every workflow in a disposable
+> Status: early development (`0.2.0-glpi12-beta.1`). Validate every workflow in a disposable
 > environment before considering a production migration.
 
 ## Features

@@ -1,6 +1,6 @@
 # GLPI 12 migration
 
-The `glpi-v12` branch prepares 0.2.0 for GLPI **12.0.x** (`>=12.0.0`, `<12.1.0`) and PHP **8.3+**.
+The `glpi-v12` branch prepares 0.2.0-glpi12-beta.1 for GLPI **12.0.x** (`>=12.0.0`, `<12.1.0`) and PHP **8.3+**.
 The GLPI 11 release remains on `main`; no GLPI 12 release tag is published before review and merge.
 
 ## Native adaptations
@@ -13,7 +13,7 @@ The GLPI 11 release remains on `main`; no GLPI 12 release tag is published befor
 
 ## Validation
 
-A disposable GLPI 12.0.1 installation with MariaDB 11.4 was used locally. The plugin installs, activates, initializes and loads all its declarations against native GLPI parents.
+A disposable GLPI 12.0.2 installation with MariaDB 11.4 was used locally. The plugin installs, activates, initializes and loads all its declarations against native GLPI parents.
 The isolated regression suites and release packaging are checked separately.
 
 The reproducible native runner requires a `.tinisys-disposable-test` marker at the GLPI root:
@@ -36,4 +36,4 @@ The automated native checks cover initialization and lifecycle; they do not repl
 - [Tag migration](https://github.com/pluginsGLPI/tag/commit/d7f547592c5e6627dc0c42fb573c5e2f448c3ff5)
 - [Fields migration](https://github.com/pluginsGLPI/fields/commit/8a679ffd01067b38c6ce98367fa047e778da6493)
 - [Addressing migration](https://github.com/pluginsGLPI/addressing/commit/ba3a3ba1e65cfb3ee7f577e5b9f89e1798b0d563)
-- [GLPI 12.0.1 source](https://github.com/glpi-project/glpi/tree/12.0.1)
+- [GLPI 12.0.2 source](https://github.com/glpi-project/glpi/tree/12.0.2)
