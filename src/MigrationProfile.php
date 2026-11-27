@@ -13,7 +13,7 @@ final class MigrationProfile extends CommonDBTM
     public const STEP_VALUES_CONFIGURED = 'values_configured';
     public const STEP_DRY_RUN_VALIDATED = 'dry_run_validated';
 
-    public static $rightname = ProfileRight::RIGHT_VIEW_PROFILES;
+    public static string $rightname = ProfileRight::RIGHT_VIEW_PROFILES;
 
     public static function getTable($classname = null): string
     {

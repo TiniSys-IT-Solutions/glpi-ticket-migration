@@ -2,6 +2,16 @@
 
 All notable public changes to GLPI Ticket Migration are documented here.
 
+## [0.2.0-glpi12-beta.1] - 2026-11-27
+
+First version compatible with GLPI 12.
+
+Préversion qualifiée sur GLPI 12.0.2. PHP 8.3 minimum.
+
+- Align migration profiles, sources and menus with the native GLPI 12 model and plugin interfaces.
+- Preserve the transactional CSV import and verify pilot deduplication and batch resumption on GLPI 12.0.2.
+- Normalize the release version and timestamps in the packaged translations.
+
 ## [0.1.2] - 2026-10-07
 
 ### Fixed

@@ -1,8 +1,8 @@
 # Development
 
-Use PHP 8.2+, PSR-12, strict domain boundaries, translated English source labels, and GLPI's DB/API abstractions. Validate behavior against the pinned local GLPI 11.0.8 source before relying on any internal API.
+Use PHP 8.3+, PSR-12, strict domain boundaries, translated English source labels, and GLPI's DB/API abstractions. Validate behavior against the pinned local GLPI 12.0.8 source before relying on any internal API.
 
-Unit tests cover pure readers, mappings, transformations, planning, hashing, and security policies. Execution regression tests use isolated GLPI and database test doubles to inject ledger, progress and lifecycle failures and verify rollback and replay. These are not live GLPI integration tests. Install/upgrade, native object lifecycle, notifications, rights and concurrent MySQL workers still require a disposable GLPI 11.0.8 installation.
+Unit tests cover pure readers, mappings, transformations, planning, hashing, and security policies. Execution regression tests use isolated GLPI and database test doubles to inject ledger, progress and lifecycle failures and verify rollback and replay. These are not live GLPI integration tests. Install/upgrade, native object lifecycle, notifications, rights and concurrent MySQL workers still require a disposable GLPI 12.0.8 installation.
 
 GLPI production mode disables Twig template auto-reload. The installer therefore clears GLPI caches after a successful install or upgrade so changed plugin templates and menu definitions are compiled again on the next request.
 

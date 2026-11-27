@@ -12,7 +12,7 @@ flowchart TD
   Mapping --> Plan[MigrationPlan]
   Plan --> Dry[Dry Run reporter]
   Plan --> Exec[GLPI Executor]
-  Exec --> Core[GLPI 11 objects]
+  Exec --> Core[GLPI 12 objects]
   App --> Repo[(Plugin repositories)]
   Repo --> DB[(Plugin tables)]
 ```
@@ -44,7 +44,7 @@ When a new revision becomes active, the previous revision receives a 30-day rete
 
 ## Persistence
 
-Frequently filtered fields are normal columns and indexed. Extensible mapping/options payloads use JSON. `profiles_id + external_id` is unique and is the technical idempotency key. The same value is also passed to GLPI 11's native `Ticket.externalid` field so it remains visible and searchable on the created ticket; plugin-scoped idempotency does not rely on that global core field. A successful pilot writes the same external-reference ledger used by final execution, so that row cannot create a second ticket later. A shared profile-scoped database advisory lock serializes pilot and final workers, including different runs. The ledger is rechecked under this lock before creation. Each final row commits ticket creation, external reference, row trace and counters in one transaction. Every critical plugin write is checked; persistence errors roll the row back and pause the run. A partial GLPI creation failure is rolled back before a separate failed-row transaction is recorded. Registered references are classified before new-plan errors. Missing, deleted or inaccessible referenced tickets never trigger replacement creation. No core table schema is changed. Uninstalling the plugin drops plugin data only; migrated tickets remain GLPI-owned.
+Frequently filtered fields are normal columns and indexed. Extensible mapping/options payloads use JSON. `profiles_id + external_id` is unique and is the technical idempotency key. The same value is also passed to GLPI 12's native `Ticket.externalid` field so it remains visible and searchable on the created ticket; plugin-scoped idempotency does not rely on that global core field. A successful pilot writes the same external-reference ledger used by final execution, so that row cannot create a second ticket later. A shared profile-scoped database advisory lock serializes pilot and final workers, including different runs. The ledger is rechecked under this lock before creation. Each final row commits ticket creation, external reference, row trace and counters in one transaction. Every critical plugin write is checked; persistence errors roll the row back and pause the run. A partial GLPI creation failure is rolled back before a separate failed-row transaction is recorded. Registered references are classified before new-plan errors. Missing, deleted or inaccessible referenced tickets never trigger replacement creation. No core table schema is changed. Uninstalling the plugin drops plugin data only; migrated tickets remain GLPI-owned.
 
 Configuration workflow state is persisted on the profile (`profile_created`, `source_selected`, `mapping_configured`, `values_configured`). It drives setup navigation but never substitutes for validation; pilot and final execution state belongs to run history.
 

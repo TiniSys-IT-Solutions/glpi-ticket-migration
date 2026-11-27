@@ -6,7 +6,7 @@ use CommonGLPI;
 
 final class Menu extends CommonGLPI
 {
-    public static $rightname = ProfileRight::RIGHT_VIEW_PROFILES;
+    public static string $rightname = ProfileRight::RIGHT_VIEW_PROFILES;
 
     public static function getMenuName(): string
     {

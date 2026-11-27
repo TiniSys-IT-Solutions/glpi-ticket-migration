@@ -49,7 +49,7 @@ final class ProfileRight extends \Profile
         return $item instanceof \Profile
             && $item->getID() > 0
             && ($item->fields['interface'] ?? '') === 'central'
-            ? self::createTabEntry(__('Ticket Migration', 'ticketmigration'), 0, $item::getType(), 'ti ti-transfer')
+            ? self::createTabEntry(__('Ticket Migration', 'ticketmigration'), 0, $item::class, 'ti ti-transfer')
             : '';
     }
 

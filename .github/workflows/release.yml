@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
           extensions: fileinfo, iconv, mbstring
           coverage: none
       - run: sudo apt-get update && sudo apt-get install --yes gettext
@@ -26,9 +26,19 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           ARCHIVE="dist/ticketmigration-${VERSION}.zip"
+          awk -v header="## [$VERSION]" '
+            index($0, header) == 1 { emit=1; next }
+            /^## / && emit { exit }
+            emit { print }
+          ' CHANGELOG.md > dist/release-notes.md
+          test -s dist/release-notes.md
+          release_flags=(--verify-tag)
+          if [[ "$VERSION" == *-glpi12-beta.* ]]; then
+            release_flags+=(--prerelease --latest=false)
+          fi
           if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
             gh release upload "${GITHUB_REF_NAME}" "${ARCHIVE}" --clobber
           else
-            gh release create "${GITHUB_REF_NAME}" "${ARCHIVE}" \
-              --title "Ticket Migration ${GITHUB_REF_NAME}" --generate-notes
+            gh release create "${GITHUB_REF_NAME}" "${ARCHIVE}" "${release_flags[@]}" \
+              --title "Ticket Migration ${GITHUB_REF_NAME}" --notes-file dist/release-notes.md
           fi

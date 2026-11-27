@@ -30,7 +30,7 @@ Before final bulk execution, the operator explicitly acknowledges responsibility
 
 Classification precedes execution: unknown external ID is `NEW`; known ID with the same canonical hash is `SKIP`; known ID with a different hash is `CHANGED`. V1 does not update `CHANGED` tickets automatically.
 
-The current executor creates tickets and actors and registers external references. Followups, tasks, documents, solutions, relations and historical metadata restoration are future work; they are not executed in version 0.1.2. Live integration tests against GLPI 11.0.8 remain necessary to validate its native lifecycle.
+The current executor creates tickets and actors and registers external references. Followups, tasks, documents, solutions, relations and historical metadata restoration are future work; they are not executed in version 0.1.2. Live integration tests against GLPI 12.0.8 remain necessary to validate its native lifecycle.
 
 Each final row commits the GLPI ticket, its reference, trace and progress together. Registered references to missing, deleted or inaccessible tickets are reported without replacement creation. Critical persistence failures roll the row back and pause the run. Closing the browser must not lose progress. Dry run may write technical report state but creates no GLPI business object.
 
